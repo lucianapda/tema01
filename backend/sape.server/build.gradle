@@ -1,0 +1,89 @@
+apply plugin: 'java'
+apply plugin: 'war'
+
+repositories {
+        mavenCentral()
+        mavenLocal()
+        jcenter()
+        maven {
+            url 'https://repository.jboss.org/nexus/content/groups/public/'
+        }
+    }
+
+    version = '1.0'
+
+jar {
+	manifest.attributes provider: 'KeepUser'
+}
+
+war {
+   archiveName = "keep-user.war"
+}
+
+ext.hibernateCoreVersion = '5.2.10.Final'
+ext.hibernateValidatorVersion = '5.4.1.Final'
+ext.hibernateC3p0Version = '5.2.5.Final'
+ext.springSecurityWebVersion = '4.3.8.RELEASE'
+ext.springOrmVersion = '4.3.8.RELEASE'
+ext.springContextVersion = '4.3.8.RELEASE'
+ext.springTxVersion = '4.3.8.RELEASE'
+ext.springWebVersion = '4.3.8.RELEASE'
+ext.springWebmvcVersion = '4.3.8.RELEASE'
+ext.springJdbcVersion = '4.3.8.RELEASE'
+ext.springSecurityConfigVersion = '4.2.2.RELEASE'
+ext.springSecurityOauth2Version = '2.1.1.RELEASE'
+ext.springSecurityWebVersion = '4.2.2.RELEASE'
+ext.log4jCoreVersion = '2.3'
+ext.gsonVersion = '2.7'
+ext.mysqlConnectorJavaVersion = '6.0.5'
+ext.javaxSservletApiVersion = '3.1.0'
+ext.hsqldbVersion = '2.3.4'
+ext.javaeeApiVersion = '7.0'
+ext.httpclientVersion = '4.5.2'
+ext.jbossAsControllerClientVersion = '7.1.1.Final'
+ext.cargoVersion = '1.4.5'
+ext.reflectionsVersion = '0.9.10'
+ext.commonsLang3Version = '3.4'
+ext.guavaVersion = '19.0-rc1'
+ext.commonsCollections4Version = '4.0'
+
+compileJava.options.encoding = 'ISO-8859-1'
+
+dependencies {
+	compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.9'
+
+    compile "javax.servlet:javax.servlet-api:${javaxSservletApiVersion}"
+    compile "org.apache.logging.log4j:log4j-core:${log4jCoreVersion}"
+
+    compile "org.springframework.security:spring-security-web:${springSecurityWebVersion}"
+    compile "org.springframework.security:spring-security-config:${springSecurityConfigVersion}"
+    compile "org.springframework:spring-orm:${springOrmVersion}"
+    compile "org.springframework.security.oauth:spring-security-oauth2:${springSecurityOauth2Version}"
+    compile "org.springframework:spring-context:${springContextVersion}"
+    compile "org.springframework:spring-tx:${springTxVersion}"
+    compile "org.springframework:spring-webmvc:${springWebmvcVersion}"
+    compile "org.springframework:spring-jdbc:${springJdbcVersion}"
+
+    compile "org.hsqldb:hsqldb:${hsqldbVersion}"
+
+    providedCompile "org.apache.httpcomponents:httpclient:${httpclientVersion}"
+    providedCompile "javax:javaee-api:${javaeeApiVersion}"
+    
+	compile "org.hibernate:hibernate-core:${hibernateCoreVersion}"
+    compile "org.hibernate:hibernate-validator:${hibernateValidatorVersion}"
+    compile "org.hibernate:hibernate-c3p0:${hibernateC3p0Version}"
+
+    compile "com.google.code.gson:gson:${gsonVersion}"
+    compile "mysql:mysql-connector-java:${mysqlConnectorJavaVersion}"
+    compile "org.apache.commons:commons-lang3:${commonsLang3Version}"
+}
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven {
+            url "https://repo.spring.io/libs-milestone"
+        }
+    }
+}
