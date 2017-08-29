@@ -12,17 +12,17 @@ import sape.server.crud.base.controller.AbstractCRUDController;
 import sape.server.crud.base.service.AbstractCRUDService;
 import sape.server.crud.userfunction.service.UserFunctionCRUDService;
 import sape.server.crud.userfunction.service.UserFunctionQueryService;
-import sape.server.model.userfunction.UserFunctionDTO;
-import sape.server.model.userfunction.UserFunctionEntity;
+import sape.server.model.event.EventDTO;
+import sape.server.model.event.EventEntity;
 
 /**
- * Implementação de {@link AbstractCRUDController} para {@link UserFunctionDTO}
+ * Implementação de {@link AbstractCRUDController} para {@link SubscriptionActivityDTO}
  *
  * @author Guilherme Dalmarco (dalmarco.gd@gmail.com)
  */
 @RestController
 @RequestMapping("/userfunctions")
-public class UserFunctionCRUDController extends AbstractCRUDController<UserFunctionDTO, UserFunctionEntity> {
+public class UserFunctionCRUDController extends AbstractCRUDController<EventDTO, EventEntity> {
 
     private UserFunctionCRUDService userFunctionCRUDService;
     private UserFunctionQueryService userFunctionQueryService;
@@ -50,11 +50,11 @@ public class UserFunctionCRUDController extends AbstractCRUDController<UserFunct
 	}
 
     /**
-     * Serviço de persistencia de {@link UserFunctionEntity}
-     * @return {@link AbstractCRUDService} of {@link UserFunctionEntity}
+     * Serviço de persistencia de {@link SubscriptionActivityEntity}
+     * @return {@link AbstractCRUDService} of {@link SubscriptionActivityEntity}
      */
     @Override
-    protected AbstractCRUDService<UserFunctionEntity, UserFunctionDTO> getService() {
+    protected AbstractCRUDService<EventEntity, EventDTO> getService() {
         return getUserFunctionCRUDService();
     }
 

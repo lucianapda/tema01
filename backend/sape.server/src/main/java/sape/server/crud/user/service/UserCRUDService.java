@@ -11,12 +11,12 @@ import sape.server.crud.base.service.AbstractCRUDService;
 import sape.server.crud.user.repository.UserCRUDRepository;
 import sape.server.crud.userfunction.service.UserFunctionCRUDService;
 import sape.server.model.base.BaseDTO;
+import sape.server.model.event.EventEntity;
 import sape.server.model.user.UserDTO;
 import sape.server.model.user.UserEntity;
-import sape.server.model.userfunction.UserFunctionEntity;
 
 /**
- * Serviço de persistencia de {@link UserEntity}
+ * Serviço de persistencia de {@link PersonContactEntity}
  *
  * @author Guilherme Dalmarco (dalmarco.gd@gmail.com)
  */
@@ -41,8 +41,8 @@ public class UserCRUDService extends AbstractCRUDService<UserEntity, UserDTO> {
     /**
      * Converte os dados do dto para entity.
      * @param dto    - {@link BaseDTO}
-     * @param entity - {@link UserFunctionEntity}
-     * @return {@link UserFunctionEntity}
+     * @param entity - {@link SubscriptionActivityEntity}
+     * @return {@link SubscriptionActivityEntity}
      */
     @Override
     public UserEntity convertToEntity(UserDTO dto, UserEntity entity) {
@@ -64,7 +64,7 @@ public class UserCRUDService extends AbstractCRUDService<UserEntity, UserDTO> {
     /**
      * Converte os dados do entity para dto.
      * @param dto    - {@link BaseDTO}
-     * @param entity - {@link UserFunctionEntity}
+     * @param entity - {@link SubscriptionActivityEntity}
      * @return {@link UserCityDTO}
      */
     @Override
@@ -84,7 +84,7 @@ public class UserCRUDService extends AbstractCRUDService<UserEntity, UserDTO> {
 
     /**
      * Cria uma entidade nova e vazia.
-     * @return {@link UserFunctionEntity}
+     * @return {@link SubscriptionActivityEntity}
      */
     @Override
     public UserEntity createEmptyEntity() {

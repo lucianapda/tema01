@@ -1,19 +1,22 @@
 package sape.server.model.user;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import sape.server.model.base.BaseEntity;
-import sape.server.model.userfunction.UserFunctionEntity;
+import sape.server.model.event.EventEntity;
 
 /**
  * Representa um usuário no sistema.
@@ -21,75 +24,71 @@ import sape.server.model.userfunction.UserFunctionEntity;
  * @author Guilherme Dalmarco (dalmarco.gd@gmail.com)
  */
 @Entity
-@Table(name = "usuario_externo")
+@Table(name = "user")
 public class UserEntity extends BaseEntity {
 
 	public static final String CODE = "code";
+	public static final String NAME = "name";
 	public static final String CPF = "cpf";
-    public static final String NAME = "name";
+	public static final String BIRTH_DAY = "birthDay";
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
     public static final String EMAIL = "email";
-    public static final String SITUATION = "situation";
-    public static final String ACESS_PROFILE = "acessProfile";
-    public static final String USER_FUNCTION = "userFunction";
-    public static final String PHONE = "phone";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id_usuario", nullable = false)
+	@Column(name = "id_user", nullable = false)
 	private Long id;
 
 	@NotNull
-	@Column(nullable = false, name = "co_usuario")
+	@Column(nullable = false, name = "code_user")
 	private Long code;
 
 	@NotNull
-	@Column(nullable = false, name = "nu_cpf", length=11, unique=true)
+	@Column(nullable = false, name = "name_user", length=100)
+	private String name;
+
+    @Column(name = "birth_day_user")
+    private LocalDate birthDate;
+
+	@NotNull
+	@Column(nullable = false, name = "cpf_user", length=20)
 	private String cpf;
 
 	@NotNull
-	@Column(nullable = false, name = "no_usuario", length=60)
-	private String name;
+	@Column(nullable = false, name = "username_user", length=50)
+	private String username;
 
 	@NotNull
-	@Column(nullable = false, name = "de_email", length=255)
+	@Column(nullable = false, name = "password_user", length=50)
+	private String password;
+
+	@NotNull
+	@Column(nullable = false, name = "email_user", length=255)
 	private String email;
 
-	@NotNull
-	@Column(nullable = false, name = "ic_situacao", length=1)
-	private Byte situation;
+	@OneToMany(cascade = CascadeType.REFRESH,targetEntity = EventEntity.class, fetch = FetchType.LAZY, mappedBy = EventEntity.USER)
+    private List<EventEntity> events = new ArrayList<>();
 
-	@NotNull
-	@Column(nullable = false, name = "ic_perfil_acesso")
-	private Integer acessProfile;
+	/**
+	 * Retorna uma instancia de {@link Long}
+	 * @return {@link Long}
+	 */
+	@Override
+	public Long getId() {
+		return id;
+	}
 
-	@NotNull
-    @ManyToOne(targetEntity = UserFunctionEntity.class, fetch = FetchType.LAZY)
-    @JoinColumn(foreignKey = @ForeignKey(name = "FK_eprtb008_eprtb016"), nullable = false, name = "co_funcao")
-    private UserFunctionEntity userFunction;
+	/**
+	 * Atribui um {@link Long}
+	 * @param id - {@link Long}
+	 */
+	@Override
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-	@NotNull
-	@Column(nullable = false, name = "nu_telefone", length=11)
-	private String phone;
-
-    /**
-     * Retorna o id - {@link Long}
-     * @return {@link Long}
-     */
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Atribui ao id - {@link Long}
-     * @param id - {@link Long}
-     */
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /**
+	/**
 	 * Retorna uma instancia de {@link Long}
 	 * @return {@link Long}
 	 */
@@ -103,6 +102,38 @@ public class UserEntity extends BaseEntity {
 	 */
 	public void setCode(Long code) {
 		this.code = code;
+	}
+
+	/**
+	 * Retorna uma instancia de {@link String}
+	 * @return {@link String}
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * Atribui um {@link String}
+	 * @param name - {@link String}
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * Retorna uma instancia de {@link LocalDate}
+	 * @return {@link LocalDate}
+	 */
+	public LocalDate getBirthDate() {
+		return birthDate;
+	}
+
+	/**
+	 * Atribui um {@link LocalDate}
+	 * @param birthDate - {@link LocalDate}
+	 */
+	public void setBirthDate(LocalDate birthDate) {
+		this.birthDate = birthDate;
 	}
 
 	/**
@@ -125,16 +156,32 @@ public class UserEntity extends BaseEntity {
 	 * Retorna uma instancia de {@link String}
 	 * @return {@link String}
 	 */
-	public String getName() {
-		return name;
+	public String getUsername() {
+		return username;
 	}
 
 	/**
 	 * Atribui um {@link String}
-	 * @param name - {@link String}
+	 * @param username - {@link String}
 	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	/**
+	 * Retorna uma instancia de {@link String}
+	 * @return {@link String}
+	 */
+	public String getPassword() {
+		return password;
+	}
+
+	/**
+	 * Atribui um {@link String}
+	 * @param password - {@link String}
+	 */
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	/**
@@ -154,66 +201,18 @@ public class UserEntity extends BaseEntity {
 	}
 
 	/**
-	 * Retorna uma instancia de {@link Byte}
-	 * @return {@link Byte}
+	 * Retorna uma instancia de {@link List<SubscriptionEntity>}
+	 * @return {@link List<SubscriptionEntity>}
 	 */
-	public Byte getSituation() {
-		return situation;
+	public List<EventEntity> getEvents() {
+		return events;
 	}
 
 	/**
-	 * Atribui um {@link Byte}
-	 * @param situation - {@link Byte}
+	 * Atribui um {@link List<SubscriptionEntity>}
+	 * @param events - {@link List<SubscriptionEntity>}
 	 */
-	public void setSituation(Byte situation) {
-		this.situation = situation;
-	}
-
-	/**
-	 * Retorna uma instancia de {@link Integer}
-	 * @return {@link Integer}
-	 */
-	public Integer getAcessProfile() {
-		return acessProfile;
-	}
-
-	/**
-	 * Atribui um {@link Integer}
-	 * @param acessProfile - {@link Integer}
-	 */
-	public void setAcessProfile(Integer acessProfile) {
-		this.acessProfile = acessProfile;
-	}
-
-	/**
-	 * Retorna uma instancia de {@link UserFunctionEntity}
-	 * @return {@link UserFunctionEntity}
-	 */
-	public UserFunctionEntity getUserFunction() {
-		return userFunction;
-	}
-
-	/**
-	 * Atribui um {@link UserFunctionEntity}
-	 * @param userFunction - {@link UserFunctionEntity}
-	 */
-	public void setUserFunction(UserFunctionEntity userFunction) {
-		this.userFunction = userFunction;
-	}
-
-	/**
-	 * Retorna uma instancia de {@link String}
-	 * @return {@link String}
-	 */
-	public String getPhone() {
-		return phone;
-	}
-
-	/**
-	 * Atribui um {@link String}
-	 * @param phone - {@link String}
-	 */
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setEvents(List<EventEntity> events) {
+		this.events = events;
 	}
 }

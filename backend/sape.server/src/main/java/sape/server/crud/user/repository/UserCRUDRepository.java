@@ -6,7 +6,7 @@ import sape.server.crud.base.repository.AbstractCRUDRepository;
 import sape.server.model.user.UserEntity;
 
 /**
- * Respositório de {@link UserFunctionEntity}.
+ * Respositório de {@link SubscriptionActivityEntity}.
  *
  * @author Guilherme Dalmarco (dalmarco.gd@gmail.com)
  */

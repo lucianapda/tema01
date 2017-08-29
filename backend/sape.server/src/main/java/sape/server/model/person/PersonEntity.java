@@ -1,23 +1,68 @@
-package sape.server.model.user;
+package sape.server.model.person;
 
 import java.time.LocalDate;
 
-import sape.server.model.base.BaseDTO;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import sape.server.model.base.BaseEntity;
 
 /**
- * Representa um {@link PersonContactEntity}.
+ * Representa uma pessoa.
  *
  * @author Guilherme Dalmarco (dalmarco.gd@gmail.com)
  */
-public class UserDTO extends BaseDTO {
+@Entity
+@Table(name = "person")
+public class PersonEntity extends BaseEntity {
 
+	public static final String CODE = "code";
+	public static final String NAME = "name";
+	public static final String CPF = "cpf";
+	public static final String BIRTH_DAY = "birthDay";
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id_person", nullable = false)
+	private Long id;
+
+	@NotNull
+	@Column(nullable = false, name = "code_person")
 	private Long code;
+
+	@NotNull
+	@Column(nullable = false, name = "name_person", length=100)
 	private String name;
+
+    @Column(name = "birth_day_person")
     private LocalDate birthDate;
+
+	@NotNull
+	@Column(nullable = false, name = "cpf_person", length=20)
 	private String cpf;
-	private String username;
-	private String password;
-	private String email;
+
+	/**
+	 * Retorna uma instancia de {@link Long}
+	 * @return {@link Long}
+	 */
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+	/**
+	 * Atribui um {@link Long}
+	 * @param id - {@link Long}
+	 */
+	@Override
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	/**
 	 * Retorna uma instancia de {@link Long}
@@ -81,53 +126,5 @@ public class UserDTO extends BaseDTO {
 	 */
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
-	}
-
-	/**
-	 * Retorna uma instancia de {@link String}
-	 * @return {@link String}
-	 */
-	public String getUsername() {
-		return username;
-	}
-
-	/**
-	 * Atribui um {@link String}
-	 * @param username - {@link String}
-	 */
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	/**
-	 * Retorna uma instancia de {@link String}
-	 * @return {@link String}
-	 */
-	public String getPassword() {
-		return password;
-	}
-
-	/**
-	 * Atribui um {@link String}
-	 * @param password - {@link String}
-	 */
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	/**
-	 * Retorna uma instancia de {@link String}
-	 * @return {@link String}
-	 */
-	public String getEmail() {
-		return email;
-	}
-
-	/**
-	 * Atribui um {@link String}
-	 * @param email - {@link String}
-	 */
-	public void setEmail(String email) {
-		this.email = email;
 	}
 }

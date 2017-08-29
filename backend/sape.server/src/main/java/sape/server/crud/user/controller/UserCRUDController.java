@@ -33,8 +33,8 @@ public class UserCRUDController extends AbstractCRUDController<UserDTO, UserEnti
     }
 
     /**
-     * Serviço de persistencia de {@link UserFunctionEntity}
-     * @return {@link AbstractCRUDService} of {@link UserFunctionEntity}
+     * Serviço de persistencia de {@link SubscriptionActivityEntity}
+     * @return {@link AbstractCRUDService} of {@link SubscriptionActivityEntity}
      */
     @Override
     protected AbstractCRUDService<UserEntity, UserDTO> getService() {

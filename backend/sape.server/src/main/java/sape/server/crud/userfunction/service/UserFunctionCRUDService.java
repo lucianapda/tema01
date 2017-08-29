@@ -7,16 +7,16 @@ import sape.server.crud.base.repository.AbstractCRUDRepository;
 import sape.server.crud.base.service.AbstractCRUDService;
 import sape.server.crud.userfunction.repository.UserFunctionCRUDRepository;
 import sape.server.model.base.BaseDTO;
-import sape.server.model.userfunction.UserFunctionDTO;
-import sape.server.model.userfunction.UserFunctionEntity;
+import sape.server.model.event.EventDTO;
+import sape.server.model.event.EventEntity;
 
 /**
- * Serviço de persistencia de {@link UserFunctionEntity}
+ * Serviço de persistencia de {@link SubscriptionActivityEntity}
  *
  * @author Guilherme Dalmarco (dalmarco.gd@gmail.com)
  */
 @Service
-public class UserFunctionCRUDService extends AbstractCRUDService<UserFunctionEntity, UserFunctionDTO> {
+public class UserFunctionCRUDService extends AbstractCRUDService<EventEntity, EventDTO> {
 
     @Autowired
     private UserFunctionCRUDRepository userFunctionCRUDRepository;
@@ -25,18 +25,18 @@ public class UserFunctionCRUDService extends AbstractCRUDService<UserFunctionEnt
      * {@inheritDoc}
      */
     @Override
-    protected AbstractCRUDRepository<UserFunctionEntity> getCRUDRepository() {
+    protected AbstractCRUDRepository<EventEntity> getCRUDRepository() {
         return userFunctionCRUDRepository;
     }
 
     /**
      * Converte os dados do dto para entity.
      * @param dto    - {@link BaseDTO}
-     * @param entity - {@link UserFunctionEntity}
-     * @return {@link UserFunctionEntity}
+     * @param entity - {@link SubscriptionActivityEntity}
+     * @return {@link SubscriptionActivityEntity}
      */
     @Override
-    public UserFunctionEntity convertToEntity(UserFunctionDTO dto, UserFunctionEntity entity) {
+    public EventEntity convertToEntity(EventDTO dto, EventEntity entity) {
     	entity.setId(dto.getId());
     	entity.setVersion(dto.getVersion());
     	entity.setCode(dto.getCode());
@@ -47,11 +47,11 @@ public class UserFunctionCRUDService extends AbstractCRUDService<UserFunctionEnt
     /**
      * Converte os dados do entity para dto.
      * @param dto    - {@link BaseDTO}
-     * @param entity - {@link UserFunctionEntity}
+     * @param entity - {@link SubscriptionActivityEntity}
      * @return {@link UserUserFunctionDTO}
      */
     @Override
-    public UserFunctionDTO convertToDTO(UserFunctionEntity entity, UserFunctionDTO dto) {
+    public EventDTO convertToDTO(EventEntity entity, EventDTO dto) {
     	dto.setId(entity.getId());
     	dto.setVersion(entity.getVersion());
     	dto.setCode(entity.getCode());
@@ -61,23 +61,23 @@ public class UserFunctionCRUDService extends AbstractCRUDService<UserFunctionEnt
 
     /**
      * Cria uma entidade nova e vazia.
-     * @return {@link UserFunctionEntity}
+     * @return {@link SubscriptionActivityEntity}
      */
     @Override
-    public UserFunctionEntity createEmptyEntity() {
-        return new UserFunctionEntity();
+    public EventEntity createEmptyEntity() {
+        return new EventEntity();
     }
 
     @Override
-    public UserFunctionDTO createEmptyDTO() {
-        return new UserFunctionDTO();
+    public EventDTO createEmptyDTO() {
+        return new EventDTO();
     }
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void internalValidate(UserFunctionEntity entity) {
+	protected void internalValidate(EventEntity entity) {
 
 	}
 }
