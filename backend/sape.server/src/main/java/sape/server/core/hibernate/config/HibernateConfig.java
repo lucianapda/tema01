@@ -20,7 +20,7 @@ public class HibernateConfig {
         properties.put("hibernate.connection.password", "root");
         properties.put("hibernate.connection.url", "jdbc:mysql://localhost:3306/");
         properties.put("hibernate.connection.username", "root");
-        properties.put("hibernate.default_catalog", "keep_user");
+        properties.put("hibernate.default_catalog", "sape");
         properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
         properties.put("hibernate.format_sql", "true");
         properties.put("hibernate.hbm2ddl.auto", "update");

@@ -1,8 +1,9 @@
 package sape.server.model.activity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import sape.server.model.base.BaseDTO;
+import sape.server.model.subscription.activity.SubscriptionActivityEntity;
 
 /**
  * Representa um {@link SubscriptionActivityEntity}.
@@ -12,17 +13,16 @@ import sape.server.model.base.BaseDTO;
 public class ActivityDTO extends BaseDTO {
 
 	private Long code;
-	private String place;
 	private String description;
-    private LocalDate dateStart;
-    private LocalDate dateEnd;
-    private LocalDate dateStartSubscription;
-    private LocalDate dateEndSubscription;
+	private String speaker;
+	private String theme;
+    private LocalDateTime dateStart;
+    private LocalDateTime dateEnd;
 	private Integer vacancy;
-	private Boolean waitingList;
-	private Long idUser;
+	private String place;
+    private Long idEvent;
 
-	/**
+    /**
 	 * Retorna uma instancia de {@link Long}
 	 * @return {@link Long}
 	 */
@@ -42,22 +42,6 @@ public class ActivityDTO extends BaseDTO {
 	 * Retorna uma instancia de {@link String}
 	 * @return {@link String}
 	 */
-	public String getPlace() {
-		return place;
-	}
-
-	/**
-	 * Atribui um {@link String}
-	 * @param place - {@link String}
-	 */
-	public void setPlace(String place) {
-		this.place = place;
-	}
-
-	/**
-	 * Retorna uma instancia de {@link String}
-	 * @return {@link String}
-	 */
 	public String getDescription() {
 		return description;
 	}
@@ -71,67 +55,67 @@ public class ActivityDTO extends BaseDTO {
 	}
 
 	/**
-	 * Retorna uma instancia de {@link LocalDate}
-	 * @return {@link LocalDate}
+	 * Retorna uma instancia de {@link String}
+	 * @return {@link String}
 	 */
-	public LocalDate getDateStart() {
+	public String getSpeaker() {
+		return speaker;
+	}
+
+	/**
+	 * Atribui um {@link String}
+	 * @param speaker - {@link String}
+	 */
+	public void setSpeaker(String speaker) {
+		this.speaker = speaker;
+	}
+
+	/**
+	 * Retorna uma instancia de {@link String}
+	 * @return {@link String}
+	 */
+	public String getTheme() {
+		return theme;
+	}
+
+	/**
+	 * Atribui um {@link String}
+	 * @param theme - {@link String}
+	 */
+	public void setTheme(String theme) {
+		this.theme = theme;
+	}
+
+	/**
+	 * Retorna uma instancia de {@link LocalDateTime}
+	 * @return {@link LocalDateTime}
+	 */
+	public LocalDateTime getDateStart() {
 		return dateStart;
 	}
 
 	/**
-	 * Atribui um {@link LocalDate}
-	 * @param dateStart - {@link LocalDate}
+	 * Atribui um {@link LocalDateTime}
+	 * @param dateStart - {@link LocalDateTime}
 	 */
-	public void setDateStart(LocalDate dateStart) {
+	public void setDateStart(LocalDateTime dateStart) {
 		this.dateStart = dateStart;
 	}
 
 	/**
-	 * Retorna uma instancia de {@link LocalDate}
-	 * @return {@link LocalDate}
+	 * Retorna uma instancia de {@link LocalDateTime}
+	 * @return {@link LocalDateTime}
 	 */
-	public LocalDate getDateEnd() {
+	public LocalDateTime getDateEnd() {
 		return dateEnd;
 	}
 
 	/**
-	 * Atribui um {@link LocalDate}
-	 * @param dateEnd - {@link LocalDate}
+	 * Atribui um {@link LocalDateTime}
+	 * @param dateEnd - {@link LocalDateTime}
 	 */
-	public void setDateEnd(LocalDate dateEnd) {
+	public void setDateEnd(LocalDateTime dateEnd) {
 		this.dateEnd = dateEnd;
-	}
-
-	/**
-	 * Retorna uma instancia de {@link LocalDate}
-	 * @return {@link LocalDate}
-	 */
-	public LocalDate getDateStartSubscription() {
-		return dateStartSubscription;
-	}
-
-	/**
-	 * Atribui um {@link LocalDate}
-	 * @param dateStartSubscription - {@link LocalDate}
-	 */
-	public void setDateStartSubscription(LocalDate dateStartSubscription) {
-		this.dateStartSubscription = dateStartSubscription;
-	}
-
-	/**
-	 * Retorna uma instancia de {@link LocalDate}
-	 * @return {@link LocalDate}
-	 */
-	public LocalDate getDateEndSubscription() {
-		return dateEndSubscription;
-	}
-
-	/**
-	 * Atribui um {@link LocalDate}
-	 * @param dateEndSubscription - {@link LocalDate}
-	 */
-	public void setDateEndSubscription(LocalDate dateEndSubscription) {
-		this.dateEndSubscription = dateEndSubscription;
 	}
 
 	/**
@@ -151,34 +135,34 @@ public class ActivityDTO extends BaseDTO {
 	}
 
 	/**
-	 * Retorna uma instancia de {@link Boolean}
-	 * @return {@link Boolean}
+	 * Retorna uma instancia de {@link String}
+	 * @return {@link String}
 	 */
-	public Boolean getWaitingList() {
-		return waitingList;
+	public String getPlace() {
+		return place;
 	}
 
 	/**
-	 * Atribui um {@link Boolean}
-	 * @param waitingList - {@link Boolean}
+	 * Atribui um {@link String}
+	 * @param place - {@link String}
 	 */
-	public void setWaitingList(Boolean waitingList) {
-		this.waitingList = waitingList;
+	public void setPlace(String place) {
+		this.place = place;
 	}
 
 	/**
 	 * Retorna uma instancia de {@link Long}
 	 * @return {@link Long}
 	 */
-	public Long getIdUser() {
-		return idUser;
+	public Long getIdEvent() {
+		return idEvent;
 	}
 
 	/**
 	 * Atribui um {@link Long}
-	 * @param idUser - {@link Long}
+	 * @param idEvent - {@link Long}
 	 */
-	public void setIdUser(Long idUser) {
-		this.idUser = idUser;
+	public void setIdEvent(Long idEvent) {
+		this.idEvent = idEvent;
 	}
 }

@@ -1,5 +1,6 @@
 package sape.server.core.spring.config.root;
 
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -8,5 +9,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Guilherme Dalmarco (dalmarco.gd@gmail.com)
  */
 @Configuration
-public class SpringFrameworkRootConfigurer {
+@ComponentScan(basePackages = "sape.server")
+public class RootConfig {
+
 }

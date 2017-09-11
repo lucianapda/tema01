@@ -29,11 +29,12 @@ public class UserEntity extends BaseEntity {
 
 	public static final String CODE = "code";
 	public static final String NAME = "name";
-	public static final String CPF = "cpf";
 	public static final String BIRTH_DAY = "birthDay";
+	public static final String CPF = "cpf";
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
     public static final String EMAIL = "email";
+    public static final String EVENTS = "events";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

@@ -9,9 +9,9 @@ import sape.server.core.utils.StringUtils;
 import sape.server.crud.base.repository.AbstractCRUDRepository;
 import sape.server.crud.base.service.AbstractCRUDService;
 import sape.server.crud.user.repository.UserCRUDRepository;
-import sape.server.crud.userfunction.service.UserFunctionCRUDService;
 import sape.server.model.base.BaseDTO;
-import sape.server.model.event.EventEntity;
+import sape.server.model.person.contact.PersonContactEntity;
+import sape.server.model.subscription.activity.SubscriptionActivityEntity;
 import sape.server.model.user.UserDTO;
 import sape.server.model.user.UserEntity;
 
@@ -25,8 +25,6 @@ public class UserCRUDService extends AbstractCRUDService<UserEntity, UserDTO> {
 
     @Autowired
     private UserCRUDRepository userCRUDRepository;
-    @Autowired
-    private UserFunctionCRUDService userFunctionCRUDService;
     @Autowired
     private UserQueryService userQueryService;
 
@@ -46,18 +44,15 @@ public class UserCRUDService extends AbstractCRUDService<UserEntity, UserDTO> {
      */
     @Override
     public UserEntity convertToEntity(UserDTO dto, UserEntity entity) {
+    	entity.setId(dto.getId());
+    	entity.setVersion(dto.getVersion());
     	entity.setCode(dto.getCode());
-    	entity.setCpf(dto.getCpf());
-        entity.setName(dto.getName());
+    	entity.setName(dto.getName());
+    	entity.setBirthDate(dto.getBirthDate());
+        entity.setCpf(dto.getCpf());
+        entity.setUsername(dto.getUsername());
+        entity.setPassword(dto.getPassword());
         entity.setEmail(dto.getEmail());
-        entity.setSituation(dto.getSituation());
-        entity.setAcessProfile(dto.getAcessProfile());
-        entity.setPhone(dto.getPhone());
-        if (dto.getUserFunction() != null) {
-			entity.setUserFunction(userFunctionCRUDService.getEntity(dto.getUserFunction().getId()));
-		}
-        entity.setId(dto.getId());
-        entity.setVersion(dto.getVersion());
         return entity;
     }
 
@@ -69,16 +64,15 @@ public class UserCRUDService extends AbstractCRUDService<UserEntity, UserDTO> {
      */
     @Override
     public UserDTO convertToDTO(UserEntity entity, UserDTO dto) {
-    	dto.setCode(entity.getCode());
-    	dto.setCpf(entity.getCpf());
-    	dto.setName(entity.getName());
-    	dto.setEmail(entity.getEmail());
-    	dto.setSituation(entity.getSituation());
-    	dto.setAcessProfile(entity.getAcessProfile());
-    	dto.setPhone(entity.getPhone());
-    	dto.setUserFunction(userFunctionCRUDService.getDTO(entity.getUserFunction().getId()));
     	dto.setId(entity.getId());
     	dto.setVersion(entity.getVersion());
+    	dto.setCode(entity.getCode());
+    	dto.setName(entity.getName());
+    	dto.setBirthDate(entity.getBirthDate());
+    	dto.setCpf(entity.getCpf());
+    	dto.setUsername(entity.getUsername());
+    	dto.setPassword(entity.getPassword());
+    	dto.setEmail(entity.getEmail());
         return dto;
     }
 

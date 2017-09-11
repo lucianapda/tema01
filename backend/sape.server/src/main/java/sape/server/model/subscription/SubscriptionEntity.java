@@ -27,8 +27,8 @@ import sape.server.model.person.PersonEntity;
 public class SubscriptionEntity extends BaseEntity {
 
 	public static final String CODE = "code";
+	public static final String DATE = "date";
 	public static final String PERSON = "person";
-    public static final String DATE = "date";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import sape.server.model.base.BaseEntity;
-import sape.server.model.person.PersonEntity;
+import sape.server.model.person.contact.PersonContactEntity;
 import sape.server.model.user.UserEntity;
 
 /**

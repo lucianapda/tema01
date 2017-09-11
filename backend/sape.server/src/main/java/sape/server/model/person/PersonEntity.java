@@ -1,16 +1,22 @@
 package sape.server.model.person;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import sape.server.model.base.BaseEntity;
+import sape.server.model.person.contact.PersonContactEntity;
 
 /**
  * Representa uma pessoa.
@@ -25,6 +31,7 @@ public class PersonEntity extends BaseEntity {
 	public static final String NAME = "name";
 	public static final String CPF = "cpf";
 	public static final String BIRTH_DAY = "birthDay";
+	public static final String CONTACTS = "contacts";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -45,6 +52,9 @@ public class PersonEntity extends BaseEntity {
 	@NotNull
 	@Column(nullable = false, name = "cpf_person", length=20)
 	private String cpf;
+
+	@OneToMany(cascade = CascadeType.REFRESH,targetEntity = PersonContactEntity.class, fetch = FetchType.LAZY, mappedBy = PersonContactEntity.PERSON)
+	private List<PersonContactEntity> contacts = new ArrayList<>();
 
 	/**
 	 * Retorna uma instancia de {@link Long}
@@ -126,5 +136,21 @@ public class PersonEntity extends BaseEntity {
 	 */
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
+	}
+
+	/**
+	 * Retorna uma instancia de {@link List<PersonContactEntity>}
+	 * @return {@link List<PersonContactEntity>}
+	 */
+	public List<PersonContactEntity> getContacts() {
+		return contacts;
+	}
+
+	/**
+	 * Atribui um {@link List<PersonContactEntity>}
+	 * @param contacts - {@link List<PersonContactEntity>}
+	 */
+	public void setContacts(List<PersonContactEntity> contacts) {
+		this.contacts = contacts;
 	}
 }
