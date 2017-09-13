@@ -18,6 +18,7 @@ import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
 import org.springframework.security.oauth2.provider.approval.TokenStoreUserApprovalHandler;
 import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import sape.server.core.hibernate.config.HibernateConfig;
@@ -68,6 +69,11 @@ public class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
 		handler.setRequestFactory(new DefaultOAuth2RequestFactory(clientService));
 		handler.setClientDetailsService(clientService);
 		return handler;
+	}
+
+	@Bean
+	public TokenStore tokenStore() {
+		return new InMemoryTokenStore();
 	}
 
 	@Bean

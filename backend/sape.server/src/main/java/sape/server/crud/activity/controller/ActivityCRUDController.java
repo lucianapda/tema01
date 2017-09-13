@@ -17,7 +17,7 @@ import sape.server.model.activity.ActivityEntity;
  * @author Guilherme Dalmarco (dalmarco.gd@gmail.com)
  */
 @RestController
-@RequestMapping("/userfunctions")
+@RequestMapping("/activities")
 public class ActivityCRUDController extends AbstractCRUDController<ActivityDTO, ActivityEntity> {
 
     private ActivityCRUDService activityCRUDService;

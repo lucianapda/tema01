@@ -10,7 +10,7 @@ import sape.server.model.event.EventDTO;
 import sape.server.model.event.EventEntity;
 
 /**
- * Serviço de persistencia de {@link EventEntity}
+ * Serviço de persistencia de {@link EntryEntity}
  *
  * @author Guilherme Dalmarco (dalmarco.gd@gmail.com)
  */
@@ -30,9 +30,9 @@ public class EventCRUDService extends AbstractCRUDService<EventEntity, EventDTO>
 
     /**
      * Converte os dados do dto para entity.
-     * @param dto    - {@link EventDTO}
-     * @param entity - {@link EventEntity}
-     * @return {@link EventEntity}
+     * @param dto    - {@link EntryDTO}
+     * @param entity - {@link EntryEntity}
+     * @return {@link EntryEntity}
      */
     @Override
     public EventEntity convertToEntity(EventDTO dto, EventEntity entity) {
@@ -52,9 +52,9 @@ public class EventCRUDService extends AbstractCRUDService<EventEntity, EventDTO>
 
     /**
      * Converte os dados do entity para dto.
-     * @param dto    - {@link EventDTO}
-     * @param entity - {@link EventEntity}
-     * @return {@link EventDTO}
+     * @param dto    - {@link EntryDTO}
+     * @param entity - {@link EntryEntity}
+     * @return {@link EntryDTO}
      */
     @Override
     public EventDTO convertToDTO(EventEntity entity, EventDTO dto) {
@@ -74,7 +74,7 @@ public class EventCRUDService extends AbstractCRUDService<EventEntity, EventDTO>
 
     /**
      * Cria uma entidade nova e vazia.
-     * @return {@link EventEntity}
+     * @return {@link EntryEntity}
      */
     @Override
     public EventEntity createEmptyEntity() {

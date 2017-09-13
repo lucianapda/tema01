@@ -1,10 +1,9 @@
-
-package sape.server.crud.event.repository;
+package sape.server.crud.entry.repository;
 
 import org.springframework.stereotype.Repository;
 
 import sape.server.crud.base.repository.AbstractCRUDRepository;
-import sape.server.model.event.EventEntity;
+import sape.server.model.entry.EntryEntity;
 
 /**
  * Respositório de {@link EntryEntity}.
@@ -12,5 +11,5 @@ import sape.server.model.event.EventEntity;
  * @author Guilherme Dalmarco (dalmarco.gd@gmail.com)
  */
 @Repository
-public class EventCRUDRepository extends AbstractCRUDRepository<EventEntity> {
+public class EntryCRUDRepository extends AbstractCRUDRepository<EntryEntity> {
 }

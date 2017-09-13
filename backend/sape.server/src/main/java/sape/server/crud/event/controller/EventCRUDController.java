@@ -17,7 +17,7 @@ import sape.server.model.activity.ActivityEntity;
  * @author Guilherme Dalmarco (dalmarco.gd@gmail.com)
  */
 @RestController
-@RequestMapping("/userfunctions")
+@RequestMapping("/events")
 public class EventCRUDController extends AbstractCRUDController<ActivityDTO, ActivityEntity> {
 
     private ActivityCRUDService activityCRUDService;

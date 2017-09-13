@@ -11,13 +11,14 @@ repositories {
     }
 
     version = '1.0'
+    tasks.withType(Javadoc).all { enabled = false}
 
 jar {
-	manifest.attributes provider: 'KeepUser'
+	manifest.attributes provider: 'Sape'
 }
 
 war {
-   archiveName = "keep-user.war"
+   archiveName = "sape-server.war"
 }
 
 ext.hibernateCoreVersion = '5.2.10.Final'

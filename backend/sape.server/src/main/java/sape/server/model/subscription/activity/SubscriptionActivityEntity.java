@@ -52,12 +52,12 @@ public class SubscriptionActivityEntity extends BaseEntity {
 
 	@NotNull
     @ManyToOne(targetEntity = ActivityEntity.class, fetch = FetchType.LAZY)
-    @JoinColumn(foreignKey = @ForeignKey(name = "fk_subscription_activity_activity"), nullable = false, name = "activity_id_activity")
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_subsc_act_activity"), nullable = false, name = "activity_id_activity")
     private ActivityEntity activity;
 
 	@NotNull
     @ManyToOne(targetEntity = SubscriptionEntity.class, fetch = FetchType.LAZY)
-    @JoinColumn(foreignKey = @ForeignKey(name = "fk_subscription_activity_subscription"), nullable = false, name = "subscription_id_subscription")
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_subsc_act_subscription"), nullable = false, name = "subscription_id_subscription")
     private SubscriptionEntity subscription;
 
 	/**

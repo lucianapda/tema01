@@ -4,32 +4,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import sape.server.core.spring.context.ManagerInstance;
-import sape.server.crud.activity.service.ActivityCRUDService;
-import sape.server.crud.activity.service.ActivityQueryService;
 import sape.server.crud.base.controller.AbstractCRUDController;
 import sape.server.crud.base.service.AbstractCRUDService;
-import sape.server.model.activity.ActivityDTO;
-import sape.server.model.activity.ActivityEntity;
+import sape.server.crud.subscription.service.SubscriptionCRUDService;
+import sape.server.crud.subscription.service.SubscriptionQueryService;
+import sape.server.model.subscription.SubscriptionDTO;
+import sape.server.model.subscription.SubscriptionEntity;
 
 /**
- * Implementação de {@link AbstractCRUDController} para {@link ActivityDTO}
+ * Implementação de {@link AbstractCRUDController} para {@link SubscriptionDTO}
  *
  * @author Guilherme Dalmarco (dalmarco.gd@gmail.com)
  */
 @RestController
-@RequestMapping("/userfunctions")
-public class SubscriptionCRUDController extends AbstractCRUDController<ActivityDTO, ActivityEntity> {
+@RequestMapping("/subscriptions")
+public class SubscriptionCRUDController extends AbstractCRUDController<SubscriptionDTO, SubscriptionEntity> {
 
-    private ActivityCRUDService activityCRUDService;
-    private ActivityQueryService activityQueryService;
+    private SubscriptionCRUDService activityCRUDService;
+    private SubscriptionQueryService activityQueryService;
 
     /**
      * Retorna o activityCRUDService - {@link StateCRUDService}
      * @return {@link StateCRUDService}
      */
-    public ActivityCRUDService getUserFunctionCRUDService() {
+    public SubscriptionCRUDService getUserFunctionCRUDService() {
         if (activityCRUDService == null) {
-			activityCRUDService = ManagerInstance.get(ActivityCRUDService.class);
+			activityCRUDService = ManagerInstance.get(SubscriptionCRUDService.class);
 		}
         return activityCRUDService;
     }
@@ -38,19 +38,19 @@ public class SubscriptionCRUDController extends AbstractCRUDController<ActivityD
 	 * Retorna uma instancia de {@link StateQueryService}
 	 * @return {@link StateQueryService}
 	 */
-	public ActivityQueryService getUserFunctionQueryService() {
+	public SubscriptionQueryService getUserFunctionQueryService() {
 		if (activityQueryService == null) {
-			activityQueryService = ManagerInstance.get(ActivityQueryService.class);
+			activityQueryService = ManagerInstance.get(SubscriptionQueryService.class);
 		}
 		return activityQueryService;
 	}
 
     /**
-     * Serviço de persistencia de {@link ActivityEntity}
-     * @return {@link AbstractCRUDService} of {@link ActivityEntity}
+     * Serviço de persistencia de {@link SubscriptionEntity}
+     * @return {@link AbstractCRUDService} of {@link SubscriptionEntity}
      */
     @Override
-    protected AbstractCRUDService<ActivityEntity, ActivityDTO> getService() {
+    protected AbstractCRUDService<SubscriptionEntity, SubscriptionDTO> getService() {
         return getUserFunctionCRUDService();
     }
 }
