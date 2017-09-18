@@ -21,16 +21,16 @@ import sape.server.model.user.UserEntity;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-	private final UserQueryService userQueryRepository;
+	private final UserQueryService userRepository;
 
 	@Autowired
 	public CustomUserDetailsService(UserQueryService userRepository) {
-		this.userQueryRepository = userRepository;
+		this.userRepository = userRepository;
 	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserEntity user = userQueryRepository.getUserByUsername(username);
+		UserEntity user = userRepository.getUserByUsername(username);
 		if (user == null) {
 			throw new UsernameNotFoundException(String.format("User %s does not exist!", username));
 		}
@@ -38,7 +38,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 			@Override
 			public boolean isEnabled() {
-				return false;
+				return true;
 			}
 
 			@Override

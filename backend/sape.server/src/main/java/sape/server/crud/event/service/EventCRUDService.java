@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import sape.server.crud.base.repository.AbstractCRUDRepository;
 import sape.server.crud.base.service.AbstractCRUDService;
 import sape.server.crud.event.repository.EventCRUDRepository;
+import sape.server.crud.user.service.UserCRUDService;
+import sape.server.model.entry.EntryDTO;
+import sape.server.model.entry.EntryEntity;
 import sape.server.model.event.EventDTO;
 import sape.server.model.event.EventEntity;
 
@@ -18,14 +21,17 @@ import sape.server.model.event.EventEntity;
 public class EventCRUDService extends AbstractCRUDService<EventEntity, EventDTO> {
 
     @Autowired
-    private EventCRUDRepository activityCRUDRepository;
+    private EventCRUDRepository eventCRUDRepository;
+
+    @Autowired
+    private UserCRUDService userCRUDService;
 
     /**
      * {@inheritDoc}
      */
     @Override
     protected AbstractCRUDRepository<EventEntity> getCRUDRepository() {
-        return activityCRUDRepository;
+        return eventCRUDRepository;
     }
 
     /**
@@ -43,10 +49,14 @@ public class EventCRUDService extends AbstractCRUDService<EventEntity, EventDTO>
     	entity.setDescription(dto.getDescription());
     	entity.setDateStart(dto.getDateStart());
     	entity.setDateEnd(dto.getDateEnd());
-    	entity.setDateStart(dto.getDateStartSubscription());
-    	entity.setDateEnd(dto.getDateEndSubscription());
+    	entity.setDateStartSubscription(dto.getDateStartSubscription());
+    	entity.setDateEndSubscription(dto.getDateEndSubscription());
     	entity.setVacancy(dto.getVacancy());
     	entity.setWaitingList(dto.getWaitingList());
+    	Long idUser = dto.getIdUser();
+    	if (idUser != null) {
+			entity.setUser(userCRUDService.getEntity(idUser));
+		}
         return entity;
     }
 
@@ -69,6 +79,7 @@ public class EventCRUDService extends AbstractCRUDService<EventEntity, EventDTO>
     	dto.setDateEnd(entity.getDateEndSubscription());
     	dto.setVacancy(entity.getVacancy());
     	dto.setWaitingList(entity.getWaitingList());
+    	dto.setIdUser(entity.getUser().getId());
         return dto;
     }
 

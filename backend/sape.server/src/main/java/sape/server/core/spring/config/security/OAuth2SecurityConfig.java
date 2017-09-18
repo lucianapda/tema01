@@ -61,6 +61,11 @@ public class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    @Bean
+	public TokenStore tokenStore(){
+		return new InMemoryTokenStore();
+	}
+
 	@Bean
 	@Autowired
 	public TokenStoreUserApprovalHandler userApprovalHandler(TokenStore tokenStore){
@@ -69,11 +74,6 @@ public class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
 		handler.setRequestFactory(new DefaultOAuth2RequestFactory(clientService));
 		handler.setClientDetailsService(clientService);
 		return handler;
-	}
-
-	@Bean
-	public TokenStore tokenStore() {
-		return new InMemoryTokenStore();
 	}
 
 	@Bean

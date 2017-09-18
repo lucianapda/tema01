@@ -4,32 +4,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import sape.server.core.spring.context.ManagerInstance;
-import sape.server.crud.activity.service.ActivityCRUDService;
-import sape.server.crud.activity.service.ActivityQueryService;
 import sape.server.crud.base.controller.AbstractCRUDController;
 import sape.server.crud.base.service.AbstractCRUDService;
-import sape.server.model.activity.ActivityDTO;
-import sape.server.model.activity.ActivityEntity;
+import sape.server.crud.event.service.EventCRUDService;
+import sape.server.crud.event.service.EventQueryService;
+import sape.server.model.event.EventDTO;
+import sape.server.model.event.EventEntity;
 
 /**
- * Implementação de {@link AbstractCRUDController} para {@link ActivityDTO}
+ * Implementação de {@link AbstractCRUDController} para {@link EventDTO}
  *
  * @author Guilherme Dalmarco (dalmarco.gd@gmail.com)
  */
 @RestController
 @RequestMapping("/events")
-public class EventCRUDController extends AbstractCRUDController<ActivityDTO, ActivityEntity> {
+public class EventCRUDController extends AbstractCRUDController<EventDTO, EventEntity> {
 
-    private ActivityCRUDService activityCRUDService;
-    private ActivityQueryService activityQueryService;
+    private EventCRUDService activityCRUDService;
+    private EventQueryService activityQueryService;
 
     /**
      * Retorna o activityCRUDService - {@link StateCRUDService}
      * @return {@link StateCRUDService}
      */
-    public ActivityCRUDService getUserFunctionCRUDService() {
+    public EventCRUDService getUserFunctionCRUDService() {
         if (activityCRUDService == null) {
-			activityCRUDService = ManagerInstance.get(ActivityCRUDService.class);
+			activityCRUDService = ManagerInstance.get(EventCRUDService.class);
 		}
         return activityCRUDService;
     }
@@ -38,19 +38,19 @@ public class EventCRUDController extends AbstractCRUDController<ActivityDTO, Act
 	 * Retorna uma instancia de {@link StateQueryService}
 	 * @return {@link StateQueryService}
 	 */
-	public ActivityQueryService getUserFunctionQueryService() {
+	public EventQueryService getUserFunctionQueryService() {
 		if (activityQueryService == null) {
-			activityQueryService = ManagerInstance.get(ActivityQueryService.class);
+			activityQueryService = ManagerInstance.get(EventQueryService.class);
 		}
 		return activityQueryService;
 	}
 
     /**
-     * Serviço de persistencia de {@link ActivityEntity}
-     * @return {@link AbstractCRUDService} of {@link ActivityEntity}
+     * Serviço de persistencia de {@link EventEntity}
+     * @return {@link AbstractCRUDService} of {@link EventEntity}
      */
     @Override
-    protected AbstractCRUDService<ActivityEntity, ActivityDTO> getService() {
+    protected AbstractCRUDService<EventEntity, EventDTO> getService() {
         return getUserFunctionCRUDService();
     }
 }

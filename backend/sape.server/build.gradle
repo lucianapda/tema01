@@ -51,7 +51,6 @@ ext.commonsCollections4Version = '4.0'
 compileJava.options.encoding = 'ISO-8859-1'
 
 dependencies {
-	compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.9'
 
     compile "javax.servlet:javax.servlet-api:${javaxSservletApiVersion}"
     compile "org.apache.logging.log4j:log4j-core:${log4jCoreVersion}"
@@ -59,7 +58,9 @@ dependencies {
     compile "org.springframework.security:spring-security-web:${springSecurityWebVersion}"
     compile "org.springframework.security:spring-security-config:${springSecurityConfigVersion}"
     compile "org.springframework:spring-orm:${springOrmVersion}"
-    compile "org.springframework.security.oauth:spring-security-oauth2:${springSecurityOauth2Version}"
+    compile ("org.springframework.security.oauth:spring-security-oauth2:${springSecurityOauth2Version}"){
+    	exclude group:'org.codehaus.jackson'
+    }
     compile "org.springframework:spring-context:${springContextVersion}"
     compile "org.springframework:spring-tx:${springTxVersion}"
     compile "org.springframework:spring-webmvc:${springWebmvcVersion}"
@@ -77,6 +78,11 @@ dependencies {
     compile "com.google.code.gson:gson:${gsonVersion}"
     compile "mysql:mysql-connector-java:${mysqlConnectorJavaVersion}"
     compile "org.apache.commons:commons-lang3:${commonsLang3Version}"
+    
+	//compile "com.fasterxml.jackson.module:jackson-module-parameter-names:2.8.9"
+	//compile "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.8.9"
+	compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.9"
+    
 }
 
 buildscript {
