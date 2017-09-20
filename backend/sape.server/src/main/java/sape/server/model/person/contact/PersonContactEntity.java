@@ -1,5 +1,6 @@
 package sape.server.model.person.contact;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,7 +30,7 @@ public class PersonContactEntity extends BaseEntity {
 	public static final String PERSON = "person";
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_person_contact", nullable = false)
 	private Long id;
 
@@ -41,8 +42,7 @@ public class PersonContactEntity extends BaseEntity {
 	@Column(nullable = false, name = "description_person_contact", length=100)
 	private String description;
 
-	@NotNull
-    @ManyToOne(targetEntity = PersonEntity.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = PersonEntity.class, fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_person_person_contact"), nullable = false, name = "person_id_person")
     private PersonEntity person;
 

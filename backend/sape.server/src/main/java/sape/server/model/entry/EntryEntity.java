@@ -32,7 +32,7 @@ public class EntryEntity extends BaseEntity {
     public static final String SUBSCRIPTION_ACTIVITY = "subscriptionActivity";
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_entry", nullable = false)
 	private Long id;
 

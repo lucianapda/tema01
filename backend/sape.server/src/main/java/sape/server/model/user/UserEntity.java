@@ -37,7 +37,7 @@ public class UserEntity extends BaseEntity {
     public static final String EVENTS = "events";
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_user", nullable = false)
 	private Long id;
 

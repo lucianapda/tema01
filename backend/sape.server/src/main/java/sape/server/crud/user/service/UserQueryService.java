@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sape.server.core.criteria.CriteriaFactory;
 import sape.server.core.utils.ClassUtils;
+import sape.server.model.user.UserDTO;
 import sape.server.model.user.UserEntity;
 
 /**
@@ -20,6 +21,8 @@ public class UserQueryService {
 
     @Autowired
     private CriteriaFactory criteriaFactory;
+    @Autowired
+    private UserCRUDService userCRUDService;
 
     @Transactional(readOnly = true)
     public UserEntity getUserByName(String name) {
@@ -33,6 +36,12 @@ public class UserQueryService {
         Criteria q = criteriaFactory.createCriteria(UserEntity.class);
         q.add(Restrictions.eq(UserEntity.USERNAME, username));
         return ClassUtils.toAssignable(UserEntity.class, q.uniqueResult());
+    }
+
+    @Transactional(readOnly = true)
+    public UserDTO getUserDTOByUsername(String username) {
+        UserEntity userByUsername = getUserByUsername(username);
+        return userCRUDService.convertToDTO(userByUsername);
     }
 
     @Transactional(readOnly = true)

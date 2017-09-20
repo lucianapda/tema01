@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 
 import sape.server.model.base.BaseEntity;
 import sape.server.model.event.EventEntity;
+import sape.server.model.subscription.SubscriptionEntity;
 
 /**
  * Representa uma atividade.
@@ -37,7 +38,7 @@ public class ActivityEntity extends BaseEntity {
     public static final String EVENT = "event";
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_activity", nullable = false)
 	private Long id;
 

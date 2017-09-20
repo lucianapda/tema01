@@ -6,10 +6,9 @@ import java.util.List;
 
 import sape.server.model.base.BaseDTO;
 import sape.server.model.person.contact.PersonContactDTO;
-import sape.server.model.person.contact.PersonContactEntity;
 
 /**
- * Representa um {@link PersonContactEntity}.
+ * Representa um {@link PersonEntity}.
  *
  * @author Guilherme Dalmarco (dalmarco.gd@gmail.com)
  */
@@ -19,10 +18,7 @@ public class PersonDTO extends BaseDTO {
 	private String name;
     private LocalDate birthDate;
 	private String cpf;
-	private String username;
-	private String password;
-	private String email;
-	private List<PersonContactDTO> contacts = new ArrayList<>();
+	private ArrayList<PersonContactDTO> contacts = new ArrayList<>();
 
 	/**
 	 * Retorna uma instancia de {@link Long}
@@ -89,54 +85,6 @@ public class PersonDTO extends BaseDTO {
 	}
 
 	/**
-	 * Retorna uma instancia de {@link String}
-	 * @return {@link String}
-	 */
-	public String getUsername() {
-		return username;
-	}
-
-	/**
-	 * Atribui um {@link String}
-	 * @param username - {@link String}
-	 */
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	/**
-	 * Retorna uma instancia de {@link String}
-	 * @return {@link String}
-	 */
-	public String getPassword() {
-		return password;
-	}
-
-	/**
-	 * Atribui um {@link String}
-	 * @param password - {@link String}
-	 */
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	/**
-	 * Retorna uma instancia de {@link String}
-	 * @return {@link String}
-	 */
-	public String getEmail() {
-		return email;
-	}
-
-	/**
-	 * Atribui um {@link String}
-	 * @param email - {@link String}
-	 */
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	/**
 	 * Retorna uma instancia de {@link List<PersonContactDTO>}
 	 * @return {@link List<PersonContactDTO>}
 	 */
@@ -148,7 +96,7 @@ public class PersonDTO extends BaseDTO {
 	 * Atribui um {@link List<PersonContactDTO>}
 	 * @param contacts - {@link List<PersonContactDTO>}
 	 */
-	public void setContacts(List<PersonContactDTO> contacts) {
+	public void setContacts(ArrayList<PersonContactDTO> contacts) {
 		this.contacts = contacts;
 	}
 }

@@ -34,7 +34,7 @@ public class PersonEntity extends BaseEntity {
 	public static final String CONTACTS = "contacts";
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_person", nullable = false)
 	private Long id;
 
@@ -53,7 +53,7 @@ public class PersonEntity extends BaseEntity {
 	@Column(nullable = false, name = "cpf_person", length=20)
 	private String cpf;
 
-	@OneToMany(cascade = CascadeType.REFRESH,targetEntity = PersonContactEntity.class, fetch = FetchType.LAZY, mappedBy = PersonContactEntity.PERSON)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = PersonContactEntity.class, fetch = FetchType.LAZY, mappedBy = PersonContactEntity.PERSON)
 	private List<PersonContactEntity> contacts = new ArrayList<>();
 
 	/**

@@ -2,7 +2,10 @@ package sape.server.model.user;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import sape.server.model.base.BaseDTO;
+import sape.server.model.person.contact.PersonContactEntity;
 
 /**
  * Representa um {@link PersonContactEntity}.
@@ -16,6 +19,7 @@ public class UserDTO extends BaseDTO {
     private LocalDate birthDate;
 	private String cpf;
 	private String username;
+	@JsonIgnore
 	private String password;
 	private String email;
 

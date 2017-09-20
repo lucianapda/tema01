@@ -59,7 +59,8 @@ public abstract class AbstractCRUDService<E extends BaseEntity, O extends BaseDT
      */
     @Transactional(rollbackFor = Throwable.class, readOnly = true)
     public O getDTO(Long id) {
-        return convertToDTO(this.getEntity(id));
+        E entity = this.getEntity(id);
+		return entity != null? convertToDTO(entity) : null;
     }
 
     /**

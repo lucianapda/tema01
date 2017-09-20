@@ -9,6 +9,7 @@ import sape.server.crud.person.repository.PersonCRUDRepository;
 import sape.server.model.base.BaseDTO;
 import sape.server.model.person.PersonDTO;
 import sape.server.model.person.PersonEntity;
+import sape.server.model.person.contact.PersonContactDTO;
 import sape.server.model.person.contact.PersonContactEntity;
 
 /**
@@ -50,6 +51,7 @@ public class PersonCRUDService extends AbstractCRUDService<PersonEntity, PersonD
     		personContactEntity.setVersion(contact.getVersion());
     		personContactEntity.setCode(contact.getCode());
     		personContactEntity.setDescription(contact.getDescription());
+    		personContactEntity.setPerson(entity);
 			entity.getContacts().add(personContactEntity);
 		});
         return entity;
@@ -69,6 +71,15 @@ public class PersonCRUDService extends AbstractCRUDService<PersonEntity, PersonD
     	dto.setName(entity.getName());
     	dto.setBirthDate(entity.getBirthDate());
     	dto.setCpf(entity.getCpf());
+    	entity.getContacts().forEach(t -> {
+			PersonContactDTO personContactDTO = new PersonContactDTO();
+			personContactDTO.setId(t.getId());
+			personContactDTO.setVersion(t.getVersion());
+			personContactDTO.setCode(t.getCode());
+			personContactDTO.setDescription(t.getDescription());
+			personContactDTO.setIdPerson(t.getPerson().getId());
+			dto.getContacts().add(personContactDTO);
+		});
         return dto;
     }
 

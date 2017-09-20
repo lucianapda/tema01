@@ -31,7 +31,7 @@ public class SubscriptionEntity extends BaseEntity {
 	public static final String PERSON = "person";
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_subscription", nullable = false)
 	private Long id;
 

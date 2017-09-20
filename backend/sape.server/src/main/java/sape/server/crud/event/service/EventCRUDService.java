@@ -56,6 +56,7 @@ public class EventCRUDService extends AbstractCRUDService<EventEntity, EventDTO>
     	Long idUser = dto.getIdUser();
     	if (idUser != null) {
 			entity.setUser(userCRUDService.getEntity(idUser));
+
 		}
         return entity;
     }
@@ -75,8 +76,8 @@ public class EventCRUDService extends AbstractCRUDService<EventEntity, EventDTO>
     	dto.setDescription(entity.getDescription());
     	dto.setDateStart(entity.getDateStart());
     	dto.setDateEnd(entity.getDateEnd());
-    	dto.setDateStart(entity.getDateStartSubscription());
-    	dto.setDateEnd(entity.getDateEndSubscription());
+    	dto.setDateStartSubscription(entity.getDateStartSubscription());
+    	dto.setDateEndSubscription(entity.getDateEndSubscription());
     	dto.setVacancy(entity.getVacancy());
     	dto.setWaitingList(entity.getWaitingList());
     	dto.setIdUser(entity.getUser().getId());

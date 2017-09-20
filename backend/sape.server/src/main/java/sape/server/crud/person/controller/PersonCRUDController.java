@@ -4,53 +4,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import sape.server.core.spring.context.ManagerInstance;
-import sape.server.crud.activity.service.ActivityCRUDService;
-import sape.server.crud.activity.service.ActivityQueryService;
 import sape.server.crud.base.controller.AbstractCRUDController;
 import sape.server.crud.base.service.AbstractCRUDService;
-import sape.server.model.activity.ActivityDTO;
-import sape.server.model.activity.ActivityEntity;
+import sape.server.crud.person.service.PersonCRUDService;
+import sape.server.model.person.PersonDTO;
+import sape.server.model.person.PersonEntity;
 
 /**
- * Implementação de {@link AbstractCRUDController} para {@link ActivityDTO}
+ * Implementação de {@link AbstractCRUDController} para {@link PersonDTO}
  *
  * @author Guilherme Dalmarco (dalmarco.gd@gmail.com)
  */
 @RestController
 @RequestMapping("/people")
-public class PersonCRUDController extends AbstractCRUDController<ActivityDTO, ActivityEntity> {
+public class PersonCRUDController extends AbstractCRUDController<PersonDTO, PersonEntity> {
 
-    private ActivityCRUDService activityCRUDService;
-    private ActivityQueryService activityQueryService;
+    private PersonCRUDService personCRUDService;
 
     /**
-     * Retorna o activityCRUDService - {@link StateCRUDService}
+     * Retorna o personCRUDService - {@link StateCRUDService}
      * @return {@link StateCRUDService}
      */
-    public ActivityCRUDService getUserFunctionCRUDService() {
-        if (activityCRUDService == null) {
-			activityCRUDService = ManagerInstance.get(ActivityCRUDService.class);
+    public PersonCRUDService getPersonCRUDService() {
+        if (personCRUDService == null) {
+			personCRUDService = ManagerInstance.get(PersonCRUDService.class);
 		}
-        return activityCRUDService;
+        return personCRUDService;
     }
 
     /**
-	 * Retorna uma instancia de {@link StateQueryService}
-	 * @return {@link StateQueryService}
-	 */
-	public ActivityQueryService getUserFunctionQueryService() {
-		if (activityQueryService == null) {
-			activityQueryService = ManagerInstance.get(ActivityQueryService.class);
-		}
-		return activityQueryService;
-	}
-
-    /**
-     * Serviço de persistencia de {@link ActivityEntity}
-     * @return {@link AbstractCRUDService} of {@link ActivityEntity}
+     * Serviço de persistencia de {@link PersonEntity}
+     * @return {@link AbstractCRUDService} of {@link PersonEntity}
      */
     @Override
-    protected AbstractCRUDService<ActivityEntity, ActivityDTO> getService() {
-        return getUserFunctionCRUDService();
+    protected AbstractCRUDService<PersonEntity, PersonDTO> getService() {
+        return getPersonCRUDService();
     }
 }

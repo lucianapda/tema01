@@ -34,7 +34,7 @@ public class SubscriptionActivityEntity extends BaseEntity {
     public static final String WAITING_LIST = "waitingList";
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_subscription_activity", nullable = false)
 	private Long id;
 
