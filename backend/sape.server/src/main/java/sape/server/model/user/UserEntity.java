@@ -1,22 +1,16 @@
 package sape.server.model.user;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import sape.server.model.base.BaseEntity;
-import sape.server.model.event.EventEntity;
 
 /**
  * Representa um usuário no sistema.
@@ -67,9 +61,6 @@ public class UserEntity extends BaseEntity {
 	@NotNull
 	@Column(nullable = false, name = "email_user", length=255)
 	private String email;
-
-	@OneToMany(cascade = CascadeType.REFRESH,targetEntity = EventEntity.class, fetch = FetchType.LAZY, mappedBy = EventEntity.USER)
-    private List<EventEntity> events = new ArrayList<>();
 
 	/**
 	 * Retorna uma instancia de {@link Long}
@@ -199,21 +190,5 @@ public class UserEntity extends BaseEntity {
 	 */
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	/**
-	 * Retorna uma instancia de {@link List<SubscriptionEntity>}
-	 * @return {@link List<SubscriptionEntity>}
-	 */
-	public List<EventEntity> getEvents() {
-		return events;
-	}
-
-	/**
-	 * Atribui um {@link List<SubscriptionEntity>}
-	 * @param events - {@link List<SubscriptionEntity>}
-	 */
-	public void setEvents(List<EventEntity> events) {
-		this.events = events;
 	}
 }

@@ -50,6 +50,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         objectMapper.configure(MapperFeature.IGNORE_DUPLICATE_MODULE_REGISTRATIONS, true);
         objectMapper.configure(MapperFeature.USE_ANNOTATIONS, true);
+        objectMapper.configure(MapperFeature.USE_GETTERS_AS_SETTERS, true);
         return objectMapper;
     }
 

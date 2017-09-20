@@ -3,10 +3,9 @@ package sape.server.model.activity;
 import java.time.LocalDateTime;
 
 import sape.server.model.base.BaseDTO;
-import sape.server.model.subscription.activity.SubscriptionActivityEntity;
 
 /**
- * Representa um {@link SubscriptionActivityEntity}.
+ * Representa um {@link ActivityEntity}.
  *
  * @author Guilherme Dalmarco (dalmarco.gd@gmail.com)
  */
