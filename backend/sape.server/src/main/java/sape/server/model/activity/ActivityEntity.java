@@ -46,14 +46,13 @@ public class ActivityEntity extends BaseEntity {
 	@Column(nullable = false, name = "code_activity")
 	private Long code;
 
-	@Column(name = "description_activity", length=4000)
+	@NotNull
+	@Column(nullable = false, name = "description_activity", length=4000)
 	private String description;
 
-	@NotNull
 	@Column(name = "speaker_activity", length=100)
 	private String speaker;
 
-	@NotNull
 	@Column(name = "theme_activity", length=255)
 	private String theme;
 

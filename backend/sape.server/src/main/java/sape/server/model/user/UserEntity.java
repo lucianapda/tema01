@@ -43,7 +43,8 @@ public class UserEntity extends BaseEntity {
 	@Column(nullable = false, name = "name_user", length=100)
 	private String name;
 
-    @Column(name = "birth_day_user")
+	@NotNull
+    @Column(name = "birth_day_user", nullable = false)
     private LocalDate birthDate;
 
 	@NotNull
@@ -58,8 +59,7 @@ public class UserEntity extends BaseEntity {
 	@Column(nullable = false, name = "password_user", length=50)
 	private String password;
 
-	@NotNull
-	@Column(nullable = false, name = "email_user", length=255)
+	@Column(name = "email_user", length=255)
 	private String email;
 
 	/**

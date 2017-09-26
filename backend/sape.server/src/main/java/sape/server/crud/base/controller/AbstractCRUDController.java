@@ -1,11 +1,13 @@
 package sape.server.crud.base.controller;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -93,8 +95,8 @@ public abstract class AbstractCRUDController<O extends BaseDTO, E extends BaseEn
      * @param id - {@link Long}
      * @return {@link ResponseEntity}
      */
-    @GetMapping(params={"id"})
-    public @ResponseBody ResponseEntity<?> read(@RequestParam("id") Long id){
+    @GetMapping(path={"/{id}"})
+    public @ResponseBody ResponseEntity<?> read(@PathVariable("id") Long id){
         return ResponseEntity.ok(getService().getDTO(id));
     }
 
@@ -102,9 +104,22 @@ public abstract class AbstractCRUDController<O extends BaseDTO, E extends BaseEn
      * Disponibiliza uma forma para recuperar todas as entidades.
      * @return {@link ResponseEntity}
      */
-    @GetMapping
-    public @ResponseBody ResponseEntity<?> read(){
-        return ResponseEntity.ok(getService().getDTOs());
+    @GetMapping()
+    public @ResponseBody ResponseEntity<?> read(@RequestParam(name = "filters", required = false ) List<String> filters,
+    											@RequestParam(name = "query", required = false) List<String> query,
+    											@RequestParam(name = "sort", required = false) List<String> sort,
+    											@RequestParam(name = "fields", required = false) List<String> fields,
+    											@RequestParam(name = "page", required = false) Integer page,
+    											@RequestParam(name = "per_page", required = false) Integer per_page){
+    	if ((filters == null || filters.isEmpty()) &&
+			(sort == null || sort.isEmpty()) &&
+			(query == null || query.isEmpty()) &&
+			(fields == null || fields.isEmpty()) &&
+			page == null &&
+			per_page == null) {
+    		return ResponseEntity.ok(getService().getDTOs());
+		}
+        return ResponseEntity.ok(getService().getDTOs(filters, sort, query, fields, page, per_page));
     }
 
     /**

@@ -22,7 +22,7 @@ war {
 }
 
 ext.hibernateCoreVersion = '5.2.10.Final'
-ext.hibernateValidatorVersion = '5.4.1.Final'
+ext.hibernateValidatorVersion = '6.0.2.Final'
 ext.hibernateC3p0Version = '5.2.5.Final'
 ext.springSecurityWebVersion = '4.3.8.RELEASE'
 ext.springOrmVersion = '4.3.8.RELEASE'
@@ -47,6 +47,7 @@ ext.reflectionsVersion = '0.9.10'
 ext.commonsLang3Version = '3.4'
 ext.guavaVersion = '19.0-rc1'
 ext.commonsCollections4Version = '4.0'
+ext.jacksonDataTypeJsr310Version = '2.8.9'
 
 compileJava.options.encoding = 'ISO-8859-1'
 
@@ -79,10 +80,7 @@ dependencies {
     compile "mysql:mysql-connector-java:${mysqlConnectorJavaVersion}"
     compile "org.apache.commons:commons-lang3:${commonsLang3Version}"
     
-	//compile "com.fasterxml.jackson.module:jackson-module-parameter-names:2.8.9"
-	//compile "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.8.9"
-	compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.9"
-    
+	compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonDataTypeJsr310Version}"
 }
 
 buildscript {

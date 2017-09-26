@@ -13,7 +13,9 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.util.UrlPathHelper;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -34,6 +36,16 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 @EnableWebMvc
 @ComponentScan("sape.server")
 public class WebMvcConfig extends WebMvcConfigurerAdapter{
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+    public void configurePathMatch(PathMatchConfigurer configurer) {
+        UrlPathHelper urlPathHelper = new UrlPathHelper();
+        urlPathHelper.setRemoveSemicolonContent(false);
+        configurer.setUrlPathHelper(urlPathHelper);
+    }
 
 	@Bean
     @Primary

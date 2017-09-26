@@ -47,7 +47,8 @@ public class EventEntity extends BaseEntity {
 	@Column(nullable = false, name = "code_event")
 	private Long code;
 
-	@Column(name = "place_event", length=100)
+	@NotNull
+	@Column(nullable = false, name = "place_event", length=100)
 	private String place;
 
 	@Column(name = "description_event", length=4000)

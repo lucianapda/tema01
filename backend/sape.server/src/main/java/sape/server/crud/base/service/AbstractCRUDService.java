@@ -1,6 +1,7 @@
 package sape.server.crud.base.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -65,11 +66,17 @@ public abstract class AbstractCRUDService<E extends BaseEntity, O extends BaseDT
 
     /**
      * Busca todas as entidades.
+     * @param config = {@link Map} of {@link String} and {@link List} of {@link String}
      * @return {@link List} of {@link E}
      */
     @Transactional(rollbackFor = Throwable.class, readOnly = true)
-    public List<E> getEntities() {
-        return getCRUDRepository().getAll();
+    public List<E> getEntities(List<String> filters,
+							   List<String> sort,
+							   List<String> query,
+							   List<String> fields,
+							   Integer page,
+							   Integer per_page) {
+        return getCRUDRepository().getAll(filters, sort, query, fields, page, per_page);
     }
 
     /**
@@ -79,6 +86,30 @@ public abstract class AbstractCRUDService<E extends BaseEntity, O extends BaseDT
     @Transactional(rollbackFor = Throwable.class, readOnly = true)
     public List<O> getDTOs() {
         return convertAllToDTO(getEntities());
+    }
+
+    /**
+     * Busca todas as entidades e converte para dto
+     * @param config = {@link Map} of {@link String} and {@link List} of {@link String}
+     * @return {@link List} of {@link O}
+     */
+    @Transactional(rollbackFor = Throwable.class, readOnly = true)
+    public List<O> getDTOs(List<String> filters,
+						   List<String> sort,
+						   List<String> query,
+						   List<String> fields,
+						   Integer page,
+						   Integer per_page) {
+        return convertAllToDTO(getEntities(filters, sort, query, fields, page, per_page));
+    }
+
+    /**
+     * Busca todas as entidades.
+     * @return {@link List} of {@link E}
+     */
+    @Transactional(rollbackFor = Throwable.class, readOnly = true)
+    public List<E> getEntities() {
+        return getCRUDRepository().getAll();
     }
 
     /**
@@ -108,6 +139,7 @@ public abstract class AbstractCRUDService<E extends BaseEntity, O extends BaseDT
      */
     @Transactional(rollbackFor = Throwable.class)
     public void validate(E entity) throws ValidationCRUDException {
+    	// Aplicar as validações do hibernate aqui...
         internalValidate(entity);
     }
 

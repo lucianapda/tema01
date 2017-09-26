@@ -40,12 +40,10 @@ public class EntryEntity extends BaseEntity {
 	@Column(nullable = false, name = "code_entry")
 	private Long code;
 
-	@NotNull
-	@Column(nullable = false, name = "date_entry_entry")
+	@Column(name = "date_entry_entry")
     private LocalDateTime dateEntry;
 
-	@NotNull
-	@Column(nullable = false, name = "date_departure_entry")
+	@Column(name = "date_departure_entry")
     private LocalDateTime dateDeparture;
 
 	@NotNull

@@ -60,7 +60,8 @@ public abstract class AbstractCRUDRepository<E extends BaseEntity> {
      * @param id - {@link E#getId()}
      * @return {@link E} - salvo ou null caso não encontrar.
      */
-    @Transactional(rollbackFor = Throwable.class, readOnly = true)
+    @SuppressWarnings("unchecked")
+	@Transactional(rollbackFor = Throwable.class, readOnly = true)
     public E get(Long id) {
         try {
             return (E) hibernateHandleSessionService.get(ClassUtils.getGenericType(getClass(), BaseEntity.class), id);
@@ -74,7 +75,8 @@ public abstract class AbstractCRUDRepository<E extends BaseEntity> {
      * Busca todas as entidades.
      * @return {@link List} of {@link E}.
      */
-    @Transactional(rollbackFor = Throwable.class, readOnly = true)
+    @SuppressWarnings("unchecked")
+	@Transactional(rollbackFor = Throwable.class, readOnly = true)
     public List<E> getAll() {
         return getCriteriaFactory().createCriteria(ClassUtils.getGenericType(getClass(), BaseEntity.class)).list();
     }
@@ -83,12 +85,16 @@ public abstract class AbstractCRUDRepository<E extends BaseEntity> {
      * Busca todas as entidades, aplicando {@link Criterion}.
      * @return {@link List} of {@link E}.
      */
-    @Transactional(rollbackFor = Throwable.class, readOnly = true)
-    public List<E> getAll(Criterion... criterions) {
+    @SuppressWarnings("unchecked")
+	@Transactional(rollbackFor = Throwable.class, readOnly = true)
+    public List<E> getAll(List<String> filters,
+						  List<String> sort,
+						  List<String> query,
+						  List<String> fields,
+						  Integer page,
+						  Integer per_page) {
         Criteria criteria = getCriteriaFactory().createCriteria(ClassUtils.getGenericType(getClass(), BaseEntity.class));
-        for (Criterion c : criterions) {
-            criteria.add(c);
-        }
+        // TODO Implementar a aplicação dos parametros na criteria.
         return criteria.list();
     }
 
@@ -98,13 +104,14 @@ public abstract class AbstractCRUDRepository<E extends BaseEntity> {
      * @return {@link List} of {@link E}
      * @throws ValidationCRUDException dispara exceção caso encontre mais de um objeto.
      */
-    @Transactional(rollbackFor = Throwable.class, readOnly = true)
+    @SuppressWarnings("unchecked")
+	@Transactional(rollbackFor = Throwable.class, readOnly = true)
     public E getUnique(Criterion... criterions) throws ValidationCRUDException {
         Criteria criteria = getCriteriaFactory().createCriteria(ClassUtils.getGenericType(getClass(), BaseEntity.class));
         for (Criterion c : criterions) {
             criteria.add(c);
         }
-        return (E) criteria.uniqueResult();
+        return ((E) criteria.uniqueResult());
     }
 
     /**
