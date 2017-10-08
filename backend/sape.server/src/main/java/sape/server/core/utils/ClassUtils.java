@@ -85,6 +85,17 @@ public class ClassUtils extends org.apache.commons.lang3.ClassUtils {
 	}
 
 	/**
+	 * Efetua um cast de <code>value</code> para <code>type</code><br/>
+	 * Procura o <code>type</code> na hierarquia das classes de <code>value</code>
+	 * @param type - {@link Class}
+	 * @param value - {@link Class}
+	 * @return {@link Boolean}
+	 */
+	public static boolean isToAssignableClassFrom(Class<?> type, Class<?> value){
+		return toAssignableClassFrom(type, value) != null;
+	}
+
+	/**
 	 * Verifica se o nome da classe contida em <code>className</code> é o mesmo nome do <code>original.class</code>.
 	 * @param original - informa o classe a ser comparada
 	 * @param className - informa o nome da classe a ser comparada.

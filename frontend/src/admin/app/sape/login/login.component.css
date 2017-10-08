@@ -1,0 +1,19 @@
+#loginContent {
+	background-color: inherit;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+#loginBox {
+	top: 2%;
+	background-color: white;
+	width: auto;
+	min-width: 350px;
+	height: auto;
+	position: absolute;
+	min-height: 250px;
+	border-radius: 5px;
+	border: 2px solid ghostwhite;
+	padding: 20px;
+}

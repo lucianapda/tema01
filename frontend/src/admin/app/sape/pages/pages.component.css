@@ -1,0 +1,36 @@
+#barTop {
+    background-color: #ffffff;
+    height: 6%;
+    border-bottom: 1px solid lightgray;
+    min-height: 40px;
+    font-family: benton-sans, 'Helvetica Neue', sans-serif;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+#content {
+    background-color: #f2f2f2;
+    height: 85%
+}
+
+#contentBody {
+    background-color: transparent;
+    height: 89.9%;
+    padding: 0.2%;
+}
+
+#contentFooter {
+    background-color: #ffffff;
+    height: 9%;
+}
+
+#contentBodyTop {
+    border-radius: 2px;
+    background-color: #ffffff;
+    height: 10%;
+}
+
+#contentBodyCenter {
+    background-color: transparent;
+    height: 90%;
+}

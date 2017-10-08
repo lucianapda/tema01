@@ -1,0 +1,13 @@
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+@import "../node_modules/font-awesome/css/font-awesome.min.css";
+@import "ng2-select.css";
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0 0 0 0;
+    /*padding: 0.2%;*/
+    height: 100%;
+    background-color: whitesmoke;
+}

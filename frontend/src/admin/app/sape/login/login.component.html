@@ -1,0 +1,15 @@
+<div id="loginContent">
+  <div id="loginBox">
+    	<form [formGroup]="form" (ngSubmit)="doLogin(form.value)">
+  		<ngl-form-element [error]="form.get('username').hasError('required')? form.get('username').getError('required') : null" label="Login"  class="slds-m-top--small">
+  			<ng-template nglFormLabel><i>Login:</i>></ng-template>
+ 			<input nglFormControl formControlName="username" type="text" placeholder="Informe seu acesso...">
+		</ngl-form-element>
+		<ngl-form-element [error]="form.get('password').hasError('required')? form.get('password').getError('required') : null" label="Senha"  class="slds-m-top--small">
+  			<ng-template nglFormLabel><i>Senha:</i>></ng-template>
+ 			<input nglFormControl formControlName="password" type="password" placeholder="Informe sua senha...">
+		</ngl-form-element>
+		<div><button nglButton="neutral" type="submit">Entrar</button></div>
+	</form>
+  </div>
+</div>

@@ -68,15 +68,16 @@ public abstract class AbstractCRUDService<E extends BaseEntity, O extends BaseDT
      * Busca todas as entidades.
      * @param config = {@link Map} of {@link String} and {@link List} of {@link String}
      * @return {@link List} of {@link E}
+     * @throws ValidationException
      */
     @Transactional(rollbackFor = Throwable.class, readOnly = true)
     public List<E> getEntities(List<String> filters,
 							   List<String> sort,
-							   List<String> query,
 							   List<String> fields,
+							   String query,
 							   Integer page,
-							   Integer per_page) {
-        return getCRUDRepository().getAll(filters, sort, query, fields, page, per_page);
+							   Integer per_page) throws ValidationException {
+        return getCRUDRepository().getAll(filters, sort, fields, query, page, per_page);
     }
 
     /**
@@ -92,15 +93,16 @@ public abstract class AbstractCRUDService<E extends BaseEntity, O extends BaseDT
      * Busca todas as entidades e converte para dto
      * @param config = {@link Map} of {@link String} and {@link List} of {@link String}
      * @return {@link List} of {@link O}
+     * @throws ValidationException
      */
     @Transactional(rollbackFor = Throwable.class, readOnly = true)
     public List<O> getDTOs(List<String> filters,
 						   List<String> sort,
-						   List<String> query,
 						   List<String> fields,
+						   String query,
 						   Integer page,
-						   Integer per_page) {
-        return convertAllToDTO(getEntities(filters, sort, query, fields, page, per_page));
+						   Integer per_page) throws ValidationException {
+        return convertAllToDTO(getEntities(filters, sort, fields, query, page, per_page));
     }
 
     /**

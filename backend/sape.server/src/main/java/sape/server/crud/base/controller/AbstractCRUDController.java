@@ -103,23 +103,24 @@ public abstract class AbstractCRUDController<O extends BaseDTO, E extends BaseEn
     /**
      * Disponibiliza uma forma para recuperar todas as entidades.
      * @return {@link ResponseEntity}
+     * @throws ValidationException
      */
-    @GetMapping()
+    @GetMapping
     public @ResponseBody ResponseEntity<?> read(@RequestParam(name = "filters", required = false ) List<String> filters,
-    											@RequestParam(name = "query", required = false) List<String> query,
     											@RequestParam(name = "sort", required = false) List<String> sort,
     											@RequestParam(name = "fields", required = false) List<String> fields,
+    											@RequestParam(name = "query", required = false) String query,
     											@RequestParam(name = "page", required = false) Integer page,
-    											@RequestParam(name = "per_page", required = false) Integer per_page){
+    											@RequestParam(name = "per_page", required = false) Integer per_page) throws ValidationException{
     	if ((filters == null || filters.isEmpty()) &&
 			(sort == null || sort.isEmpty()) &&
-			(query == null || query.isEmpty()) &&
 			(fields == null || fields.isEmpty()) &&
+			(query == null || query.isEmpty()) &&
 			page == null &&
 			per_page == null) {
     		return ResponseEntity.ok(getService().getDTOs());
 		}
-        return ResponseEntity.ok(getService().getDTOs(filters, sort, query, fields, page, per_page));
+        return ResponseEntity.ok(getService().getDTOs(filters, sort, fields, query, page, per_page));
     }
 
     /**

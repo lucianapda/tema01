@@ -11,6 +11,7 @@ import sape.server.model.entry.EntryDTO;
 import sape.server.model.entry.EntryEntity;
 import sape.server.model.event.EventDTO;
 import sape.server.model.event.EventEntity;
+import sape.server.model.user.UserEntity;
 
 /**
  * Serviço de persistencia de {@link EntryEntity}
@@ -80,7 +81,10 @@ public class EventCRUDService extends AbstractCRUDService<EventEntity, EventDTO>
     	dto.setDateEndSubscription(entity.getDateEndSubscription());
     	dto.setVacancy(entity.getVacancy());
     	dto.setWaitingList(entity.getWaitingList());
-    	dto.setIdUser(entity.getUser().getId());
+    	UserEntity user = entity.getUser();
+    	if (user != null) {
+    		dto.setIdUser(user.getId());
+		}
         return dto;
     }
 

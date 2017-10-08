@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Type;
+
 import sape.server.model.base.BaseEntity;
 import sape.server.model.person.contact.PersonContactEntity;
 import sape.server.model.user.UserEntity;
@@ -76,6 +78,7 @@ public class EventEntity extends BaseEntity {
 
 	@NotNull
 	@Column(nullable = false, name = "waiting_list_event")
+	@Type(type = "yes_no")
 	private Boolean waitingList;
 
 	@NotNull
