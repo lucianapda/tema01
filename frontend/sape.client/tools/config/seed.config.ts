@@ -440,6 +440,7 @@ export class SeedConfig {
       'lodash': 'node_modules:lodash',
       'traceur': 'node_modules:traceur/bin/traceur.js',
       'ngx-bootstrap' : 'node_modules/ngx-bootstrap/bundles/ngx-bootstrap.umd.min.js',
+      'ng2-semantic-ui': 'node_modules/ng2-semantic-ui/bundles/ng2-semantic-ui.umd.min.js',
 
       'app/': `${this.APP_BASE}app/`,
       // For test config

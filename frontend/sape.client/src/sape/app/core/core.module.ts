@@ -1,3 +1,4 @@
+import { SuiModule } from 'ng2-semantic-ui';
 /**
  * Core module
  */
@@ -24,6 +25,7 @@ const CORE_PROVIDERS = [
     SharedModule,
     SapeModule,
     NglModule.forRoot(),
+    SuiModule,
     BrowserModule,
     HttpModule,
     JsonpModule,
