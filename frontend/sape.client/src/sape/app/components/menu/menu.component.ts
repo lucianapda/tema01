@@ -18,8 +18,8 @@ export class MenuComponent implements OnInit {
   private mapMenuOptions: Map<string, MenuOption> = new Map();
   private mapMenuGroups: Map<string, MenuGroup> = new Map();
 
-  menuGroupSelected: MenuGroup;
-  menuOptionSelected: MenuOption;
+  private menuGroupSelected: MenuGroup;
+  private menuOptionSelected: MenuOption;
 
   constructor(private menuService: MenuService) {
     this.mapMenuOptions = this.menuService.getMenuOptions();
@@ -36,14 +36,7 @@ export class MenuComponent implements OnInit {
     this.menuOptions = this.menuGroupSelected.menuOptions;
     console.log(this.menuOptions)
   }
-
-  search(value:any) : void {
-    let menuOptionsToSearch = this.menuGroupSelected.menuOptions;
-    if (this.menuGroupSelected != undefined) {
-      menuOptionsToSearch = this.menuGroupSelected.menuOptions;
-    }
-  }
-
+  
   lookupMenuGroupSelected(event: EventEmitter<any>) {
     if (event != null) {
       this.menuService.setMenuGroupSelected(this.menuGroupSelected, true);

@@ -433,13 +433,10 @@ export class SeedConfig {
       '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
 
       'tether': 'node_modules/tether/dist/js/tether.min.js',
-      'ng-lightning': 'node_modules/ng-lightning/bundles/ng-lightning.umd.js',
       'ng2-smart-table': 'node_modules:ng2-smart-table',
       'ng2-completer': 'node_modules/ng2-completer/ng2-completer.umd.js',
-      'ng2-select': 'node_modules/ng2-select/bundles/ng2-select.umd.js',
       'lodash': 'node_modules:lodash',
       'traceur': 'node_modules:traceur/bin/traceur.js',
-      'ngx-bootstrap' : 'node_modules/ngx-bootstrap/bundles/ngx-bootstrap.umd.min.js',
       'ng2-semantic-ui': 'node_modules/ng2-semantic-ui/bundles/ng2-semantic-ui.umd.min.js',
 
       'app/': `${this.APP_BASE}app/`,
@@ -546,14 +543,6 @@ export class SeedConfig {
       'ng2-smart-table': {
           main: 'index.js',
           defaultExtension: 'js'
-      },
-      'ng2-select': {
-        main: 'ng2-select.js',
-        defaultExtension: 'js'
-      },
-      'ngx-bootstrap': {
-        main: 'ngx-bootstrap.js',
-        defaultExtension: 'js'
       }
     }
   };

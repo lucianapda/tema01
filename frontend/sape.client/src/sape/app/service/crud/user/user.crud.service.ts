@@ -14,8 +14,8 @@ import {HttpService} from '../../http/http.service';
 @Injectable()
 export class UserCrudService extends BaseCrudService<UserDTO> {
 
-  constructor(protected httpService: HttpService) {
-    super(httpService)
+  constructor() {
+    super()
   }
 
   protected getPatch(): string {

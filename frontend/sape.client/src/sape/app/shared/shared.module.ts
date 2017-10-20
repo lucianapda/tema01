@@ -1,23 +1,20 @@
-import { SelectModule } from 'ng2-select';
 import { CommonModule } from '@angular/common';
 import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Ng2BootstrapModule } from 'ngx-bootstrap';
+import { SuiModule } from 'ng2-semantic-ui';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    SelectModule,
-    Ng2BootstrapModule
+    SuiModule
   ],
   exports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    SelectModule,
-    Ng2BootstrapModule
+    SuiModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -1,6 +1,6 @@
 import { AuthGuard } from './auth/auth.guard';
 import { AuthService } from './auth/auth.service';
-import { ModuleCrudService } from './crud/module/module.crud.service';
+import { EventCrudService } from './crud/event/event.crud.service';
 import { UserCrudService } from './crud/user/user.crud.service';
 import { StorageService } from './storage/storage.service';
 import { HttpService } from './http/http.service';
@@ -22,7 +22,7 @@ const PROVIDERS = [
   AuthService,
   TokenService,
   HttpService,
-  ModuleCrudService,
+  EventCrudService,
   UserCrudService,
   MessageService,
   StorageService,

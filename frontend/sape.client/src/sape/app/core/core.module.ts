@@ -1,4 +1,3 @@
-import { SuiModule } from 'ng2-semantic-ui';
 /**
  * Core module
  */
@@ -9,7 +8,6 @@ import { ModuleWithProviders, NgModule, Optional, Provider, SkipSelf } from '@an
 import { SapeModule } from '../sape/sape.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import { NglModule } from 'ng-lightning';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import {AppTask} from './task/app.task';
@@ -24,8 +22,6 @@ const CORE_PROVIDERS = [
   imports: [
     SharedModule,
     SapeModule,
-    NglModule.forRoot(),
-    SuiModule,
     BrowserModule,
     HttpModule,
     JsonpModule,

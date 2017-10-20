@@ -1,5 +1,4 @@
 import {BaseCrudService} from "../base.crud";
-import {ModuleDTO} from "../../../model/module/module.dto";
 import {Injectable} from "@angular/core";
 import {CostumerDTO} from "../../../model/costumer/costumer.dto";
 /**

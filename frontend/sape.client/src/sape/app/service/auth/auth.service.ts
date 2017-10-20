@@ -1,3 +1,6 @@
+import { ServiceLocator } from './../locator/service.locator';
+import { HttpConfigMethod } from './../http/http.config.method';
+import { HttpHeaders } from './../http/http.headers';
 /**
  * Created by Guilherme on 06/04/2017.
  */
@@ -18,23 +21,32 @@ import {Router} from '@angular/router';
 @Injectable()
 export class AuthService extends BaseService {
 
-  constructor(protected httpService: HttpService, private tokenService: TokenService, private router: Router) {
-    super(httpService);
+  constructor(private router: Router) {
+    super();
+  }
+
+  private get tokenService() : TokenService {
+    return ServiceLocator.get(TokenService);
   }
 
   /**
    * Efetua a autenticação no servidor, com os parametros recebidos.
    */
   login(username: string, password: string): Promise<Boolean> {
-    return this.httpService.post('/oauth/token', {data : new AuthCredentials(username, password), params: new Map([["grantType", "password"], ["username", username], ["password", password], ["clientId", "sape_id"]])}).then((data) => {
+    var headers = new HttpHeaders();
+    headers.set('authorization', 'Basic c2FwZUNsaWVudDpQQHNzdzByZA==');
+    let config = new HttpConfigMethod(null,
+                 new Map([["grant_type", "password"], ["username", username], ["password", password]]),
+                 headers);
+    return this.httpService.post('/oauth/token', config).then((data) => {
         console.log(data);
         if (data instanceof Object) {
           this.tokenService.setToken(data, new Date());
-          //this.router.navigate(['sape/pages']);
+          this.router.navigate(['sape/pages']);
           return true;
         } else {
           this.tokenService.resetToken();
-          //this.router.navigate(['sape/login']);
+          this.router.navigate(['sape/login']);
           return false;
         }
       }
@@ -42,7 +54,17 @@ export class AuthService extends BaseService {
   }
 
   isLoggedIn(): Promise<boolean> {
-    return this.tokenService.isTokenValid();
+    let tokenDTO = this.tokenService.getToken();
+
+    let value: any = tokenDTO? tokenDTO.access_token : null;
+    if (!!value) {
+      console.log("Valiando: "+value);
+      var headers = new HttpHeaders();
+      headers.set('authorization', 'Basic c2FwZUNsaWVudDpQQHNzdzByZA==');
+      let config = new HttpConfigMethod(null, new Map([['token', value]]), headers);
+      return this.httpService.get('/oauth/check_token', config);
+    }
+    return new Promise(() => false);
   }
 
   logout(): void {

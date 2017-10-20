@@ -39,7 +39,7 @@ export class HttpService {
    * Realiza um put no endereço especificado.
    */
   public delete(url: string, config?: HttpConfigMethod): Promise<any> {
-    let headers = this.getConfigHeaders();
+    let headers = this.getConfigHeaders(config.headers);
     let finalURL = this.formatURL(url);
     console.log('Method delete: ' + finalURL);
     let options = this.buildRequestOptions(headers, config);
@@ -50,7 +50,7 @@ export class HttpService {
    * Realiza um put no endereço especificado.
    */
   public get(url: string, config?: HttpConfigMethod): Promise<any> {
-    let headers = this.getConfigHeaders();
+    let headers = this.getConfigHeaders(config.headers);
     let finalURL = this.formatURL(url);
     console.log('Method get: ' + finalURL);
     let options = this.buildRequestOptions(headers, config);
@@ -61,7 +61,7 @@ export class HttpService {
    * Realiza um put no endereço especificado.
    */
   public put(url: string, config?: HttpConfigMethod): Promise<any> {
-    let headers = this.getConfigHeaders();
+    let headers = this.getConfigHeaders(config.headers);
     let finalURL = this.formatURL(url);
     console.log('Method put: ' + finalURL);
     let options = this.buildRequestOptions(headers, config);    
@@ -72,7 +72,7 @@ export class HttpService {
    * Realiza um post no endereço especificado.
    */
   public post(url: string, config?: HttpConfigMethod): Promise<any> {
-    let headers = this.getConfigHeaders();
+    let headers = this.getConfigHeaders(config.headers);
     let finalURL = this.formatURL(url);
     console.log('Method post: ' + finalURL);
     let options = this.buildRequestOptions(headers, config);
@@ -92,12 +92,16 @@ export class HttpService {
     return options
   }
 
-  private getConfigHeaders(): HttpHeaders {
-    let headers = new HttpHeaders();
-    let token: TokenDTO = this.tokenService.getToken();
-    if (!!token) {
-      console.log('Token: ' + token.token);
-      headers.append('Authorization', token.token);
+  private getConfigHeaders(headers: HttpHeaders): HttpHeaders {
+    if (!headers) {
+      headers = new HttpHeaders();
+    }
+    if (!headers.get('Authorization')) {
+      let token: TokenDTO = this.tokenService.getToken();
+      if (!!token) {
+        console.log('Authorization: Bearer' + token.access_token);
+        headers.append('Authorization', 'Bearer ' + token.access_token);
+      }
     }
     return headers;
   }

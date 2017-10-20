@@ -1,4 +1,4 @@
-import { SAPE_PAGES_HOME, SAPE_PAGES_ALL, SAPE_PAGES_REGISTER, SAPE_PAGES_CONFIGURATION, SAPE_PAGES_REGISTER_MODULE, SAPE_PAGES_REGISTER_COSTUMER, SAPE_PAGES_REGISTER_USER } from './../../app.routing.mapping';
+import { SAPE_PAGES_HOME, SAPE_PAGES_ALL, SAPE_PAGES_REGISTER, SAPE_PAGES_CONFIGURATION, SAPE_PAGES_REGISTER_EVENTS, SAPE_PAGES_REGISTER_EVENTS_ACTIVITIES, SAPE_PAGES_REGISTER_EVENTS_ENTRIES, SAPE_PAGES_REGISTER_SUBSCRIPTIONS, SAPE_PAGES_REGISTER_SUBSCRIPTIONS_ACTIVITIES, SAPE_PAGES_REGISTER_PEOPLE } from './../../app.routing.mapping';
 import { StringUtils } from './../../util/string/string.utils';
 import { Injectable } from '@angular/core';
 import { MenuGroup } from './menu.group';
@@ -24,23 +24,33 @@ export class MenuService {
     let all: MenuGroup = new MenuGroup('Todos', 'all', 'fa fa-map-o', SAPE_PAGES_ALL.routingFull);
     let register: MenuGroup = new MenuGroup('Cadastro', 'register', 'fa fa-address-book', SAPE_PAGES_REGISTER.routingFull);
     let config: MenuGroup = new MenuGroup('Configuração', 'configuration','fa fa-cogs', SAPE_PAGES_CONFIGURATION.routingFull);
-    // Opções
-    let module: MenuOption = new MenuOption('Módulos', 'module', 'fa fa-server', SAPE_PAGES_REGISTER_MODULE.routingFull, register);
-    let costumer: MenuOption = new MenuOption('Clientes', 'costumer', 'fa fa-vcard', SAPE_PAGES_REGISTER_COSTUMER.routingFull, register);
-    let user: MenuOption = new MenuOption('Usuários', 'user', 'fa fa-user', SAPE_PAGES_REGISTER_USER.routingFull, register);
 
-    all.menuOptions.push(module);
-    all.menuOptions.push(costumer);
-    all.menuOptions.push(user);
+    // Opções
+    let event: MenuOption = new MenuOption('Eventos', 'event', 'fa fa-server', SAPE_PAGES_REGISTER_EVENTS.routingFull, register);
+    let eventActivity: MenuOption = new MenuOption('Atividades', 'event_activity', 'fa fa-vcard', SAPE_PAGES_REGISTER_EVENTS_ACTIVITIES.routingFull, register);
+    let eventEntry: MenuOption = new MenuOption('Entradas', 'entry', 'fa fa-user', SAPE_PAGES_REGISTER_EVENTS_ENTRIES.routingFull, register);
+    let subscription: MenuOption = new MenuOption('Inscrições', 'subscription', 'fa fa-server', SAPE_PAGES_REGISTER_SUBSCRIPTIONS.routingFull, register);
+    let subscriptionActivity: MenuOption = new MenuOption('Atividades', 'subscription_activity', 'fa fa-vcard', SAPE_PAGES_REGISTER_SUBSCRIPTIONS_ACTIVITIES.routingFull, register);   
+    let people: MenuOption = new MenuOption('Pessoas', 'person', 'fa fa-vcard', SAPE_PAGES_REGISTER_PEOPLE.routingFull, register);   
+    
+    all.menuOptions.push(event);
+    all.menuOptions.push(eventActivity);
+    all.menuOptions.push(eventEntry);
+    all.menuOptions.push(subscription);
+    all.menuOptions.push(subscriptionActivity);
+    all.menuOptions.push(people);
 
     this.mapMenuGroups.set(home.id, home);
     this.mapMenuGroups.set(all.id, all);
     this.mapMenuGroups.set(register.id, register);
     this.mapMenuGroups.set(config.id, config);
 
-    this.mapMenuOptions.set(module.id, module);
-    this.mapMenuOptions.set(costumer.id, costumer);
-    this.mapMenuOptions.set(user.id, user);
+    this.mapMenuOptions.set(event.id, event);
+    this.mapMenuOptions.set(eventActivity.id, eventActivity);
+    this.mapMenuOptions.set(eventEntry.id, eventEntry);
+    this.mapMenuOptions.set(subscription.id, subscription);
+    this.mapMenuOptions.set(subscriptionActivity.id, subscriptionActivity);
+    this.mapMenuOptions.set(people.id, people);
   }
 
   public getMenuOptions() : Map<string, MenuOption> {

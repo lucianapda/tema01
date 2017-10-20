@@ -1,15 +1,24 @@
-<div id="loginContent">
-  <div id="loginBox">
-    	<form [formGroup]="form" (ngSubmit)="doLogin(form.value)">
-  		<ngl-form-element [error]="form.get('username').hasError('required')? form.get('username').getError('required') : null" label="Login"  class="slds-m-top--small">
-  			<ng-template nglFormLabel><i>Login:</i>></ng-template>
- 			<input nglFormControl formControlName="username" type="text" placeholder="Informe seu acesso...">
-		</ngl-form-element>
-		<ngl-form-element [error]="form.get('password').hasError('required')? form.get('password').getError('required') : null" label="Senha"  class="slds-m-top--small">
-  			<ng-template nglFormLabel><i>Senha:</i>></ng-template>
- 			<input nglFormControl formControlName="password" type="password" placeholder="Informe sua senha...">
-		</ngl-form-element>
-		<div><button nglButton="neutral" type="submit">Entrar</button></div>
-	</form>
-  </div>
+<div class="ui container" id="loginContent">
+    <div class="ui raised very padded container segment" id="loginBox">
+        <h3 class="ui center aligned header">Acesso</h3>
+        <form class="ui form" [formGroup]="form" (ngSubmit)="doLogin(form.value)">
+            <div class="fiveteen wide field">
+                <div class="ui pointing below label">Login</div>
+                <div class="ui left icon input">
+                    <input formControlName="username" placeholder="Informe seu acesso..." type="text">
+                    <i class="users icon"></i>
+                </div>
+            </div>
+            <div class="fiveteen wide field">
+                <div class="ui pointing below label">Senha</div>
+                <div class="ui left icon input">
+                    <input formControlName="password" type="password" placeholder="Informe sua senha...">
+                    <i class="users icon"></i>
+                </div>
+            </div>
+            <div class="field">
+                <button class="ui right floated primary button" type="submit">Entrar</button>
+            </div>
+        </form>
+    </div>
 </div>

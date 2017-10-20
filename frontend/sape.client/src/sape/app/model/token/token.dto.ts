@@ -6,9 +6,9 @@ import {BaseDTO} from "../base/base.dto";
 
 export class TokenDTO extends BaseDTO {
 
-  code: number = null;
-  token: string = null;
-  username: string = null;
-  password: string = null;
-  dateTimeGenerate: Date = null;
+  access_token: string = null;
+  expires_in: string = null;
+  refresh_token: string = null;
+  scope: string = null;
+  token_type: string = null;
 }

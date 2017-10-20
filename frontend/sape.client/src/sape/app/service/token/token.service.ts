@@ -36,20 +36,6 @@ export class TokenService {
   /**
    * Retorna o token to usuário
    */
-  public isTokenValid(): Promise<boolean> {
-      let tokenDTO: any = JSON.parse(localStorage.getItem(TOKEN));
-
-      let value: any = !!tokenDTO? tokenDTO.token : null;
-      if (!!value) {
-        console.log("Valiando: "+value);
-        return this.httpService.put('/auth', {data: new ValidToken(value)});
-      }
-      return new Promise(() => false);
-  }
-
-  /**
-   * Retorna o token to usuário
-   */
   public getToken(): TokenDTO {
     return JSON.parse(localStorage.getItem(TOKEN));
   }
@@ -61,11 +47,3 @@ export class TokenService {
     return JSON.parse(localStorage.getItem(DATE_TOKEN));
   }
 }
-
- class ValidToken {
-     private token: String;
-
-     constructor(token: String) {
-       this.token = token;
-     }
-  }
