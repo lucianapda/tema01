@@ -1,0 +1,11 @@
+uniedu.server.model.base
+uniedu.server.model.course
+uniedu.server.model.grade
+uniedu.server.model.grade.subject
+uniedu.server.model.institution
+uniedu.server.model.person
+uniedu.server.model.person.contact
+uniedu.server.model.student
+uniedu.server.model.subject
+uniedu.server.model.teacher
+uniedu.server.model.user

@@ -1,9 +1,10 @@
 package sape.server.core.spring.config.security;
 
+import java.util.Arrays;
+
 import org.hibernate.internal.SessionFactoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -20,13 +21,15 @@ import org.springframework.security.oauth2.provider.request.DefaultOAuth2Request
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import sape.server.core.hibernate.config.HibernateConfig;
 import sape.server.core.hibernate.transaction.CustomHibernateTransactionManager;
 import sape.server.core.spring.config.user.CustomUserDetailsService;
 
 @Configuration
-@ComponentScan(basePackages = "sape.server")
 @EnableWebSecurity
 @EnableTransactionManagement
 public class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -46,11 +49,23 @@ public class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
 	 */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable()
+		http.cors()
+			.and()
+			.csrf().disable()
 			.anonymous().disable()
-			.authorizeRequests()
-			.antMatchers("/oauth/token").permitAll();
+			.authorizeRequests().antMatchers("/oauth/token", "/oauth/check_token").permitAll();
     }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(Arrays.asList("*"));
+		configuration.setAllowedMethods(Arrays.asList("*"));
+		configuration.setAllowedHeaders(Arrays.asList("*"));
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
 
     /**
 	 * {@inheritDoc}

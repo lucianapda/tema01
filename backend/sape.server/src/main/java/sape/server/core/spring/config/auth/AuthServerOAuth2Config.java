@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 
 @Configuration
 @EnableAuthorizationServer
+//@Order(-4)
 public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter {
 
 	private static String REALM="EXAMPLE_REALM";
@@ -28,6 +29,9 @@ public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter
 	@Qualifier("authenticationManagerBean")
 	private AuthenticationManager authManager;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory()
@@ -40,6 +44,9 @@ public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter
 	            	.refreshTokenValiditySeconds(20000);//refresh after 10 minutes.
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		endpoints.tokenStore(tokenStore)
@@ -47,6 +54,9 @@ public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter
 				 .authenticationManager(authManager);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
 		oauthServer.realm(REALM+"/client");

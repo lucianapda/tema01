@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -32,10 +33,24 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
  *
  * @author Guilherme Dalmarco (dalmarco.gd@gmail.com)
  */
-@Configuration
 @EnableWebMvc
+@Configuration
 @ComponentScan("sape.server")
+//@Order(-3)
 public class WebMvcConfig extends WebMvcConfigurerAdapter{
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+		registry.addMapping("/**")
+				.allowedOrigins("*")
+				.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+				.allowedHeaders("*")
+				.allowCredentials(false)
+				.maxAge(3600);
+	}
 
 	/**
 	 * {@inheritDoc}
