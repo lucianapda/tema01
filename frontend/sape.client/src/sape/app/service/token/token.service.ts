@@ -1,3 +1,4 @@
+import { CheckTokenDTO } from './../../model/token/check.token.dto';
 import { Http } from '@angular/http';
 import { ServiceLocator } from './../locator/service.locator';
 import { HttpService } from './../http/http.service';
@@ -8,7 +9,7 @@ import { TokenDTO } from '../../model/token/token.dto';
  */
 
 const TOKEN: string = 'token';
-const DATE_TOKEN: string = 'datetoken';
+const CHECK_TOKEN: string = 'check_token';
 
 @Injectable()
 export class TokenService {
@@ -20,16 +21,22 @@ export class TokenService {
   /**
    * Atribui o token atual do usuario e a data.
    */
-  public setToken(token: TokenDTO, date: Date) {
+  public setToken(token: TokenDTO) {
     localStorage.setItem(TOKEN, JSON.stringify(token));
-    localStorage.setItem(DATE_TOKEN, JSON.stringify(date));
+  }
+
+  /**
+   * Atribui o token checkado atual
+   */
+  public setCheckToken(token: CheckTokenDTO) {
+    localStorage.setItem(CHECK_TOKEN, JSON.stringify(token));
   }
 
   /**
    * Retorna o token to usuário
    */
   public resetToken() {
-    localStorage.removeItem(DATE_TOKEN);
+    localStorage.removeItem(CHECK_TOKEN);
     localStorage.removeItem(TOKEN);
   }
 
@@ -41,9 +48,9 @@ export class TokenService {
   }
 
   /**
-   * Retorna a data que o token foi gerado.
+   * Retorna o token checkado
    */
-  public getDate(): Date {
-    return JSON.parse(localStorage.getItem(DATE_TOKEN));
+  public getCheckToken(): CheckTokenDTO {
+    return JSON.parse(localStorage.getItem(CHECK_TOKEN));
   }
 }

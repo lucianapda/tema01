@@ -59,6 +59,6 @@ public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter
 	 */
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-		oauthServer.realm(REALM+"/client");
+		oauthServer.realm(REALM+"/client").checkTokenAccess("permitAll()");
 	}
 }

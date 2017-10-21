@@ -1,9 +1,8 @@
 import {BaseDTO} from "../base/base.dto";
 
 /**
- * Created by Guilherme on 07/04/2017.
+ * Representa o token to usuario.
  */
-
 export class TokenDTO extends BaseDTO {
 
   access_token: string = null;

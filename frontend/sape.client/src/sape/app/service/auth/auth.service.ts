@@ -41,7 +41,7 @@ export class AuthService extends BaseService {
     return this.httpService.post('/oauth/token', config).then((data) => {
         console.log(data);
         if (data instanceof Object) {
-          this.tokenService.setToken(data, new Date());
+          this.tokenService.setToken(data);
           this.router.navigate(['sape/pages']);
           return true;
         } else {
@@ -62,7 +62,19 @@ export class AuthService extends BaseService {
       var headers = new HttpHeaders();
       headers.set('authorization', 'Basic c2FwZUNsaWVudDpQQHNzdzByZA==');
       let config = new HttpConfigMethod(null, new Map([['token', value]]), headers);
-      return this.httpService.get('/oauth/check_token', config);
+      return this.httpService.get('/oauth/check_token', config).then((data) => {
+          console.log(data);
+          if (data instanceof Object) {
+            this.tokenService.setCheckToken(data);
+            this.router.navigate(['sape/pages']);
+            return true;
+          } else {
+            this.tokenService.resetToken();
+            this.router.navigate(['sape/login']);
+            return false;
+          }
+        }
+      );
     }
     return new Promise(() => false);
   }

@@ -1,6 +1,8 @@
-@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+/*@import "../node_modues/bootstrap/dist/css/bootstrap.min.css";*/
+
 @import "../node_modules/font-awesome/css/font-awesome.min.css";
 @import "ng2-select.css";
+@import "../node_modules/semantic-ui/dist/semantic.min.css";
 html {
     height: 100%;
 }
