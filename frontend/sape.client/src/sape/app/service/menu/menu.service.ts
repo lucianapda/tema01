@@ -1,4 +1,4 @@
-import { SAPE_PAGES_HOME, SAPE_PAGES_ALL, SAPE_PAGES_REGISTER, SAPE_PAGES_CONFIGURATION, SAPE_PAGES_REGISTER_EVENTS, SAPE_PAGES_REGISTER_EVENTS_ACTIVITIES, SAPE_PAGES_REGISTER_EVENTS_ENTRIES, SAPE_PAGES_REGISTER_SUBSCRIPTIONS, SAPE_PAGES_REGISTER_SUBSCRIPTIONS_ACTIVITIES, SAPE_PAGES_REGISTER_PEOPLE } from './../../app.routing.mapping';
+import { SAPE_PAGES, SAPE_PAGES_HOME, SAPE_PAGES_REGISTER, SAPE_PAGES_CONFIGURATION, SAPE_PAGES_REGISTER_EVENTS, SAPE_PAGES_REGISTER_EVENTS_ACTIVITIES, SAPE_PAGES_REGISTER_EVENTS_ENTRIES, SAPE_PAGES_REGISTER_SUBSCRIPTIONS, SAPE_PAGES_REGISTER_SUBSCRIPTIONS_ACTIVITIES, SAPE_PAGES_REGISTER_PEOPLE } from './../../app.routing.mapping';
 import { StringUtils } from './../../util/string/string.utils';
 import { Injectable } from '@angular/core';
 import { MenuGroup } from './menu.group';
@@ -20,12 +20,12 @@ export class MenuService {
 
   constructor(private router: Router, private storageService: StorageService) {
     // Grupos
-    let home: MenuGroup = new MenuGroup('Home', 'home', 'fa fa-home', SAPE_PAGES_HOME.routingFull);
-    let all: MenuGroup = new MenuGroup('Todos', 'all', 'fa fa-map-o', SAPE_PAGES_ALL.routingFull);
+    let pages: MenuGroup = new MenuGroup('Páginas', 'pages', 'fa fa-home', SAPE_PAGES.routingFull);
     let register: MenuGroup = new MenuGroup('Cadastro', 'register', 'fa fa-address-book', SAPE_PAGES_REGISTER.routingFull);
     let config: MenuGroup = new MenuGroup('Configuração', 'configuration','fa fa-cogs', SAPE_PAGES_CONFIGURATION.routingFull);
-
+    
     // Opções
+    let home: MenuOption = new MenuOption('Home', 'home', 'fa fa-home', SAPE_PAGES_HOME.routingFull, pages);
     let event: MenuOption = new MenuOption('Eventos', 'event', 'fa fa-server', SAPE_PAGES_REGISTER_EVENTS.routingFull, register);
     let eventActivity: MenuOption = new MenuOption('Atividades', 'event_activity', 'fa fa-vcard', SAPE_PAGES_REGISTER_EVENTS_ACTIVITIES.routingFull, register);
     let eventEntry: MenuOption = new MenuOption('Entradas', 'entry', 'fa fa-user', SAPE_PAGES_REGISTER_EVENTS_ENTRIES.routingFull, register);
@@ -33,18 +33,19 @@ export class MenuService {
     let subscriptionActivity: MenuOption = new MenuOption('Atividades', 'subscription_activity', 'fa fa-vcard', SAPE_PAGES_REGISTER_SUBSCRIPTIONS_ACTIVITIES.routingFull, register);   
     let people: MenuOption = new MenuOption('Pessoas', 'person', 'fa fa-vcard', SAPE_PAGES_REGISTER_PEOPLE.routingFull, register);   
     
-    all.menuOptions.push(event);
-    all.menuOptions.push(eventActivity);
-    all.menuOptions.push(eventEntry);
-    all.menuOptions.push(subscription);
-    all.menuOptions.push(subscriptionActivity);
-    all.menuOptions.push(people);
+    pages.menuOptions.push(home);
+    pages.menuOptions.push(event);
+    pages.menuOptions.push(eventActivity);
+    pages.menuOptions.push(eventEntry);
+    pages.menuOptions.push(subscription);
+    pages.menuOptions.push(subscriptionActivity);
+    pages.menuOptions.push(people);
 
-    this.mapMenuGroups.set(home.id, home);
-    this.mapMenuGroups.set(all.id, all);
+    this.mapMenuGroups.set(pages.id, pages);
     this.mapMenuGroups.set(register.id, register);
     this.mapMenuGroups.set(config.id, config);
 
+    this.mapMenuOptions.set(home.id, home);
     this.mapMenuOptions.set(event.id, event);
     this.mapMenuOptions.set(eventActivity.id, eventActivity);
     this.mapMenuOptions.set(eventEntry.id, eventEntry);
@@ -120,7 +121,7 @@ export class MenuService {
     this.notify.subscribe(notify);
   }
 
-  public setMenuUrl(url: string, navigate?: boolean) {
+  public setMenuUrl(url: string, navigate?: boolean, group?: boolean) {
     let resultOption: MenuOption = null;
     this.mapMenuOptions.forEach((value: MenuOption, key: string) => { 
       if (StringUtils.equals(url, value.router)){
@@ -140,10 +141,10 @@ export class MenuService {
       });
       if (result != null) {
         this.setMenuGroupSelected(result, navigate);
-        this.setMenuOptionSelected(null, false);
+        //this.setMenuOptionSelected(null, false);
         this.notify.next(result);
         console.log("achou grupo")
-      } else {
+      } else if (StringUtils.notEquals(url, "/")){
         console.log("volta pro home")
         this.resetMenuGroupSelected();
         this.notify.next(this.mapMenuGroups.values().next().value);

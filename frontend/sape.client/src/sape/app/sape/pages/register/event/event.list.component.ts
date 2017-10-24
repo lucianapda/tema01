@@ -1,6 +1,6 @@
-import {ListComponent} from '../../../../components/list/list.component';
+import { EventCrudService } from './../../../../service/crud/event/event.crud.service';
+import { ServiceLocator } from './../../../../service/locator/service.locator';
 import {EventDTO} from '../../../../model/event/event.dto';
-import {EventCrudService} from '../../../../service/crud/event/event.crud.service';
 import {ListService} from '../../../../components/list/list.service';
 import { Component } from '@angular/core';
 
@@ -11,16 +11,16 @@ import { Component } from '@angular/core';
   moduleId: module.id,
   selector: 'event-list',
   styleUrls: ['./event.list.component.css'],
-  templateUrl: ListComponent.HTML_URL
+  templateUrl: './event.list.component.html',
 })
-export class EventListComponent extends ListComponent<EventDTO> {
+export class EventListComponent {
 
-  constructor(private eventCrudService: EventCrudService) {
-    super();
+  getTableService(): ListService<EventDTO> {
+    return this.eventCrudService();
   }
 
-  getListService(): ListService<EventDTO> {
-    return this.eventCrudService;
+  eventCrudService() {
+    return ServiceLocator.get(EventCrudService);
   }
 
   protected getColumns() : {} {

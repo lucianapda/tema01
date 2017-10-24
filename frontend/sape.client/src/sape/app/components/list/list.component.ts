@@ -1,54 +1,63 @@
-import { AppActionTask, AppActionType } from './../../core/task/action/app.action.task';
-import {BaseDTO} from '../../model/base/base.dto';
-import {Component} from '@angular/core';
 import {ListService} from './list.service';
+import {AppActionTask, AppActionType} from '../../core/task/action/app.action.task';
+import {BaseDTO} from '../../model/base/base.dto';
+import { Component, EventEmitter, Input, Output, OnInit, AfterViewChecked } from '@angular/core';
 import {BaseComponent} from '../base/base.component';
 import {LocalDataSource} from 'ng2-smart-table';
 
 
 @Component({
   moduleId: module.id,
-  selector: 'list',
+  selector: 'list' ,
   templateUrl: './list.component.html',
-  styleUrls: ["./list.component.css"]
 })
- export abstract class ListComponent<T extends BaseDTO> extends BaseComponent {
-    public static HTML_URL= "app/components/list/list.component.html"; 
+export class ListComponent<T extends BaseDTO> extends BaseComponent{
 
-    settings = {
-      add: {
-        addButtonContent: 'Adicionar',
-        createButtonContent: 'Novo',
-        cancelButtonContent: 'Cancelar',
-      },
-      edit: {
-        editButtonContent: 'Editar',
-        saveButtonContent: 'Salvar',
-        cancelButtonContent: 'Cancelar',
-      },
-      delete: {
-        deleteButtonContent: 'Deletar',
-        confirmDelete: true
-      },
-      columns: this.getColumns()
-    };
-    source = new LocalDataSource();
+  // Events of load
+  @Output() beforeLoad = new EventEmitter<T>();
+  @Output() afterLoad = new EventEmitter<T>();
+  // Events of edit
+  @Output() onEdit = new EventEmitter<T>();
+  @Output() beforeEdit = new EventEmitter<T>();
+  @Output() afterEdit = new EventEmitter<T>();
+  // Events of delete
+  @Output() onDelete = new EventEmitter<T>();
+  @Output() beforeDelete = new EventEmitter<T>();
+  @Output() afterDelete = new EventEmitter<T>();
+  // Serviço para leitura.
+  @Input() service: ListService<T>;
+  
+  @Input() columns: TableColumn[] = [];
+  @Input() actions: TableAction[] = [];
+  
+  values: T[] = []; 
+  isFormatValue: Boolean = false;
+  collectionSize: number = 10;
+  maxSize: number = 10;
+  pageSize: number = 10;
+  selectedPage: number = 1;
 
-    protected getActionInit() : AppActionTask {
-      return this.createAction(AppActionType.READING)._execute(() => {
-          this.getListService().read().then((values: Array<T>) => {
-              if (values instanceof Array) {
-                values.forEach((t: T) => this.getSource().add(t))
-                this.getSource().refresh();
-              }
-          });
-      })
-    }
-    
-    protected getSource() : LocalDataSource{
-      return this.source;
-    }
-    
-    protected abstract getColumns(): {};
-    protected abstract getListService(): ListService<T>;
+  protected getActionInit() : AppActionTask {
+    this.beforeLoad.subscribe(() => {
+      this.values = [];
+    });
+    return this.createAction(AppActionType.READING)
+      ._before(() => {this.beforeLoad.emit();})
+      ._execute(() => {
+        console.log("get")
+        this.service.read().then((values: Array<T>) => {
+            if (values instanceof Array) {
+              values.forEach((t: T) => this.values.push(t))
+            }
+        });
+      })._after(() => {this.afterLoad.emit();});
+  }
+}
+
+export class TableColumn {
+  constructor(name: string, index: number) {}
+}
+
+export class TableAction {
+  constructor(name: string, index: number) {}
 }

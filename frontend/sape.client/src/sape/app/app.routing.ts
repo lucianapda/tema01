@@ -1,7 +1,7 @@
-import { SAPE_PAGES_HOME, SAPE_NOT_FOUND } from './app.routing.mapping';
+import { SAPE_NOT_FOUND, SAPE_PAGES_HOME,  SAPE_PAGES } from './app.routing.mapping';
 
 /**
- * Created by Guilherme on 03/04/2017.
+ * Created by Guilherme on 03/04/2017. 
  */
 import { RouterModule } from '@angular/router';
 

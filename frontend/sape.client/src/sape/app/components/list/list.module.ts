@@ -1,12 +1,12 @@
+import { SharedModule } from './../../shared/shared.module';
 import { NgModule } from '@angular/core';
-import {Ng2SmartTableModule} from 'ng2-smart-table';
 import { ListComponent } from './list.component';
 
 @NgModule({
-  imports: [Ng2SmartTableModule],
-  declarations: [],
+  declarations: [ListComponent],
   providers: [],
-  exports: [Ng2SmartTableModule],
+  exports: [ListComponent],
+  imports: [SharedModule],
   bootstrap: []
 })
-export class ListModule { }
+export class TableModule { }

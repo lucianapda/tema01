@@ -433,10 +433,10 @@ export class SeedConfig {
       '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
 
       'tether': 'node_modules/tether/dist/js/tether.min.js',
-      'ng2-smart-table': 'node_modules:ng2-smart-table',
+      'ng2-smart-table': 'node_modules/ng2-smart-table/bundles/table.umd.js',
       'ng2-completer': 'node_modules/ng2-completer/ng2-completer.umd.js',
-      'lodash': 'node_modules:lodash',
-      'traceur': 'node_modules:traceur/bin/traceur.js',
+      'lodash': 'node_modules/lodash/lodash.min.js',
+      'traceur': 'node_modules/traceur/bin/traceur.js',
       'ng2-semantic-ui': 'node_modules/ng2-semantic-ui/bundles/ng2-semantic-ui.umd.min.js',
 
       'app/': `${this.APP_BASE}app/`,

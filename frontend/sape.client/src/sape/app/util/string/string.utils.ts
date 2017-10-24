@@ -1,4 +1,3 @@
-
 export class StringUtils {
 
   /**
@@ -10,5 +9,9 @@ export class StringUtils {
 
   public static equals(str1: string | String, str2: string | String) {
     return str1.valueOf() == str2.valueOf();
+  }
+
+  public static notEquals(str1: string | String, str2: string | String) {
+    return !this.equals(str1, str2);
   }
 }

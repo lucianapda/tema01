@@ -22,7 +22,7 @@ export class AppActionTask {
   }
 
   _before(action: AppAction) : AppActionTask {
-    this.execute = action;
+    this.before = action;
     return this;
   }
 
@@ -32,7 +32,7 @@ export class AppActionTask {
   }
 
   _after(action: AppAction) : AppActionTask {
-    this.execute = action;
+    this.after = action;
     return this;
   }
 

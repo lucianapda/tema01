@@ -1,3 +1,4 @@
+import { SAPE_LOGIN, SAPE_PAGES } from './../../app.routing.mapping';
 import { ServiceLocator } from './../locator/service.locator';
 import { HttpConfigMethod } from './../http/http.config.method';
 import { HttpHeaders } from './../http/http.headers';
@@ -42,11 +43,11 @@ export class AuthService extends BaseService {
         console.log(data);
         if (data instanceof Object) {
           this.tokenService.setToken(data);
-          this.router.navigate(['sape/pages']);
+          this.router.navigate([SAPE_PAGES.routingFull]);
           return true;
         } else {
           this.tokenService.resetToken();
-          this.router.navigate(['sape/login']);
+          this.router.navigate([SAPE_LOGIN.routingFull]);
           return false;
         }
       }
@@ -66,11 +67,10 @@ export class AuthService extends BaseService {
           console.log(data);
           if (data instanceof Object) {
             this.tokenService.setCheckToken(data);
-            this.router.navigate(['sape/pages']);
             return true;
           } else {
             this.tokenService.resetToken();
-            this.router.navigate(['sape/login']);
+            this.router.navigate([SAPE_LOGIN.routingFull]);
             return false;
           }
         }

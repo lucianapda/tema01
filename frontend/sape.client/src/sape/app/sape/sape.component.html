@@ -1,3 +1,7 @@
 <div id="appBody">
-    <router-outlet></router-outlet>
+    <router-outlet>
+        <div *ngIf="showLoader" class="ui active inverted dimmer">
+            <div class="ui text large loader">Carregando</div>
+        </div>
+    </router-outlet>
 </div>

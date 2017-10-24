@@ -2,12 +2,12 @@
  * Created by Guilherme on 03/04/2017.
  */
 import { Routes, RouterModule }  from '@angular/router';
-import {EventListComponent} from "./event.list.component";
+import {EventTableComponent} from "./event.table.component";
 import {EventFormComponent} from "./event.form.component";
 
 const routes: Routes = [
   {
-    path: '', component: EventListComponent
+    path: '', component: EventTableComponent
   },
   {
     path: ':id', component: EventFormComponent

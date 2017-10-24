@@ -32,7 +32,7 @@ export class MenuComponent implements OnInit {
         this.menuOptionSelected = null;
       }
     });
-    this.menuGroupSelected = this.menuService.getMenuGroups().get("all");
+    this.menuGroupSelected = this.menuService.getMenuGroups().get("pages");
     this.menuOptions = this.menuGroupSelected.menuOptions;
     console.log(this.menuOptions)
   }

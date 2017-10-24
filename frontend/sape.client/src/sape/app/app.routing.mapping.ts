@@ -12,11 +12,11 @@ export class AppRouteMappging {
     }
 }
 
-export const SAPE = {routingFull: "sape", routingSimple:"sape"};
-export const SAPE_LOGIN = {routingFull: "sape/login",  routingSimple:"login"};
-export const SAPE_NOT_FOUND = {routingFull: "sape/notfound",  routingSimple:"notfound"};
-export const SAPE_PAGES = {routingFull: "sape/pages",  routingSimple:"pages"};
-export const SAPE_PAGES_ALL = {routingFull: "/sape/pages/all",  routingSimple:"all"};
+export const SAPE = {routingFull: "/sape", routingSimple:"sape"};
+export const SAPE_LOGIN = {routingFull: "/sape/login",  routingSimple:"login"};
+export const SAPE_NOT_FOUND = {routingFull: "/sape/notfound",  routingSimple:"notfound"};
+export const SAPE_PAGES = {routingFull: "/sape/pages",  routingSimple:"pages"};
+// export const SAPE_PAGES_ALL = {routingFull: "/sape/pages/all",  routingSimple:"all"};
 export const SAPE_PAGES_HOME = {routingFull: "/sape/pages/home",  routingSimple:"home"};
 // Start Registers
 export const SAPE_PAGES_REGISTER = { routingFull: "/sape/pages/register", routingSimple: "register" };
