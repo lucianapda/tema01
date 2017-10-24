@@ -1,7 +1,6 @@
 import { ServiceLocator } from './../../../../service/locator/service.locator';
-import { LocalDataSource } from 'ng2-smart-table';
 import {Component} from "@angular/core";
-import {TableService} from '../../../../components/table/table.service';
+import {ListService} from '../../../../components/list/list.service';
 import {UserCrudService} from '../../../../service/crud/user/user.crud.service';
 import {UserDTO} from '../../../../model/user/user.dto';
 
@@ -21,7 +20,7 @@ export class UserListComponent {
     return ServiceLocator.get(UserCrudService);
   }
 
-  getListService(): TableService<UserDTO> {
+  getListService(): ListService<UserDTO> {
     return this.userCrudService();
   }
 

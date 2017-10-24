@@ -4,7 +4,7 @@ import {ListService} from '../../components/list/list.service';
 import {HttpService} from '../http/http.service';
 
 /**
- * Created by Guilherme on 10/04/2017.
+ * Created by Guilherme on 10/04/2017. 
  */
 export abstract class BaseCrudService<T extends BaseDTO> extends BaseService implements ListService<T> {
 

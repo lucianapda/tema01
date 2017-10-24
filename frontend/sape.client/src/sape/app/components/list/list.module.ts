@@ -9,4 +9,4 @@ import { ListComponent } from './list.component';
   imports: [SharedModule],
   bootstrap: []
 })
-export class TableModule { }
+export class ListModule { }
