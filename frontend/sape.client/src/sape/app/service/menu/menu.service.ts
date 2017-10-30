@@ -1,4 +1,4 @@
-import { SAPE_PAGES, SAPE_PAGES_HOME, SAPE_PAGES_REGISTER, SAPE_PAGES_CONFIGURATION, SAPE_PAGES_REGISTER_EVENTS, SAPE_PAGES_REGISTER_EVENTS_ACTIVITIES, SAPE_PAGES_REGISTER_EVENTS_ENTRIES, SAPE_PAGES_REGISTER_SUBSCRIPTIONS, SAPE_PAGES_REGISTER_SUBSCRIPTIONS_ACTIVITIES, SAPE_PAGES_REGISTER_PEOPLE } from './../../app.routing.mapping';
+import { SAPE_PAGES, SAPE_PAGES_HOME, SAPE_PAGES_REGISTER, SAPE_PAGES_CONFIGURATION, SAPE_PAGES_REGISTER_EVENTS, SAPE_PAGES_REGISTER_EVENTS_ACTIVITIES, SAPE_PAGES_REGISTER_EVENTS_ENTRIES, SAPE_PAGES_REGISTER_SUBSCRIPTIONS, SAPE_PAGES_REGISTER_SUBSCRIPTIONS_ACTIVITIES, SAPE_PAGES_REGISTER_PEOPLE, SAPE_PAGES_REGISTER_EVENTS_EDIT } from './../../app.routing.mapping';
 import { StringUtils } from './../../util/string/string.utils';
 import { Injectable } from '@angular/core';
 import { MenuGroup } from './menu.group';
@@ -20,25 +20,27 @@ export class MenuService {
 
   constructor(private router: Router, private storageService: StorageService) {
     // Grupos
-    let pages: MenuGroup = new MenuGroup('Páginas', 'pages', 'fa fa-home', SAPE_PAGES.routingFull);
-    let register: MenuGroup = new MenuGroup('Cadastro', 'register', 'fa fa-address-book', SAPE_PAGES_REGISTER.routingFull);
-    let config: MenuGroup = new MenuGroup('Configuração', 'configuration','fa fa-cogs', SAPE_PAGES_CONFIGURATION.routingFull);
+    let pages: MenuGroup = new MenuGroup('Páginas', 'pages', 'fa fa-home', SAPE_PAGES.routingFull, SAPE_PAGES.routingFullRegExp);
+    let register: MenuGroup = new MenuGroup('Cadastro', 'register', 'fa fa-address-book', SAPE_PAGES_REGISTER.routingFull, SAPE_PAGES_REGISTER.routingFullRegExp);
+    let config: MenuGroup = new MenuGroup('Configuração', 'configuration','fa fa-cogs', SAPE_PAGES_CONFIGURATION.routingFull, SAPE_PAGES_CONFIGURATION.routingFullRegExp);
     
     // Opções
-    let home: MenuOption = new MenuOption('Home', 'home', 'fa fa-home', SAPE_PAGES_HOME.routingFull, pages);
-    let event: MenuOption = new MenuOption('Eventos', 'event', 'fa fa-server', SAPE_PAGES_REGISTER_EVENTS.routingFull, register);
-    let eventActivity: MenuOption = new MenuOption('Atividades', 'event_activity', 'fa fa-vcard', SAPE_PAGES_REGISTER_EVENTS_ACTIVITIES.routingFull, register);
-    let eventEntry: MenuOption = new MenuOption('Entradas', 'entry', 'fa fa-user', SAPE_PAGES_REGISTER_EVENTS_ENTRIES.routingFull, register);
-    let subscription: MenuOption = new MenuOption('Inscrições', 'subscription', 'fa fa-server', SAPE_PAGES_REGISTER_SUBSCRIPTIONS.routingFull, register);
-    let subscriptionActivity: MenuOption = new MenuOption('Atividades', 'subscription_activity', 'fa fa-vcard', SAPE_PAGES_REGISTER_SUBSCRIPTIONS_ACTIVITIES.routingFull, register);   
-    let people: MenuOption = new MenuOption('Pessoas', 'person', 'fa fa-vcard', SAPE_PAGES_REGISTER_PEOPLE.routingFull, register);   
+    let home: MenuOption = new MenuOption('Home', 'home', 'fa fa-home', SAPE_PAGES_HOME.routingFull, SAPE_PAGES_HOME.routingFullRegExp, pages);
+    let event: MenuOption = new MenuOption('Eventos', 'event', 'fa fa-server', SAPE_PAGES_REGISTER_EVENTS.routingFull, SAPE_PAGES_REGISTER_EVENTS.routingFullRegExp, register);
+    let eventEdit: MenuOption = new MenuOption('Eventos', 'event', 'fa fa-server', SAPE_PAGES_REGISTER_EVENTS_EDIT.routingFull, SAPE_PAGES_REGISTER_EVENTS_EDIT.routingFullRegExp, register);
+    event.subMenuOptions.push(eventEdit);
+    //let eventActivity: MenuOption = new MenuOption('Atividades', 'event_activity', 'fa fa-vcard', SAPE_PAGES_REGISTER_EVENTS_ACTIVITIES.routingFull, SAPE_PAGES_REGISTER_EVENTS_ACTIVITIES.routingFullRegExp, register);
+    let eventEntry: MenuOption = new MenuOption('Entradas', 'entry', 'fa fa-user', SAPE_PAGES_REGISTER_EVENTS_ENTRIES.routingFull, SAPE_PAGES_REGISTER_EVENTS_ENTRIES.routingFullRegExp, register);
+    let subscription: MenuOption = new MenuOption('Inscrições', 'subscription', 'fa fa-server', SAPE_PAGES_REGISTER_SUBSCRIPTIONS.routingFull, SAPE_PAGES_REGISTER_SUBSCRIPTIONS.routingFullRegExp, register);
+    //let subscriptionActivity: MenuOption = new MenuOption('Atividades', 'subscription_activity', 'fa fa-vcard', SAPE_PAGES_REGISTER_SUBSCRIPTIONS_ACTIVITIES.routingFull, SAPE_PAGES_REGISTER_SUBSCRIPTIONS_ACTIVITIES.routingFullRegExp, register);   
+    let people: MenuOption = new MenuOption('Pessoas', 'person', 'fa fa-vcard', SAPE_PAGES_REGISTER_PEOPLE.routingFull, SAPE_PAGES_REGISTER_PEOPLE.routingFullRegExp, register);   
     
     pages.menuOptions.push(home);
     pages.menuOptions.push(event);
-    pages.menuOptions.push(eventActivity);
+    //pages.menuOptions.push(eventActivity);
     pages.menuOptions.push(eventEntry);
     pages.menuOptions.push(subscription);
-    pages.menuOptions.push(subscriptionActivity);
+    //pages.menuOptions.push(subscriptionActivity);
     pages.menuOptions.push(people);
 
     this.mapMenuGroups.set(pages.id, pages);
@@ -47,11 +49,11 @@ export class MenuService {
 
     this.mapMenuOptions.set(home.id, home);
     this.mapMenuOptions.set(event.id, event);
-    this.mapMenuOptions.set(eventActivity.id, eventActivity);
+    //this.mapMenuOptions.set(eventActivity.id, eventActivity);
     this.mapMenuOptions.set(eventEntry.id, eventEntry);
     this.mapMenuOptions.set(subscription.id, subscription);
-    this.mapMenuOptions.set(subscriptionActivity.id, subscriptionActivity);
-    this.mapMenuOptions.set(people.id, people);
+    //this.mapMenuOptions.set(subscriptionActivity.id,  subscriptionActivity);
+    this.mapMenuOptions.set(people.id, people); 
   }
 
   public getMenuOptions() : Map<string, MenuOption> {
@@ -124,7 +126,7 @@ export class MenuService {
   public setMenuUrl(url: string, navigate?: boolean, group?: boolean) {
     let resultOption: MenuOption = null;
     this.mapMenuOptions.forEach((value: MenuOption, key: string) => { 
-      if (StringUtils.equals(url, value.router)){
+      if (StringUtils.test(value.routerRegExp, url)){
         resultOption = value;
       }
     });
@@ -135,7 +137,7 @@ export class MenuService {
     } else {
       let result: MenuGroup = null;
       this.mapMenuGroups.forEach((value: MenuGroup, key: string) => { 
-        if (StringUtils.equals(url, value.router)){
+        if (StringUtils.test(value.routerRegExp, url)){
           result = value;
         }
       });

@@ -20,13 +20,13 @@
 }
 
 #contentFooter {
-    background-color: #ffffff;
+    background-color: blueviolet;
     height: 9%;
 }
 
 #contentBodyTop {
     border-radius: 2px;
-    background-color: #ffffff;
+    background-color: aquamarine;
     height: 10%;
     min-height: 39px;
 }

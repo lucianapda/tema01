@@ -6,9 +6,7 @@ import {HttpService} from "./http/http.service";
  */
 export abstract class BaseService {
 
-  constructor() {}
-
-  protected get httpService() : HttpService {
+  httpService() : HttpService {
     return ServiceLocator.get(HttpService);
   }
 }

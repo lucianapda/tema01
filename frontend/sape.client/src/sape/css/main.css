@@ -3,6 +3,7 @@
 @import "../node_modules/font-awesome/css/font-awesome.min.css";
 @import "ng2-select.css";
 @import "../node_modules/semantic-ui/dist/semantic.min.css";
+@import "../node_modules/semantic-ui-calendar/dist/calendar.min.css";
 html {
     height: 100%;
 }

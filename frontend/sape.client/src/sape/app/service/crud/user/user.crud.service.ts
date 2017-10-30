@@ -1,3 +1,4 @@
+import { ListColumn, ListAction } from './../../../components/list/list.component';
 
 import {BaseCrudService} from "../base.crud";
 import {UserDTO} from "../../../model/user/user.dto";
@@ -15,10 +16,21 @@ import {HttpService} from '../../http/http.service';
 export class UserCrudService extends BaseCrudService<UserDTO> {
 
   constructor() {
-    super()
+    super('/users')
   }
 
-  protected getPatch(): string {
-    return "/users";
+  public getColumns() : Array<ListColumn> {
+    return [];
+    // return [][{name:'code', title: 'Código', index:0},
+    //         {name:'place', index:1},
+    //         {name:'description', index:2},
+    //         {name:'dateStart', index:3},
+    //         {name:'dateEnd', index:4}];
+  }
+
+  public getActions() : Array<ListAction> {
+    return [];
+    // return [{name:'edit', index:0},
+    //         {name:'delete', index:1}];
   }
 }

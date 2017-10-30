@@ -14,4 +14,8 @@ export class StringUtils {
   public static notEquals(str1: string | String, str2: string | String) {
     return !this.equals(str1, str2);
   }
+
+  public static test(regexp: RegExp, value: string) {
+    return regexp && value && regexp.test(value);
+  }
 }

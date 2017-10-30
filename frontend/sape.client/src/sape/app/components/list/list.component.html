@@ -1,44 +1,42 @@
 <div>
     <div id="table">
-        <table class="ui celled striped table">
+        <table class="ui sortable selectable celled striped table">
             <thead>
-                <tr *ngFor='let column of columns; trackBy: index;'>
-                    <th colspan="3">
-                        {{column.name}}
+                <tr>
+                    <th *ngFor='let column of columns; trackBy: index;' class="{{column.style}}">
+                        {{column.title}}
                     </th>
+                    <th class="one wide">Ações</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let value of values; trackBy: index;">
+                    <!-- Valores que precisam de formatação.  -->
                     <ng-container *ngIf="isFormatValue">
-                        <td class="collapsing" ngFor='let column of columns; trackBy: index;'>
-                            {{formatValue(value[columns[index]])}}
+                        <td class="{{column.style}}" *ngFor='let column of columns; trackBy: index;'>
+                            {{formatValue(value[column.name])}}
                         </td>
                     </ng-container>
 
-
+                    <!-- Valores que não precisam de formatação.  -->
                     <ng-container *ngIf="!isFormatValue">
-                        <td class="collapsing" ngFor='let column of columns; trackBy: index;'>
-                            {{value[columns[index]]}}
+                        <td class="{{column.style}}" *ngFor='let column of columns; trackBy: index;'>
+                            {{value[column.name]}}
                         </td>
                     </ng-container>
-                </tr>
-                <tr *ngFor='let action of actions; trackBy: index;'>
-                    <td class="collapsing">
-                        {{action.name}}
+                    <!-- Coluna de ações da table .  -->
+                    <td class="one wide">
+                        <a *ngFor='let action of actions; trackBy: index;'>
+                            <i class="{{action.icon}} link icon" (click)="action.execute(value)"></i>
+                        </a>
                     </td>
                 </tr>
             </tbody>
+            <tfoot>
+            </tfoot>
         </table>
     </div>
-    <div>
-        <div class="ui segments">
-            <div class="ui segment">
-                <sui-pagination [collectionSize]="collectionSize" [maxSize]="maxSize" [hasEllipses]="true" [pageSize]="pageSize" [hasNavigationLinks]="true" [hasBoundaryLinks]="true" [(page)]="selectedPage"></sui-pagination>
-            </div>
-            <div class="ui segment">
-                <p>Current page: {{ selectedPage }}</p>
-            </div>
-        </div>
+    <div id="tablePagination">
+        <sui-pagination [collectionSize]="collectionSize" [maxSize]="maxSize" [hasEllipses]="true" [pageSize]="pageSize" [hasNavigationLinks]="true" [hasBoundaryLinks]="true" [(page)]="selectedPage"></sui-pagination>
     </div>
 </div>

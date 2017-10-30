@@ -1,3 +1,7 @@
+import { HttpConfigMethod } from './../http/http.config.method';
+import { Config } from './../../shared/config/env.config';
+import { HttpHeaders } from './../http/http.headers';
+import { ListColumn, ListAction } from './../../components/list/list.component';
 import {BaseService} from "../base.service";
 import {BaseDTO} from "../../model/base/base.dto";
 import {ListService} from '../../components/list/list.service';
@@ -7,33 +11,43 @@ import {HttpService} from '../http/http.service';
  * Created by Guilherme on 10/04/2017. 
  */
 export abstract class BaseCrudService<T extends BaseDTO> extends BaseService implements ListService<T> {
+  
+  private path: string;
+
+  public abstract getColumns(): Array<ListColumn>;
+  public abstract getActions(): Array<ListAction>;
+
+  constructor (path: string) {
+    super();
+    this.path = path;
+  }
 
   /**
    * Retorna o dado especificado ou os dados do backend.
    */
-  public read(id?: Number) : Promise<Array<T>> {
-    return this.httpService.get(this.getPatch(), {data: id}).then((data) => this.extract(data));
+  public read(id?: Number, config?:HttpConfigMethod) : Promise<Array<T>> {
+    return super.httpService().get(id? this.path + "/" + id : this.path, config).then((data) => this.extract(data));
   }
 
   /**
    * Executa a criação do dado no backend.
    */
   public create(data: T) : Promise<T> {
-    return this.httpService.post(this.getPatch(), {data: data}).then((data) => this.extract(data));
+    return super.httpService().post(this.path, {data: data}).then((data) => this.extract(data));
   }
 
   /**
    * Executa a atualização dos dados no backend.
    */
   public update(data: T) : Promise<T> {
-    return this.httpService.put(this.getPatch(), {data: data}).then((data) => this.extract(data));
+    return super.httpService().put(this.path, {data: data}).then((data) => this.extract(data));
   }
 
   /**
    * Executa a atualização dos dados no backend.
    */
   public deleteById(id: Number) : Promise<T> {
-    return this.httpService.delete(this.getPatch(), {data: id}).then((data) => this.extract(data));
+    return super.httpService().delete(this.path + "/" + id).then((data) => this.extract(data));
   }
 
   /**
@@ -50,6 +64,4 @@ export abstract class BaseCrudService<T extends BaseDTO> extends BaseService imp
       return data;
     }
   }
-
-  protected abstract getPatch(): string;
 }

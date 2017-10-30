@@ -5,16 +5,16 @@ import {BaseDTO} from "../base/base.dto";
 
 export class EventDTO extends BaseDTO {
 
-  id: number;
-  vesion: Date;
-  code: number;
-  place: String;
-  description: String;
-  dateStart: Date;
-  dateEnd: Date;
-  dateStartSubscription: Date;
-  dateEndSubscription: Date;
-  vacancy: number;
-  waitingList: Boolean;
-  idUser: number;
+  id: number = null;
+  vesion: Date = null;
+  code: number = null;
+  place: String = "null";
+  description: String = null;
+  dateStart: Date = new Date();
+  dateEnd: Date = new Date();
+  dateStartSubscription: Date = new Date();
+  dateEndSubscription: Date = new Date();
+  vacancy: number = 0;
+  waitingList: Boolean = false;
+  idUser: number = null;
 }

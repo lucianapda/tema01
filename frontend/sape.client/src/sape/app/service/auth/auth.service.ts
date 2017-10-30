@@ -39,7 +39,7 @@ export class AuthService extends BaseService {
     let config = new HttpConfigMethod(null,
                  new Map([["grant_type", "password"], ["username", username], ["password", password]]),
                  headers);
-    return this.httpService.post('/oauth/token', config).then((data) => {
+    return super.httpService().post('/oauth/token', config).then((data) => {
         console.log(data);
         if (data instanceof Object) {
           this.tokenService.setToken(data);
@@ -63,7 +63,7 @@ export class AuthService extends BaseService {
       var headers = new HttpHeaders();
       headers.set('authorization', 'Basic c2FwZUNsaWVudDpQQHNzdzByZA==');
       let config = new HttpConfigMethod(null, new Map([['token', value]]), headers);
-      return this.httpService.get('/oauth/check_token', config).then((data) => {
+      return super.httpService().get('/oauth/check_token', config).then((data) => {
           console.log(data);
           if (data instanceof Object) {
             this.tokenService.setCheckToken(data);

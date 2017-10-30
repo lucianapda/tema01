@@ -50,6 +50,7 @@ export class HttpService {
    * Realiza um put no endereço especificado.
    */
   public get(url: string, config?: HttpConfigMethod): Promise<any> {
+    config = config? config : new HttpConfigMethod();
     let headers = this.getConfigHeaders(config.headers);
     let finalURL = this.formatURL(url);
     console.log('Method get: ' + finalURL);
@@ -61,6 +62,7 @@ export class HttpService {
    * Realiza um put no endereço especificado.
    */
   public put(url: string, config?: HttpConfigMethod): Promise<any> {
+    config = config? config : new HttpConfigMethod();
     let headers = this.getConfigHeaders(config.headers);
     let finalURL = this.formatURL(url);
     console.log('Method put: ' + finalURL);
@@ -72,6 +74,7 @@ export class HttpService {
    * Realiza um post no endereço especificado.
    */
   public post(url: string, config?: HttpConfigMethod): Promise<any> {
+    config = config? config : new HttpConfigMethod();
     let headers = this.getConfigHeaders(config.headers);
     let finalURL = this.formatURL(url);
     console.log('Method post: ' + finalURL);

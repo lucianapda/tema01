@@ -25,12 +25,11 @@ export class ListComponent<T extends BaseDTO> extends BaseComponent{
   @Output() beforeDelete = new EventEmitter<T>();
   @Output() afterDelete = new EventEmitter<T>();
   // Serviço para leitura.
-  @Input() service: ListService<T>;
-  
-  @Input() columns: TableColumn[] = [];
-  @Input() actions: TableAction[] = [];
+  @Input() service: ListService<T>;  
   
   values: T[] = []; 
+  columns: ListColumn[] = [];
+  actions: ListAction[] = [];
   isFormatValue: Boolean = false;
   collectionSize: number = 10;
   maxSize: number = 10;
@@ -43,8 +42,12 @@ export class ListComponent<T extends BaseDTO> extends BaseComponent{
     });
     return this.createAction(AppActionType.READING)
       ._before(() => {this.beforeLoad.emit();})
-      ._execute(() => {
-        console.log("get")
+      ._execute(() => { 
+        this.actions = this.service.getActions();
+        this.columns = this.service.getColumns();
+        console.log(this.actions);
+        console.log(this.columns);
+        
         this.service.read().then((values: Array<T>) => {
             if (values instanceof Array) {
               values.forEach((t: T) => this.values.push(t))
@@ -54,10 +57,17 @@ export class ListComponent<T extends BaseDTO> extends BaseComponent{
   }
 }
 
-export class TableColumn {
-  constructor(name: string, index: number) {}
+export class ListColumn {
+  constructor(private name: string, private  title: string, private  index: number, private style: string) {}
 }
 
-export class TableAction {
-  constructor(name: string, index: number) {}
+export class ListAction {
+  private action: Function = (value:any) => {};
+  constructor(private name: string, private icon:string, private index: number, action: Function) {
+    this.action = action;
+  }
+
+  public execute(value: any) : void {
+    this.action(value);
+  }
 }
