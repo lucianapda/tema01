@@ -15,7 +15,11 @@ export abstract class BaseComponent implements OnInit, AfterViewChecked, OnChang
   protected abstract getActionInit() : AppActionTask;
   
   ngOnInit(): void {
-     this.appTask.run(this.getActionInit());
+    this.runner(this.getActionInit());
+  }
+
+  protected runner(task: AppActionTask) {
+    this.appTask.run(task);
   }
 
   ngAfterViewChecked() {

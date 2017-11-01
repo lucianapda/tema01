@@ -9,7 +9,7 @@
                     <th class="one wide">Ações</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="scroll">
                 <tr *ngFor="let value of values; trackBy: index;">
                     <!-- Valores que precisam de formatação.  -->
                     <ng-container *ngIf="isFormatValue">

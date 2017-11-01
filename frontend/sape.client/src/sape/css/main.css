@@ -14,3 +14,9 @@ body {
     height: 100%;
     background-color: whitesmoke;
 }
+
+.scroll {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}

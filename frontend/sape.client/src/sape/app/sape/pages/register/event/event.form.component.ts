@@ -1,4 +1,4 @@
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ServiceLocator } from './../../../../service/locator/service.locator';
 import {Component} from "@angular/core";
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
@@ -18,8 +18,6 @@ import {BaseCrudService} from '../../../../service/crud/base.crud';
 })
 export class EventFormComponent extends FormComponent<EventDTO> {
 
-  // sourceForm: FormGroup = this.buildForm(this.formBuilder); 
-
   constructor(route: ActivatedRoute, formBuilder: FormBuilder) {
     super(route, formBuilder);
   }
@@ -36,29 +34,27 @@ export class EventFormComponent extends FormComponent<EventDTO> {
     return new EventDTO();
   }
 
-  protected buildForm(formBuilder: FormBuilder) : FormGroup{
-    var f: FormGroup = formBuilder.group({
-      place: formBuilder.control('oi', Validators.required),
-      description: formBuilder.control('', Validators.required),
-      dateStart: formBuilder.control(new Date(), Validators.required),
-      dateEnd: formBuilder.control('', Validators.required),
-      dateStartSubscription: formBuilder.control('', Validators.required),
-      dateEndSubscription: formBuilder.control('', Validators.required),
-      vacancy: formBuilder.control('', Validators.required),
-      waitingList: formBuilder.control('', Validators.required),
+  protected buildForm(formBuilder: FormBuilder, source: EventDTO) : FormGroup{
+    return formBuilder.group({
+      place: new FormControl(source.place),
+      description: new FormControl(source.description),
+      dateStart: new FormControl(new Date(source.dateStart)),
+      dateEnd: new FormControl(new Date(source.dateEnd)),
+      dateStartSubscription: new FormControl(new Date(source.dateStartSubscription)),
+      dateEndSubscription: new FormControl(new Date(source.dateEndSubscription)),
+      vacancy: new FormControl(source.vacancy),
+      waitingList: new FormControl(source.waitingList)
     }); 
-    // this.bindForm(f, this.newSource());
-    return f;
   }
 
   protected bindForm(sourceForm: FormGroup, source: EventDTO): void  {
     sourceForm.setValue({
       place: source.place,
       description: source.description,
-      dateStart: source.dateStart,
-      dateEnd: source.dateEnd,
-      dateStartSubscription: source.dateStartSubscription,
-      dateEndSubscription: source.dateEndSubscription,
+      dateStart: new Date(source.dateStart),
+      dateEnd: new Date(source.dateEnd),
+      dateStartSubscription: new Date(source.dateStartSubscription),
+      dateEndSubscription: new Date(source.dateEndSubscription),
       vacancy: source.vacancy,
       waitingList: source.waitingList
     });

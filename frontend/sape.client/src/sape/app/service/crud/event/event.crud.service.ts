@@ -30,7 +30,7 @@ export class EventCrudService extends BaseCrudService<EventDTO> {
     return [new ListAction('edit', 'edit', 0, (value: EventDTO) => {
                 if (value && value.id) {
                   this.router.navigate([SAPE_PAGES_REGISTER_EVENTS_EDIT.routingFull + '/' +value.id]);
-                }
+                } 
             }), 
             new ListAction('delete', 'trash outline', 1, (value: EventDTO) => {
                 super.deleteById(value.id);
