@@ -1,0 +1,28 @@
+<div id="contentPushable" class="pushable">
+    <div class="ui left vertical labeled sidebar menu">
+        <a (click)="selectOption(menuOptionRoot)" class="item">
+                {{menuOptionRoot.name}}
+                <i class="{{menuOptionRoot.icon}} icon"></i> 
+        </a>
+        <div *ngFor='let menuGroup of menuGroups; trackBy: index;'>
+            <div class="item">
+                <accordion>
+                    <a class="title">
+                        <i class="{{menuGroup.icon}} icon"></i> {{menuGroup.name}}
+                        <i class="dropdown icon"></i>
+                    </a>
+                    <div class="content">
+                        <div *ngFor="let menuOption of menuGroup.menuOptions">
+                            <a (click)="selectOption(menuOption)" class="item">
+                                <i class="{{menuOption.icon}} icon"></i> {{menuOption.name}}
+                            </a>
+                        </div>
+                    </div>
+                </accordion>
+            </div>
+        </div>
+    </div>
+    <div class="pusher">
+        <ng-content></ng-content>
+    </div>
+</div>

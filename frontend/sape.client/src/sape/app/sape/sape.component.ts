@@ -1,3 +1,4 @@
+import { MenuSideBarService } from './../service/menu/menu-sidebar.service';
 import { ServiceLocator } from './../service/locator/service.locator';
 import {ElementRef, Renderer, ViewChild, Component, OnInit, NgZone } from '@angular/core'
 import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router, Event as RouterEvent} from '@angular/router'
@@ -17,8 +18,16 @@ export class SapeComponent {
 
     showLoader: boolean = true;
 
-    constructor(private router: Router, private ngZone: NgZone, private renderer: Renderer, private menuService: MenuService) {
+    constructor(private router: Router, private ngZone: NgZone, private renderer: Renderer) {
         router.events.subscribe((event: RouterEvent) => this._navigationInterceptor(event));
+    }
+
+    private menuService() : MenuService {
+        return ServiceLocator.get(MenuService);
+    }
+
+    private menuSideBarService() : MenuSideBarService {
+        return ServiceLocator.get(MenuSideBarService);
     }
 
     // Shows and hides the loading spinner during RouterEvent changes
@@ -30,9 +39,10 @@ export class SapeComponent {
             }
         }
         if (event instanceof NavigationEnd) {
-            this.menuService.setMenuUrl(event.urlAfterRedirects, false);
+            this.menuService().selectMenuByUrl(event.url, false);
+            this.menuSideBarService().executeOnClose(); 
             this._hideSpinner();
-            console.log('end: ' +  event.urlAfterRedirects)
+            console.log('end: ' +  event.url)
         }
         if (event instanceof NavigationCancel) {
             console.log('cancel: '+event.url + ' reason: ' + event.reason);

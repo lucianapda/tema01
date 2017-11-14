@@ -1,6 +1,7 @@
 package sape.server.core.spring.config.mvc;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -26,6 +27,7 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 /**
@@ -36,7 +38,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 @EnableWebMvc
 @Configuration
 @ComponentScan("sape.server")
-//@Order(-3)
 public class WebMvcConfig extends WebMvcConfigurerAdapter{
 
 	/**
@@ -46,7 +47,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
 				.allowedOrigins("*")
-				.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+				.allowedMethods("*")
 				.allowedHeaders("*")
 				.allowCredentials(false)
 				.maxAge(3600);
@@ -65,15 +66,19 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 	@Bean
     @Primary
     public ObjectMapper objectMapper() {
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(LocalDate.class, new LocalDateSerializer());
+        module.addDeserializer(LocalDate.class, new LocalDateDeserializer());
+        module.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer());
+        module.addDeserializer(LocalDateTime.class, new LocalDateTimDeserializer());
+        module.addSerializer(Timestamp.class, new TimestampSerializer());
+        module.addDeserializer(Timestamp.class, new TimestampDeserializer());
+
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.findAndRegisterModules();
-        JavaTimeModule javaTimeModule = new JavaTimeModule();
-        javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer());
-        javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer());
-        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer());
-        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimDeserializer());
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.registerModule(module);
 
-        objectMapper.registerModule(javaTimeModule);
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         objectMapper.configure(MapperFeature.IGNORE_DUPLICATE_MODULE_REGISTRATIONS, true);
         objectMapper.configure(MapperFeature.USE_ANNOTATIONS, true);
@@ -99,7 +104,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 		 */
 		@Override
 		public void serialize(LocalDate value, com.fasterxml.jackson.core.JsonGenerator gen, SerializerProvider serializers) throws IOException {
-			gen.writeString(value.format(DateTimeFormatter.ISO_LOCAL_DATE));
+			gen.writeString(value.format(DateTimeFormatter.ISO_DATE));
 
 		}
 
@@ -112,7 +117,15 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 		 */
 		@Override
 		public LocalDate deserialize(JsonParser p, DeserializationContext ctxt)	throws IOException, com.fasterxml.jackson.core.JsonProcessingException {
-			return LocalDate.parse(p.getValueAsString(), DateTimeFormatter.ISO_LOCAL_DATE);
+			try {
+				return LocalDate.parse(p.getValueAsString(), DateTimeFormatter.ISO_DATE);
+			} catch (Exception e) {
+				try {
+					return LocalDate.parse(p.getValueAsString(), DateTimeFormatter.ISO_DATE_TIME);
+				} catch (Exception e2) {
+					return LocalDate.parse(p.getValueAsString(), DateTimeFormatter.ISO_LOCAL_DATE);
+				}
+			}
 		}
 	}
 
@@ -123,10 +136,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 		 */
 		@Override
 		public void serialize(LocalDateTime value, com.fasterxml.jackson.core.JsonGenerator gen, SerializerProvider serializers) throws IOException {
-			gen.writeString(value.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-
+			gen.writeString(value.format(DateTimeFormatter.ISO_DATE_TIME));
 		}
-
 	}
 
 	public class LocalDateTimDeserializer extends JsonDeserializer<LocalDateTime> {
@@ -136,7 +147,45 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 		 */
 		@Override
 		public LocalDateTime deserialize(JsonParser p, DeserializationContext ctxt)	throws IOException, com.fasterxml.jackson.core.JsonProcessingException {
-			return LocalDateTime.parse(p.getValueAsString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+			try {
+				return LocalDateTime.parse(p.getValueAsString(), DateTimeFormatter.ISO_DATE_TIME);
+			} catch (Exception e) {
+				try {
+					return LocalDateTime.parse(p.getValueAsString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+				} catch (Exception e2) {
+					return LocalDateTime.parse(p.getValueAsString(), DateTimeFormatter.ISO_INSTANT);
+				}
+			}
+		}
+	}
+
+	public class TimestampSerializer extends JsonSerializer<Timestamp> {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void serialize(Timestamp value, com.fasterxml.jackson.core.JsonGenerator gen, SerializerProvider serializers) throws IOException {
+			gen.writeString(value.toInstant().toString());
+		}
+	}
+
+	public class TimestampDeserializer extends JsonDeserializer<Timestamp> {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public Timestamp deserialize(JsonParser p, DeserializationContext ctxt)	throws IOException, com.fasterxml.jackson.core.JsonProcessingException {
+			try {
+				return Timestamp.valueOf(LocalDateTime.parse(p.getValueAsString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME).withNano(0));
+			} catch (Exception e) {
+				try {
+					return Timestamp.valueOf(LocalDateTime.parse(p.getValueAsString(), DateTimeFormatter.ISO_DATE_TIME).withNano(0));
+				} catch (Exception e2) {
+					return Timestamp.valueOf(LocalDateTime.parse(p.getValueAsString(), DateTimeFormatter.ISO_INSTANT).withNano(0));
+				}
+			}
 		}
 	}
 }

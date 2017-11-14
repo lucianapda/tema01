@@ -1,35 +1,110 @@
-<div id="eventFormPage">
-    <h1>Eventos</h1>
-    <form class="ui form" [formGroup]="sourceForm">
-        <div class="inline field">
-            <label>Local:</label>
-            <input type="text" formControlName="place">
-            <label>Descrição:</label>
-            <input type="text" formControlName="description">
-        </div>
-        <div class="inline field">
-            <label>Início:</label>
-            <calendar formControlName="dateStart"></calendar>
-            <label>Fim:</label>
-            <calendar formControlName="dateEnd"></calendar>
-        </div>
-        <div class="inline field">
-            <label>Início das inscrições:</label>
-            <calendar formControlName="dateStartSubscription"></calendar>
-            <label>Fim das inscrições:</label>
-            <calendar formControlName="dateEndSubscription"></calendar>
-        </div>
-        <div class="inline field">
-            <label>Número de vagas:</label>
-            <input type="text" maxlength="5" formControlName="vacancy">
-            <div class="ui toggle checkbox">
-                <input type="checkbox" tabindex="0" class="hidden" formControlName="waitingList">
-                <label>Lista de espera</label>
+<div id="eventFormPage" [ngClass]="{loading: loading}" class="ui left aligned container">
+    <div class="ui center aligned container">
+        <h2 class="ui header">
+            <i class="{{menuOption.icon}} icon"></i>
+            <div class="content">
+                {{menuOption.name}}
+                <div class="sub header">{{menuOption.text}}</div>
             </div>
-        </div>
-        <div class="inline field">
-            <button class="ui button" (click)="onCancel()">Cancelar</button>
-            <button class="ui primary button" (click)="onSave()">Salvar</button>
+        </h2>
+    </div>
+    <form class="ui form" [formGroup]="sourceForm">
+        <div class="ui two column grid">
+            <div class="noPaddingBottom row">
+                <div class="right aligned five wide column noPaddingRight">
+                    <label>Código:</label>
+                </div>
+                <div class="column">
+                    <div class="ui input">
+                        <input type="text" formControlName="code">
+                    </div>
+                </div>
+            </div>
+            <div class="noPaddingBottom row">
+                <div class="right aligned five wide column noPaddingRight">
+                    <label>Local:</label>
+                </div>
+                <div class="column">
+                    <div class="ui fluid input">
+                        <input type="text" formControlName="place">
+                    </div>
+                </div>
+            </div>
+            <div class="noPaddingBottom row">
+                <div class="right aligned five wide column noPaddingRight">
+                    <label>Descrição:</label>
+                </div>
+                <div class="column">
+                    <div class="ui fluid input">
+                        <input type="text" formControlName="description">
+                    </div>
+                </div>
+            </div>
+            <div class="noPaddingBottom row">
+                <div class="right aligned five wide column noPaddingRight">
+                    <label>Início:</label>
+                </div>
+                <div class="column">
+                    <calendar type="date" formControlName="dateStart"></calendar>
+                </div>
+            </div>
+            <div class="noPaddingBottom row">
+                <div class="right aligned five wide column noPaddingRight">
+                    <label>Fim:</label>
+                </div>
+                <div class="column">
+                    <calendar type="date" formControlName="dateEnd"></calendar>
+                </div>
+            </div>
+            <div class="noPaddingBottom row">
+                <div class="right aligned five wide column noPaddingRight">
+                    <label>Início inscrições:</label>
+                </div>
+                <div class="column">
+                    <calendar type="date" formControlName="dateStartSubscription"></calendar>
+                </div>
+            </div>
+            <div class="noPaddingBottom row">
+                <div class="right aligned five wide column noPaddingRight">
+                    <label>Fim inscrições:</label>
+                </div>
+                <div class="column">
+                    <calendar type="date" formControlName="dateEndSubscription"></calendar>
+                </div>
+            </div>
+            <div class="noPaddingBottom row">
+                <div class="right aligned five wide column noPaddingRight">
+                    <label>Número de vagas:</label>
+                </div>
+                <div class="column">
+                    <div class="ui fluid input">
+                        <input type="text" maxlength="5" formControlName="vacancy">
+                    </div>
+                </div>
+            </div>
+            <div class="noPaddingBottom row">
+                <div class="right aligned five wide column noPaddingRight">
+                    <label>Lista de espera</label>
+                </div>
+                <div class="column">
+                    <div class="ui checkbox">
+                        <input type="checkbox" tabindex="0" class="hidden" formControlName="waitingList">
+                        <label></label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="right aligned five wide column noPaddingRight">
+                    <button class="ui button" (click)="onCancel()">Cancelar</button>
+                </div>
+                <div class="right aligned five wide column noPaddingRight">
+                    <button class="ui button" (click)="openActivities()">Atividades</button>
+                </div>
+                <div class="column">
+                    <button class="ui primary button" (click)="onSave()">Salvar</button>
+                </div>
+            </div>
+            <div class="row"></div>
         </div>
     </form>
 </div>

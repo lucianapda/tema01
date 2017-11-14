@@ -13,21 +13,15 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   constructor(private authService: AuthService, private router: Router) {
   }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     return this.checkLogin();
   }
 
-  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     return this.canActivate(route, state);
   }
 
-  checkLogin(): boolean {
-    if (this.authService.isLoggedIn()) { 
-      return true; 
-    }
-
-    // Navigate to the login page with extras
-    this.router.navigate([SAPE_LOGIN.routingFull]);
-    return false;
+  private checkLogin(): Promise<boolean> {
+    return this.authService.isLoggedIn();
   }
 }

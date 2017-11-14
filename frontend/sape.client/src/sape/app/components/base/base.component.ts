@@ -4,7 +4,7 @@ import {AppTask} from '../../core/task/app.task';
 import {AppActionType, AppActionTask} from '../../core/task/action/app.action.task';
 import {AppActionTaskFactory} from '../../core/task/action/app.action.task.factory';
 
-export abstract class BaseComponent implements OnInit, AfterViewChecked, OnChanges {
+export abstract class BaseComponent implements OnInit, AfterViewChecked, OnChanges, AfterViewInit {
 
   private appTask: AppTask = ServiceLocator.get(AppTask);
 
@@ -23,6 +23,9 @@ export abstract class BaseComponent implements OnInit, AfterViewChecked, OnChang
   }
 
   ngAfterViewChecked() {
+  }
+
+  ngAfterViewInit() {
   }
 
   ngOnChanges(): void {

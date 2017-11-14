@@ -1,6 +1,6 @@
 package sape.server.model.base;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * Base para implementações livres de definições jpa.
@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 public abstract class BaseDTO {
 
 	private Long id;
-	private Timestamp version;
+	private LocalDateTime version;
 
 	/**
 	 * Retorna uma instancia de {@link Long}
@@ -29,18 +29,18 @@ public abstract class BaseDTO {
 	}
 
 	/**
-	 * Retorna uma instancia de {@link Timestamp}
-	 * @return {@link Timestamp}
+	 * Retorna uma instancia de {@link LocalDateTime}
+	 * @return {@link LocalDateTime}
 	 */
-	public Timestamp getVersion() {
+	public LocalDateTime getVersion() {
 		return version;
 	}
 
 	/**
-	 * Atribui um {@link Timestamp}
-	 * @param version - {@link Timestamp}
+	 * Atribui um {@link LocalDateTime}
+	 * @param version - {@link LocalDateTime}
 	 */
-	public void setVersion(Timestamp version) {
+	public void setVersion(LocalDateTime version) {
 		this.version = version;
 	}
 }

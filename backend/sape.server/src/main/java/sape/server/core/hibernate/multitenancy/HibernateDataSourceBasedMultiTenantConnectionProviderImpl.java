@@ -19,7 +19,7 @@ public class HibernateDataSourceBasedMultiTenantConnectionProviderImpl extends A
     public HibernateDataSourceBasedMultiTenantConnectionProviderImpl(){
         defaultDataSource = new DriverManagerDataSource();
         defaultDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        defaultDataSource.setUrl("jdbc:mysql://localhost:3306/?useLegacyDatetimeCode=false&serverTimezone=UTC");
+        defaultDataSource.setUrl("jdbc:mysql://localhost:3306/?useTimezone=true&serverTimezone=UTC");
         defaultDataSource.setUsername("root");
         defaultDataSource.setPassword("root");
         defaultDataSource.setConnectionProperties(HibernateConfig.getDefaultProperties());

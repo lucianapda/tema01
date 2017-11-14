@@ -1,0 +1,9 @@
+<div *ngFor="let message of messages; trackBy: index;">
+    <div class="ui floating {{message.type}} message">
+        <i class="close icon"></i>
+        <div class="header">
+            {{message.message}}
+        </div>
+        <p>{{message.messageDetail}}</p>
+    </div>
+</div>

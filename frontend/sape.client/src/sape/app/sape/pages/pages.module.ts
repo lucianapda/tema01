@@ -1,18 +1,20 @@
-/**
- * Created by Guilherme on 03/04/2017.
- */
-
+import { BreadcrumbModule } from './../../components/breadcrumb/breadcrumb.module';
+import { MenuSideBarModule } from './../../components/menu/sidebar/menu-sidebar.module';
 import { NgModule }      from '@angular/core';
 import {routing} from "./pages.routing";
 import {PagesComponent} from "./pages.component";
 import {HomeModule} from "./home/home.module";
 import {BartopModule} from '../../components/bartop';
 import {SharedModule} from '../../shared/shared.module';
-
+import { BarfooterModule } from '../../components/batfooter/barfooter.module';
+ 
 @NgModule({
   imports:      [ SharedModule,
                   routing,
-                  BartopModule ],
+                  BartopModule,
+                  MenuSideBarModule,
+                  BreadcrumbModule,
+                  BarfooterModule ],
   declarations: [ PagesComponent ],
   bootstrap:    [ PagesComponent ]
 })

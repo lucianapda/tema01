@@ -1,3 +1,4 @@
+import { SAPE_PAGES_REGISTER_EVENTS } from './../../../../app.routing.mapping';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {UserCrudService} from '../../../../service/crud/user/user.crud.service';
 import {ServiceLocator} from '../../../../service/locator/service.locator';
@@ -56,5 +57,9 @@ export class UserFormComponent extends FormComponent<UserDTO> {
       // vacancy: source.vacancy,
       // waitingList: source.waitingList
     });
+  }
+
+  protected onCancel() : void {
+    this.goTo(SAPE_PAGES_REGISTER_EVENTS.routingFull);
   }
 }

@@ -1,4 +1,4 @@
-import { SAPE_PAGES, SAPE_PAGES_HOME, SAPE_PAGES_REGISTER, SAPE_PAGES_CONFIGURATION, SAPE_PAGES_REGISTER_EVENTS, SAPE_PAGES_REGISTER_EVENTS_ACTIVITIES, SAPE_PAGES_REGISTER_EVENTS_ENTRIES, SAPE_PAGES_REGISTER_SUBSCRIPTIONS, SAPE_PAGES_REGISTER_SUBSCRIPTIONS_ACTIVITIES, SAPE_PAGES_REGISTER_PEOPLE, SAPE_PAGES_REGISTER_EVENTS_EDIT } from './../../app.routing.mapping';
+import { SAPE_PAGES, SAPE_PAGES_HOME, SAPE_PAGES_REGISTER, SAPE_PAGES_CONFIGURATION, SAPE_PAGES_REGISTER_EVENTS, SAPE_PAGES_REGISTER_EVENTS_ACTIVITIES, SAPE_PAGES_REGISTER_EVENTS_ENTRIES, SAPE_PAGES_REGISTER_SUBSCRIPTIONS, SAPE_PAGES_REGISTER_SUBSCRIPTIONS_ACTIVITIES, SAPE_PAGES_REGISTER_PEOPLE, SAPE_PAGES_REGISTER_EVENTS_EDIT, SAPE_LOGIN, SAPE_NOT_FOUND } from './../../app.routing.mapping';
 import { StringUtils } from './../../util/string/string.utils';
 import { Injectable } from '@angular/core';
 import { MenuGroup } from './menu.group';
@@ -13,6 +13,8 @@ const KEY_MENU_GROUP_SELECTED: string = "KEY_MENU_GROUP_SELECTED";
 @Injectable()
 export class MenuService {
 
+  private rootGroup: MenuGroup;
+  private rootMenuOption: MenuOption;
   private mapMenuGroups: Map<string, MenuGroup> = new Map();
   private mapMenuOptions: Map<string, MenuOption> = new Map();
   
@@ -20,30 +22,28 @@ export class MenuService {
 
   constructor(private router: Router, private storageService: StorageService) {
     // Grupos
-    let pages: MenuGroup = new MenuGroup('Páginas', 'pages', 'fa fa-home', SAPE_PAGES.routingFull, SAPE_PAGES.routingFullRegExp);
-    let register: MenuGroup = new MenuGroup('Cadastro', 'register', 'fa fa-address-book', SAPE_PAGES_REGISTER.routingFull, SAPE_PAGES_REGISTER.routingFullRegExp);
-    let config: MenuGroup = new MenuGroup('Configuração', 'configuration','fa fa-cogs', SAPE_PAGES_CONFIGURATION.routingFull, SAPE_PAGES_CONFIGURATION.routingFullRegExp);
+    this.rootGroup = new MenuGroup('Páginas', 'pages', 'home', SAPE_PAGES.routingFull, SAPE_PAGES.routingFullRegExp);
+    let register: MenuGroup = new MenuGroup('Cadastro', 'register', 'add square', SAPE_PAGES_REGISTER.routingFull, SAPE_PAGES_REGISTER.routingFullRegExp);
+    let config: MenuGroup = new MenuGroup('Configuração', 'configuration','configure', SAPE_PAGES_CONFIGURATION.routingFull, SAPE_PAGES_CONFIGURATION.routingFullRegExp);
     
     // Opções
-    let home: MenuOption = new MenuOption('Home', 'home', 'fa fa-home', SAPE_PAGES_HOME.routingFull, SAPE_PAGES_HOME.routingFullRegExp, pages);
-    let event: MenuOption = new MenuOption('Eventos', 'event', 'fa fa-server', SAPE_PAGES_REGISTER_EVENTS.routingFull, SAPE_PAGES_REGISTER_EVENTS.routingFullRegExp, register);
-    let eventEdit: MenuOption = new MenuOption('Eventos', 'event', 'fa fa-server', SAPE_PAGES_REGISTER_EVENTS_EDIT.routingFull, SAPE_PAGES_REGISTER_EVENTS_EDIT.routingFullRegExp, register);
-    event.subMenuOptions.push(eventEdit);
+    let home: MenuOption = new MenuOption('Home', 'home', 'home', SAPE_PAGES_HOME.routingFull, SAPE_PAGES_HOME.routingFullRegExp, this.rootGroup);
+    this.rootMenuOption = home;
+    let event: MenuOption = new MenuOption('Eventos', 'event', 'calendar outline', SAPE_PAGES_REGISTER_EVENTS.routingFull, SAPE_PAGES_REGISTER_EVENTS.routingFullRegExp, register);
+    event.subMenuOptions.push(new MenuOption('Eventos', 'event', 'calendar outline', SAPE_PAGES_REGISTER_EVENTS_EDIT.routingFull, SAPE_PAGES_REGISTER_EVENTS_EDIT.routingFullRegExp, event));
     //let eventActivity: MenuOption = new MenuOption('Atividades', 'event_activity', 'fa fa-vcard', SAPE_PAGES_REGISTER_EVENTS_ACTIVITIES.routingFull, SAPE_PAGES_REGISTER_EVENTS_ACTIVITIES.routingFullRegExp, register);
-    let eventEntry: MenuOption = new MenuOption('Entradas', 'entry', 'fa fa-user', SAPE_PAGES_REGISTER_EVENTS_ENTRIES.routingFull, SAPE_PAGES_REGISTER_EVENTS_ENTRIES.routingFullRegExp, register);
-    let subscription: MenuOption = new MenuOption('Inscrições', 'subscription', 'fa fa-server', SAPE_PAGES_REGISTER_SUBSCRIPTIONS.routingFull, SAPE_PAGES_REGISTER_SUBSCRIPTIONS.routingFullRegExp, register);
+    let eventEntry: MenuOption = new MenuOption('Entradas', 'entry', 'wait', SAPE_PAGES_REGISTER_EVENTS_ENTRIES.routingFull, SAPE_PAGES_REGISTER_EVENTS_ENTRIES.routingFullRegExp, register);
+    let subscription: MenuOption = new MenuOption('Inscrições', 'subscription', 'edit', SAPE_PAGES_REGISTER_SUBSCRIPTIONS.routingFull, SAPE_PAGES_REGISTER_SUBSCRIPTIONS.routingFullRegExp, register);
     //let subscriptionActivity: MenuOption = new MenuOption('Atividades', 'subscription_activity', 'fa fa-vcard', SAPE_PAGES_REGISTER_SUBSCRIPTIONS_ACTIVITIES.routingFull, SAPE_PAGES_REGISTER_SUBSCRIPTIONS_ACTIVITIES.routingFullRegExp, register);   
-    let people: MenuOption = new MenuOption('Pessoas', 'person', 'fa fa-vcard', SAPE_PAGES_REGISTER_PEOPLE.routingFull, SAPE_PAGES_REGISTER_PEOPLE.routingFullRegExp, register);   
+    let people: MenuOption = new MenuOption('Pessoas', 'person', 'users', SAPE_PAGES_REGISTER_PEOPLE.routingFull, SAPE_PAGES_REGISTER_PEOPLE.routingFullRegExp, register);   
     
-    pages.menuOptions.push(home);
-    pages.menuOptions.push(event);
+    this.rootGroup.menuOptions.push(event);
     //pages.menuOptions.push(eventActivity);
-    pages.menuOptions.push(eventEntry);
-    pages.menuOptions.push(subscription);
+    this.rootGroup.menuOptions.push(eventEntry);
+    this.rootGroup.menuOptions.push(subscription);
     //pages.menuOptions.push(subscriptionActivity);
-    pages.menuOptions.push(people);
+    this.rootGroup.menuOptions.push(people);
 
-    this.mapMenuGroups.set(pages.id, pages);
     this.mapMenuGroups.set(register.id, register);
     this.mapMenuGroups.set(config.id, config);
 
@@ -56,10 +56,26 @@ export class MenuService {
     this.mapMenuOptions.set(people.id, people); 
   }
 
+  /**
+   * Retorna a opção root do menu
+   * @return {@link MenuOption}
+   */
+  public getRootMenuOption() : MenuOption {
+    return this.rootMenuOption;
+  }
+
+  /**
+   * Retorna um Map com todas as opções, mantida por uma chave string
+   * @return @link Map:key string, value: MenuOption
+   */
   public getMenuOptions() : Map<string, MenuOption> {
     return this.mapMenuOptions;
   }
 
+   /**
+   * Retorna um Map com todos os grupos, mantido por uma chave string
+   * @return @link Map:key string, value: MenuGroup
+   */
   public getMenuGroups() : Map<string, MenuGroup> {
     return this.mapMenuGroups;
   }
@@ -68,88 +84,126 @@ export class MenuService {
     var option: Object = this.storageService.get(KEY_MENU_OPTION_SELECTED);
     if (!!option) {
       let menuOption: MenuOption = (<MenuOption> option);
-      this.router.navigateByUrl(menuOption.router);
+      // this.router.navigateByUrl(menuOption.router);
       return menuOption;
     }
     return  null;
   }
 
+  /**
+   * Armazena a opção do menu selecionada, persistindo ela no storageService
+   * @param selected - {@link MenuOption}
+   * @param navigate - {@link boolean} indica se deve realizar a navegação para a rota da opção.
+   */
   public setMenuOptionSelected(selected: MenuOption, navigate: boolean) {
     this.storageService.put(KEY_MENU_OPTION_SELECTED, selected);
-
-    if (!!selected && navigate) {
-        this.router.navigateByUrl(selected.router);
+    if (selected) {
+      this.setMenuGroupSelected(this.mapMenuGroups.get(selected.keyMenuGroup), false);
+      this.notify.next(selected);
+      if (navigate) {
+          this.router.navigateByUrl(selected.router);
+      }
     }
-  }
+  } 
 
+  /**
+   * Retorna o grupo selecionado.
+   * @returns {@link MenuGroup}
+   */
   public getMenuGroupSelected() : MenuGroup {
-    var option: Object = this.storageService.get(KEY_MENU_GROUP_SELECTED);
-    if (!!option) {
-      let menuGroup: MenuGroup = (<MenuGroup> option);
-      this.router.navigateByUrl(menuGroup.router);
+    var groupObj: Object = this.storageService.get(KEY_MENU_GROUP_SELECTED);
+    if (groupObj) {
+      let menuGroup: MenuGroup = (<MenuGroup> groupObj);
       return menuGroup;
     }
-    let group: MenuGroup = this.mapMenuGroups.values().next().value;
-    this.setMenuGroupSelected(group, true);
-    return group;
+    this.resetMenuGroupSelected();
+    return this.getMenuGroupSelected();
   }
 
+  /**
+   * Armazena grupo selecionado, persistindo elo no storageService.
+   * @param selected - {@link MenuGroup}
+   * @param navigate - {@link boolean} indica se deve realizar a navegação para a rota dp grupo.
+   */
   public setMenuGroupSelected(selected: MenuGroup, navigate: boolean) {
     this.storageService.put(KEY_MENU_GROUP_SELECTED, selected);
-    if (!!selected && navigate) {
-        this.router.navigateByUrl(selected.router);
+    if (selected) {
+      this.notify.next(selected);
+      if (navigate) {
+          this.router.navigateByUrl(selected.router);
+      }
     }
   }
 
+  /**
+   * Reseta a opção selecionada para nulo.
+   */
   public resetMenuOptionSelected() {
-    this.setMenuOptionSelected(null, false);
+    this.setMenuOptionSelected(this.rootMenuOption, false);
   }
 
-  public reloadMenuOptionSelected() {
-    this.setMenuOptionSelected(this.getMenuOptionSelected(), true);
-  }
-
+   /**
+   * Reseta o grupo selecionado para o root grupo.
+   */
   public resetMenuGroupSelected() {
-    this.setMenuGroupSelected(this.mapMenuGroups.values().next().value, false);
     this.resetMenuOptionSelected();
+    this.setMenuGroupSelected(this.rootGroup, true);
   }
 
-  public reloadMenuGroupSelected() {
-    this.setMenuGroupSelected(this.getMenuGroupSelected(), true);
-    this.resetMenuOptionSelected();
-  }
-
-  public notifyComponent(notify: (value: any) => void) {
+  /**
+   * Registra uma função para ser notificada.
+   */
+  public registerNotify(notify: (value: any) => void) {
     this.notify.subscribe(notify);
   }
 
-  public setMenuUrl(url: string, navigate?: boolean, group?: boolean) {
+  /**
+   * Seleciona um MenuGroup ou MenuOption correspondente a url
+   * @param url - String - A url informada.
+   * @param navigate - boolean - Indica se deve navegar para a url.
+   */
+  public selectMenuByUrl(url: string, navigate?: boolean) {
+    let currentOption: MenuOption = this.getMenuOptionSelected();
+    if (currentOption && StringUtils.test(this.mapMenuOptions.get(currentOption.id).routerRegExp, url)) {
+      return;
+    }
+
     let resultOption: MenuOption = null;
+    // Procura no map de opções e nas subopções
     this.mapMenuOptions.forEach((value: MenuOption, key: string) => { 
       if (StringUtils.test(value.routerRegExp, url)){
         resultOption = value;
+      } else {
+        value.subMenuOptions.forEach((valueSub: MenuOption) => { 
+          if (StringUtils.test(valueSub.routerRegExp, url)){
+            resultOption = valueSub;
+          }   
+        });
       }
     });
     if (resultOption != null) {
       this.setMenuOptionSelected(resultOption, navigate);
-      this.notify.next(resultOption);
       console.log("achou opcao")
     } else {
-      let result: MenuGroup = null;
+      let resultGroup: MenuGroup = null;
+      if (StringUtils.test(this.rootGroup.routerRegExp, url)){
+        resultGroup = this.rootGroup;
+      }
       this.mapMenuGroups.forEach((value: MenuGroup, key: string) => { 
         if (StringUtils.test(value.routerRegExp, url)){
-          result = value;
+          resultGroup = value;
         }
       });
-      if (result != null) {
-        this.setMenuGroupSelected(result, navigate);
-        //this.setMenuOptionSelected(null, false);
-        this.notify.next(result);
+      if (resultGroup != null) {
+        this.setMenuGroupSelected(resultGroup, navigate);
         console.log("achou grupo")
-      } else if (StringUtils.notEquals(url, "/")){
-        console.log("volta pro home")
-        this.resetMenuGroupSelected();
-        this.notify.next(this.mapMenuGroups.values().next().value);
+      } else {
+        // Excluir rotas
+        if (!StringUtils.test(SAPE_LOGIN.routingFullRegExp, url) && 
+              !StringUtils.test(SAPE_NOT_FOUND.routingFullRegExp, url)){
+                console.log("volta pro root")
+                this.resetMenuGroupSelected();
+        }
       }
     }
   }

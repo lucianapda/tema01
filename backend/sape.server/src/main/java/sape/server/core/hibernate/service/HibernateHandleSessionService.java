@@ -29,17 +29,17 @@ public class HibernateHandleSessionService {
      * Cria ou atuliza a entidade.
      * @param entity - E
      */
-    @Transactional(propagation = Propagation.MANDATORY)
+    @SuppressWarnings("unchecked")
+	@Transactional(propagation = Propagation.MANDATORY)
     public <E extends BaseEntity> E saveOrUpdate(E entity) throws ValidationException{
         Session session = hibernateManagerSessionFactoryService.getCurrentSession();
         try {
             session.saveOrUpdate(entity);
-            entity.getId();
         } catch (Exception e) {
         	TranslatorException.translateToCRUDException(e);
         }
-        // flush();
-        return entity;
+        flush();
+        return ((E) get(entity.getClass(), entity.getId()));
     }
 
     /**
@@ -54,7 +54,7 @@ public class HibernateHandleSessionService {
         } catch (Exception e) {
         	TranslatorException.translateToCRUDException(e);
         }
-        // flush();
+        flush();
     }
 
     /**
@@ -100,11 +100,24 @@ public class HibernateHandleSessionService {
     }
 
     /**
+     * Efetuar a limpeza da {@link Session} corrente aplica {@link Session#evict(Object)} em todos os objetos.
+     */
+    @Transactional(propagation = Propagation.MANDATORY)
+    public void clear() throws ValidationException {
+        Session session = hibernateManagerSessionFactoryService.getCurrentSession();
+        try {
+            session.clear();
+        } catch (Exception e) {
+        	TranslatorException.translateToCRUDException(e);
+        }
+    }
+
+    /**
      * Efetuar a sncronização dos objetos com o banco de dados e limpa a sessão do hibernate.
      */
     @Transactional(propagation = Propagation.MANDATORY)
     public void flushClear() throws ValidationException {
-            Session session = hibernateManagerSessionFactoryService.getCurrentSession();
+    	Session session = hibernateManagerSessionFactoryService.getCurrentSession();
         try {
             flush();
             session.clear();

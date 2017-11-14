@@ -1,13 +1,9 @@
 
+export const MESSAGE_INFO = 'info';
+export const MESSAGE_ERROR = 'error';
+export const MESSAGE_WARNING = 'warning';
+export const MESSAGE_SUCCESS = 'success';
+
 export class Message {
-
-  private message: string | String;
-
-  constructor(message: string | String) {
-    this.message = message;
-  }
-
-  public getMessage() : string | String {
-    return this.message;
-  }
+    constructor(public code: number, public message: string, public messageDetail: string, public type:string) {} 
 }

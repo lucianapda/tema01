@@ -1,0 +1,34 @@
+#contentBarfooter {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    min-height: 39px;
+}
+
+#contentBarfooter1 {
+    height: 100%;
+    width: 33.33%;
+    float: left;
+    position: relative;
+}
+
+#contentBarfooter2 {
+    height: 100%;
+    width: 33.33%;
+    float: left;
+    position: relative;
+}
+
+#contentBarfooter2 menu-select {
+    float: left;
+    width: 100%;
+    padding: 6px;
+    text-align: center
+}
+
+#contentBarfooter3 {
+    height: 100%;
+    width: 33.33%;
+    float: left;
+    position: relative;
+}

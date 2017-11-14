@@ -18,7 +18,8 @@ public class HibernateConfig {
 
         properties.put("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
         properties.put("hibernate.connection.password", "root");
-        properties.put("hibernate.connection.url", "jdbc:mysql://localhost:3306/");
+        properties.put("hibernate.connection.url", "jdbc:mysql://localhost:3306/?useTimezone=true&serverTimezone=UTC");
+        properties.put("hibernate.jdbc.time_zone", "UTC");
         properties.put("hibernate.connection.username", "root");
         properties.put("hibernate.default_catalog", "sape");
         properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");

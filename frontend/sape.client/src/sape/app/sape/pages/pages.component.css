@@ -10,7 +10,7 @@
 
 #content {
     background-color: #f2f2f2;
-    height: 92%
+    height: 86%
 }
 
 #contentBody {
@@ -19,19 +19,26 @@
     padding: 0.2%;
 }
 
-#contentFooter {
-    background-color: blueviolet;
-    height: 9%;
-}
-
 #contentBodyTop {
     border-radius: 2px;
     background-color: aquamarine;
     height: 10%;
     min-height: 39px;
+    width: 100%;
 }
 
 #contentBodyCenter {
     background-color: transparent;
     height: 90%;
+    margin-top: 5px;
+}
+
+#barFooter {
+    background-color: #ffffff;
+    height: 6%;
+    border-bottom: 1px solid lightgray;
+    min-height: 30px;
+    font-family: benton-sans, 'Helvetica Neue', sans-serif;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
 }

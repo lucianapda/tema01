@@ -19,11 +19,11 @@
     position: relative;
 }
 
-#contentBarTop2 menu {
+#contentBarTop2 menu-select {
     float: left;
-    width: 99%;
-    margin: 0px;
-    height: 0px;
+    width: 100%;
+    padding: 6px;
+    text-align: center
 }
 
 #contentBarTop3 {

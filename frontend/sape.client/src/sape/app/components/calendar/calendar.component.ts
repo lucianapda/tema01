@@ -1,117 +1,89 @@
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgModel } from '@angular/forms';
-import { Component, ElementRef, AfterViewInit, Output, EventEmitter, Input, Self, forwardRef, AfterViewChecked } from '@angular/core';
+import {CalendarOptions} from './options/calendar.options';
+import { Component, Inject, ViewChild, AfterViewInit, Input, ElementRef, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 declare var $: any;
 
-export const CALENDAR_COMPONENT_CONTROL_VALUE_ACCESSOR: any = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => CalendarComponent),
-  multi: true
-};
- 
 @Component({
   selector: 'calendar',
-  template: ` 
-        <div class="ui calendar">
-          <div class="ui input left icon">
-            <i class="calendar icon"></i>
-            <input type="text" placeholder="{{placeholder}}">
-          </div>
-        </div>
+  template: `
+    <div class="ui calendar" style="display: inherit !important" #calendar>
+      <div class="ui input left icon">
+        <i class="calendar icon"></i>
+        <input (change)="dateTabCompletion($event)" type="text"  placeholder="Date/Time">
+      </div>
+    </div>
   `,
-  providers: [CALENDAR_COMPONENT_CONTROL_VALUE_ACCESSOR]
+  providers: [{
+    provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => CalendarComponent), multi: true
+  }]
 })
-export class CalendarComponent implements AfterViewInit, AfterViewChecked, ControlValueAccessor {
+export class CalendarComponent implements AfterViewInit, ControlValueAccessor {
+  @ViewChild('calendar') componentRoot: ElementRef;
+  @Input() placeholder: string;
+  @Input() type: string;
+  @Input() minDate: Date;
+  @Input() maxDate: Date;
 
-  @Output() change: EventEmitter<Date> = new EventEmitter<Date>();
-  @Output() htmlElement: EventEmitter<HTMLElement> = new EventEmitter<HTMLElement>();
-  @Input() settings: CalendarOptions = {
-    formatter: {
-      formatDate: (date: Date, settings: CalendarOptions) => {
-          $.datepicker.formatDate('dd-MM-yy', date)
-      }
-    },
-    onChange: (date: Date) => {
-      this.writeValue(date)
-    },
-    text: {
-      days: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
-      months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-      monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-      today: 'Hoje',
-      now: 'Agora',
-      am: 'AM',
-      pm: 'PM'
-    }
-  };
-  @Input() placeholder: String; 
-  @Input() calendarType: string; 
+  $control: any;
+  customOptions: CalendarOptions;
 
-  public onChange: any = Function.prototype;
-  public onTouched: any = Function.prototype;
-  private selectedDate: Date;
-  
-  constructor(private parentElement: ElementRef){
-  }
-  
- //get accessor
- get value(): any {
-  return this.selectedDate;
-};
+  private propagateChange: Function = (date: Date) => { };
 
-//set accessor including call the onchange callback
-set value(v: any) {
-  if (v instanceof Date && v !== this.selectedDate) {
-      this.selectedDate = v;
-      this.change.emit(v);
-      let calandarElement: HTMLElement = this.parentElement.nativeElement.children[0];
-      $(calandarElement).calendar('set date', this.selectedDate, true);
-  }
-}
-
-  ngAfterViewInit(): void {
-    this.settings.type = this.calendarType? this.calendarType : 'date';
-    let calandarElement: HTMLElement = this.parentElement.nativeElement.children[0];
-    $(calandarElement).calendar(this.settings);
+  get options() {
+    return Object.assign({},
+                         this.customOptions,
+                         { type: this.type },
+                         { minDate: this.minDate },
+                         { maxDate: this.maxDate },
+                         { onChange: (date: Date) => this.emit(date) });
   }
 
-  ngAfterViewChecked(): void {
-    let calandarElement: HTMLElement = this.parentElement.nativeElement.children[0];
-    // this.htmlElement.emit(calandarElement);
-  }
-  
-  writeValue (value: Date): void { 
-    if (value === this.selectedDate) {
-      return;
-    }
-    if (value instanceof Date) {
-      this.selectedDate = value;
-      this.change.emit(this.selectedDate);
-    } else {
-      this.selectedDate = new Date(value);
-      this.change.emit(this.selectedDate);
-    }
-    let calandarElement: HTMLElement = this.parentElement.nativeElement.children[0];
-    $(calandarElement).calendar('set date', this.selectedDate, true);
+  constructor(@Inject(CalendarOptions) options: CalendarOptions) {
+    this.customOptions = options;
   }
 
-  registerOnChange(fn: (_: any) => void): void { this.onChange = fn; }
-  registerOnTouched(fn: () => void): void { this.onTouched = fn; }
-}
+  ngAfterViewInit() {
+    this.useSemanticUiCalendar();
+  }
 
-export interface CalendarOptions {
-  type?: string;
-  startCalendar?: HTMLElement;
-  endCalendar?: HTMLElement;
-  startMode?: string;
-  ampm?: boolean;
-  on?: string;
-  minDate?: Date;
-  maxDate?: Date;
-  formatter?: any;
-  monthFirst?: boolean;
-  inline?: boolean;
-  onChange?: Function;
-  text?: any;
-  
+  useSemanticUiCalendar() {
+    this.$control = $(this.componentRoot.nativeElement).calendar(this.options);
+  }
+
+  dateTabCompletion(evr: any) {
+    if (this.options.type !== 'date') { return; }
+
+    const parsePattern = /^(\d{2})(\d{2})(\d{2}|\d{4})$/;
+    let matches = parsePattern.exec(evr.target.value);
+
+    if(!matches && matches.length !== 5) { return; }
+
+    let [, day, month, year] = matches;
+    console.log(day, month, year);
+    this.$control.calendar('set date', new Date(parseInt(year), parseInt(month)-1, parseInt(day)));
+    this.propagateChange(this.$control.calendar('get date'));
+  }
+
+  emit(date: Date) {
+    if (!date || typeof date.getMonth !== 'function') { return; }
+
+    if (this.options.type === 'date') {
+      date.setHours(0, 0, 0, 0);
+    } 
+
+    this.propagateChange(new Date(date));
+  }
+
+  writeValue(dateTime: Date) {
+    if(!dateTime || !this.$control) { return; }
+
+    this.$control.calendar('set date', dateTime, true, false);
+  }
+
+  registerOnChange(fn: Function) {
+    this.propagateChange = fn;
+  } 
+
+  registerOnTouched(fn: any) { }
 }

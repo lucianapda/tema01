@@ -1,6 +1,6 @@
 package sape.server.model.base;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
@@ -16,21 +16,21 @@ public abstract class BaseEntity {
     public static final String VERSION = "version";
 
     @Version
-	private Timestamp version;
+	private LocalDateTime version;
 
 	/**
-	 * Retorna um {@link Timestamp} - (version)
-	 * @return {@link Timestamp}
+	 * Retorna um {@link LocalDateTime} - (version)
+	 * @return {@link LocalDateTime}
 	 */
-	public final Timestamp getVersion() {
+	public final LocalDateTime getVersion() {
         return version;
 	}
 
 	/**
-	 * Atribui um {@link Timestamp} para (version).
-	 * @param version - {@link Timestamp}
+	 * Atribui um {@link LocalDateTime} para (version).
+	 * @param version - {@link LocalDateTime}
 	 */
-	public final void setVersion(Timestamp version) {
+	public final void setVersion(LocalDateTime version) {
         this.version = version;
 	}
 

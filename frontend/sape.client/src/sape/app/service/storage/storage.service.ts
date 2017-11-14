@@ -13,7 +13,7 @@ export class StorageService {
     try {
       jsonData = JSON.stringify(data);
     } catch(e) {
-      this.messageService.dispatchMessage(e);
+      this.messageService.error(e, "error");
     }
     localStorage.setItem(key, JSON.stringify(data));
   }

@@ -20,3 +20,11 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
 }
+
+.noPaddingBottom {
+    padding-bottom: 0px !important;
+}
+
+.noPaddingRight {
+    padding-right: 0px !important;
+}

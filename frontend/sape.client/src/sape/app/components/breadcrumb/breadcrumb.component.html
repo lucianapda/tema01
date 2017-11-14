@@ -1,0 +1,12 @@
+<div id="breadcrumb">
+    <label>Onde eu estou?</label><br />
+    <div class="ui large breadcrumb">
+        <a class="section">
+            <i class="{{rootMenuOption.icon}} icon"></i>{{rootMenuOption.name}}
+        </a>
+        <a class="section" *ngFor="let routeMenuOption of routeMenuOptions">
+            <i class="right angle icon divider"></i>
+            <i class="{{routeMenuOption.icon}} icon"></i>{{routeMenuOption.name}}
+        </a>
+    </div>
+</div>

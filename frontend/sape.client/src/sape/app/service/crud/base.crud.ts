@@ -23,10 +23,24 @@ export abstract class BaseCrudService<T extends BaseDTO> extends BaseService imp
   }
 
   /**
+   * Retorna toos os dados do backend.
+   */
+  public read() : Promise<Array<T>> {
+    return super.httpService().get(this.path).then((data) => this.extract(data));
+  }
+
+  /**
    * Retorna o dado especificado ou os dados do backend.
    */
-  public read(id?: Number, config?:HttpConfigMethod) : Promise<Array<T>> {
-    return super.httpService().get(id? this.path + "/" + id : this.path, config).then((data) => this.extract(data));
+  public readById(id: Number) : Promise<Array<T>> {
+    return super.httpService().get(id? this.path + "/" + id : this.path).then((data) => this.extract(data));
+  }
+
+  /**
+   * Retorna o dado especificado ou os dados do backend.
+   */
+  public readByParams(params: Map<string, any>) : Promise<Array<T>> {
+    return super.httpService().get(this.path, {params: params}).then((data) => this.extract(data));
   }
 
   /**
@@ -46,8 +60,8 @@ export abstract class BaseCrudService<T extends BaseDTO> extends BaseService imp
   /**
    * Executa a atualização dos dados no backend.
    */
-  public deleteById(id: Number) : Promise<T> {
-    return super.httpService().delete(this.path + "/" + id).then((data) => this.extract(data));
+  public deleteById(id: Number, config?:HttpConfigMethod) : Promise<T> {
+    return super.httpService().delete(this.path + "/" + id, config).then((data) => this.extract(data));
   }
 
   /**

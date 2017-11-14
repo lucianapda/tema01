@@ -1,3 +1,5 @@
+import {MenuSideBarService} from '../../service/menu/menu-sidebar.service';
+import {ServiceLocator} from '../../service/locator/service.locator';
 import {Component} from "@angular/core";
 /**
  * Created by Guilherme on 03/04/2017.
@@ -10,4 +12,5 @@ import {Component} from "@angular/core";
   templateUrl: `./pages.component.html`,
 })
 export class PagesComponent {
+
 }

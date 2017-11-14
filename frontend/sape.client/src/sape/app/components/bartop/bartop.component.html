@@ -1,13 +1,24 @@
 <div id="contentBarTop">
-    <div id="contentBarTop1">
-        <div id="contentBarTopLogo">
-            <!--<a href="javascript:void(0)" [nglCrop]='1-by-1'>
-                <img src="../../../assets/icons/app/logo/t3.png" alt="16x9 image" />
-            </a>-->
+    <div id="contentBarTop1" class="ui top fixed menu">
+        <a class="item" (click)="openMenuSidebar($event)">
+            <i class="sidebar icon"></i> Menu
+        </a>
+    </div>
+    <div id="contentBarTop2" class="ui top fixed menu">
+        <menu-select></menu-select>
+    </div>
+    <div id="contentBarTop3" class="ui top fixed menu">
+        <div dropdown class="ui right dropdown icon item">
+            <i class="user outline icon"></i>
+            <div class="menu">
+                <div class="item">
+                    Minha conta
+                </div>
+                <div class="divider"></div>
+                <div class="item" (click)="logout()">
+                    Logout
+                </div>
+            </div>
         </div>
     </div>
-    <div id="contentBarTop2">
-        <menu></menu>
-    </div>
-    <div id="contentBarTop3"></div>
 </div>

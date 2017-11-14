@@ -29,9 +29,9 @@ public class ActivityEntity extends BaseEntity {
 
 	public static final String CODE = "code";
 	public static final String DESCRIPTION = "description";
-    public static final String SPEAKER = "place";
-    public static final String THEME = "dateStart";
-    public static final String DATE_START = "dateEnd";
+    public static final String SPEAKER = "speaker";
+    public static final String THEME = "theme";
+    public static final String DATE_START = "dateStart";
     public static final String DATE_END = "dateEnd";
     public static final String VACANCY = "vacancy";
     public static final String PLACE = "place";

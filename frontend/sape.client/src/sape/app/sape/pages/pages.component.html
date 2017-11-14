@@ -1,16 +1,18 @@
 <div id="barTop">
-  <bartop></bartop>
+    <bartop></bartop>
 </div>
-<div id="content" >
-  <div id="contentBody">
-    <div id="contentBodyTop">
-Oi eu sou o pages
-    </div>
-    <div id="contentBodyCenter">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
-  <div id="contentFooter">
-
-  </div>
+<div id="content" class="pushable">
+    <menu-sidebar>
+        <div id="contentBody">
+            <div id="contentBodyTop" class="ui container">
+                <breadcrumb></breadcrumb>
+            </div>
+            <div id="contentBodyCenter">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </menu-sidebar>
+</div>
+<div id="barFooter">
+    <barfooter></barfooter>
 </div>

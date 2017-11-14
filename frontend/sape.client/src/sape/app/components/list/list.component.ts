@@ -1,3 +1,4 @@
+import { HttpConfigMethod } from './../../service/http/http.config.method';
 import {ListService} from './list.service';
 import {AppActionTask, AppActionType} from '../../core/task/action/app.action.task';
 import {BaseDTO} from '../../model/base/base.dto';
@@ -26,6 +27,7 @@ export class ListComponent<T extends BaseDTO> extends BaseComponent{
   @Output() afterDelete = new EventEmitter<T>();
   // Serviço para leitura.
   @Input() service: ListService<T>;  
+  @Input() params: Map<string, any>;  
   
   values: T[] = []; 
   columns: ListColumn[] = [];
@@ -45,14 +47,21 @@ export class ListComponent<T extends BaseDTO> extends BaseComponent{
       ._execute(() => { 
         this.actions = this.service.getActions();
         this.columns = this.service.getColumns();
-        console.log(this.actions);
-        console.log(this.columns);
         
-        this.service.read().then((values: Array<T>) => {
+        if(this.params) {
+          this.service.readByParams(this.params).then((values: Array<T>) => {
             if (values instanceof Array) {
               values.forEach((t: T) => this.values.push(t))
             }
         });
+        } else {
+          this.service.read().then((values: Array<T>) => {
+            if (values instanceof Array) {
+              values.forEach((t: T) => this.values.push(t))
+            }
+        });
+        }
+        
       })._after(() => {this.afterLoad.emit();});
   }
 }
