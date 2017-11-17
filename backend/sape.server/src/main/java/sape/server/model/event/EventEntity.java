@@ -1,7 +1,10 @@
 package sape.server.model.event;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,12 +14,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
 
 import sape.server.model.base.BaseEntity;
+import sape.server.model.event.activity.EventActivityEntity;
 import sape.server.model.person.contact.PersonContactEntity;
 import sape.server.model.user.UserEntity;
 
@@ -39,6 +44,7 @@ public class EventEntity extends BaseEntity {
     public static final String VACANCY = "vacancy";
     public static final String WAITING_LIST = "waitingList";
     public static final String USER = "user";
+    public static final String ACTIVITIES = "activities";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -85,6 +91,9 @@ public class EventEntity extends BaseEntity {
     @ManyToOne(targetEntity = UserEntity.class, fetch = FetchType.LAZY)
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_event_user"), nullable = false, name = "user_id_user")
     private UserEntity user;
+
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = EventActivityEntity.class, fetch = FetchType.LAZY, mappedBy = EventActivityEntity.EVENT)
+	private List<EventActivityEntity> activities = new ArrayList<>();
 
 	/**
 	 * {@inheritDoc}
@@ -260,5 +269,21 @@ public class EventEntity extends BaseEntity {
 	 */
 	public void setUser(UserEntity user) {
 		this.user = user;
+	}
+
+	/**
+	 * Retorna uma instancia de {@link List<EventActivityEntity>}
+	 * @return {@link List<EventActivityEntity>}
+	 */
+	public List<EventActivityEntity> getActivities() {
+		return activities;
+	}
+
+	/**
+	 * Atribui um {@link List<EventActivityEntity>}
+	 * @param activities - {@link List<EventActivityEntity>}
+	 */
+	public void setActivities(List<EventActivityEntity> activities) {
+		this.activities = activities;
 	}
 }

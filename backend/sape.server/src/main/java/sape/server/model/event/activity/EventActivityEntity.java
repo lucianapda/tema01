@@ -1,4 +1,4 @@
-package sape.server.model.activity;
+package sape.server.model.event.activity;
 
 import java.time.LocalDateTime;
 
@@ -25,7 +25,7 @@ import sape.server.model.subscription.SubscriptionEntity;
  */
 @Entity
 @Table(name = "activity")
-public class ActivityEntity extends BaseEntity {
+public class EventActivityEntity extends BaseEntity {
 
 	public static final String CODE = "code";
 	public static final String DESCRIPTION = "description";
@@ -72,7 +72,6 @@ public class ActivityEntity extends BaseEntity {
 	@Column(nullable = false, name = "place_activity", length=100)
 	private String place;
 
-	@NotNull
     @ManyToOne(targetEntity = EventEntity.class, fetch = FetchType.LAZY)
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_activity_event"), nullable = false, name = "event_id_event")
     private EventEntity event;

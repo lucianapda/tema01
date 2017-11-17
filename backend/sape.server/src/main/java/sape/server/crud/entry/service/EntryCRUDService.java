@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import sape.server.crud.base.repository.AbstractCRUDRepository;
 import sape.server.crud.base.service.AbstractCRUDService;
 import sape.server.crud.entry.repository.EntryCRUDRepository;
-import sape.server.crud.subscription.activity.repository.SubscriptionActivityCRUDRepository;
+import sape.server.crud.subscription.repository.SubscriptionActivityCRUDRepository;
 import sape.server.model.entry.EntryDTO;
 import sape.server.model.entry.EntryEntity;
 

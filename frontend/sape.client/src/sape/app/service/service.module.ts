@@ -1,3 +1,4 @@
+import { PersonCrudService } from './crud/person/person.crud.service';
 import { MenuSideBarService } from './menu/menu-sidebar.service';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthService } from './auth/auth.service';
@@ -12,6 +13,7 @@ import { ErrorHandler, ModuleWithProviders, NgModule, Optional, SkipSelf } from 
 import { ApplicationErrorHandler } from './error/application.error.handler';
 import { CommonModule } from '@angular/common';
 import {SharedModule} from '../shared/shared.module';
+import { SubscriptionCrudService } from './crud/subscription/subscription.crud.service';
 
 /**
  * Created by Guilherme on 06/04/2017.
@@ -24,6 +26,8 @@ const PROVIDERS = [
   TokenService,
   HttpService,
   EventCrudService,
+  PersonCrudService,
+  SubscriptionCrudService,
   UserCrudService,
   MessageService,
   StorageService,

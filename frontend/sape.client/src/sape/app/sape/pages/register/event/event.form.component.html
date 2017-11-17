@@ -8,103 +8,149 @@
             </div>
         </h2>
     </div>
-    <form class="ui form" [formGroup]="sourceForm">
-        <div class="ui two column grid">
-            <div class="noPaddingBottom row">
-                <div class="right aligned five wide column noPaddingRight">
-                    <label>Código:</label>
-                </div>
-                <div class="column">
-                    <div class="ui input">
-                        <input type="text" formControlName="code">
+    <div class="ui pointing secondary menu" tab>
+        <a class="item active" data-tab="first">Evento</a>
+        <a class="item" data-tab="second">Atividades</a>
+    </div>
+    <div class="ui tab active" data-tab="first">
+        <form class="ui form" [formGroup]="sourceForm">
+            <div class="ui two column grid">
+                <div class="noPaddingBottom row">
+                    <div class="right aligned five wide column noPaddingRight">
+                        <label>Código:</label>
+                    </div>
+                    <div class="column">
+                        <div class="ui input">
+                            <input type="text" formControlName="code">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="noPaddingBottom row">
-                <div class="right aligned five wide column noPaddingRight">
-                    <label>Local:</label>
-                </div>
-                <div class="column">
-                    <div class="ui fluid input">
-                        <input type="text" formControlName="place">
+                <div class="noPaddingBottom row">
+                    <div class="right aligned five wide column noPaddingRight">
+                        <label>Local:</label>
+                    </div>
+                    <div class="column">
+                        <div class="ui fluid input">
+                            <input type="text" formControlName="place">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="noPaddingBottom row">
-                <div class="right aligned five wide column noPaddingRight">
-                    <label>Descrição:</label>
-                </div>
-                <div class="column">
-                    <div class="ui fluid input">
-                        <input type="text" formControlName="description">
+                <div class="noPaddingBottom row">
+                    <div class="right aligned five wide column noPaddingRight">
+                        <label>Descrição:</label>
+                    </div>
+                    <div class="column">
+                        <div class="ui fluid input">
+                            <input type="text" formControlName="description">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="noPaddingBottom row">
-                <div class="right aligned five wide column noPaddingRight">
-                    <label>Início:</label>
-                </div>
-                <div class="column">
-                    <calendar type="date" formControlName="dateStart"></calendar>
-                </div>
-            </div>
-            <div class="noPaddingBottom row">
-                <div class="right aligned five wide column noPaddingRight">
-                    <label>Fim:</label>
-                </div>
-                <div class="column">
-                    <calendar type="date" formControlName="dateEnd"></calendar>
-                </div>
-            </div>
-            <div class="noPaddingBottom row">
-                <div class="right aligned five wide column noPaddingRight">
-                    <label>Início inscrições:</label>
-                </div>
-                <div class="column">
-                    <calendar type="date" formControlName="dateStartSubscription"></calendar>
-                </div>
-            </div>
-            <div class="noPaddingBottom row">
-                <div class="right aligned five wide column noPaddingRight">
-                    <label>Fim inscrições:</label>
-                </div>
-                <div class="column">
-                    <calendar type="date" formControlName="dateEndSubscription"></calendar>
-                </div>
-            </div>
-            <div class="noPaddingBottom row">
-                <div class="right aligned five wide column noPaddingRight">
-                    <label>Número de vagas:</label>
-                </div>
-                <div class="column">
-                    <div class="ui fluid input">
-                        <input type="text" maxlength="5" formControlName="vacancy">
+                <div class="noPaddingBottom row">
+                    <div class="right aligned five wide column noPaddingRight">
+                        <label>Início:</label>
+                    </div>
+                    <div class="column">
+                        <calendar type="date" formControlName="dateStart"></calendar>
                     </div>
                 </div>
-            </div>
-            <div class="noPaddingBottom row">
-                <div class="right aligned five wide column noPaddingRight">
-                    <label>Lista de espera</label>
-                </div>
-                <div class="column">
-                    <div class="ui checkbox">
-                        <input type="checkbox" tabindex="0" class="hidden" formControlName="waitingList">
-                        <label></label>
+                <div class="noPaddingBottom row">
+                    <div class="right aligned five wide column noPaddingRight">
+                        <label>Fim:</label>
+                    </div>
+                    <div class="column">
+                        <calendar type="date" formControlName="dateEnd"></calendar>
                     </div>
                 </div>
+                <div class="noPaddingBottom row">
+                    <div class="right aligned five wide column noPaddingRight">
+                        <label>Início inscrições:</label>
+                    </div>
+                    <div class="column">
+                        <calendar type="date" formControlName="dateStartSubscription"></calendar>
+                    </div>
+                </div>
+                <div class="noPaddingBottom row">
+                    <div class="right aligned five wide column noPaddingRight">
+                        <label>Fim inscrições:</label>
+                    </div>
+                    <div class="column">
+                        <calendar type="date" formControlName="dateEndSubscription"></calendar>
+                    </div>
+                </div>
+                <div class="noPaddingBottom row">
+                    <div class="right aligned five wide column noPaddingRight">
+                        <label>Número de vagas:</label>
+                    </div>
+                    <div class="column">
+                        <div class="ui fluid input">
+                            <input type="text" maxlength="5" formControlName="vacancy">
+                        </div>
+                    </div>
+                </div>
+                <div class="noPaddingBottom row">
+                    <div class="right aligned five wide column noPaddingRight">
+                        <label>Lista de espera</label>
+                    </div>
+                    <div class="column">
+                        <div class="ui checkbox">
+                            <input type="checkbox" tabindex="0" class="hidden" formControlName="waitingList">
+                            <label></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row"></div>
             </div>
-            <div class="row">
-                <div class="right aligned five wide column noPaddingRight">
-                    <button class="ui button" (click)="onCancel()">Cancelar</button>
-                </div>
-                <div class="right aligned five wide column noPaddingRight">
-                    <button class="ui button" (click)="openActivities()">Atividades</button>
-                </div>
-                <div class="column">
-                    <button class="ui primary button" (click)="onSave()">Salvar</button>
-                </div>
-            </div>
-            <div class="row"></div>
+        </form>
+    </div>
+    <div class="ui tab " data-tab="second">
+        <table class="ui fixed single line celled table">
+            <thead>
+                <tr>
+                    <th>
+                        Descrição
+                    </th>
+                    <th>
+                        Início
+                    </th>
+                    <th>
+                        Fim
+                    </th>
+                    <th>
+                        Ações
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let value of source.getValue().activities; trackBy: index;">
+                    <td>
+                        {{value.code}}
+                    </td>
+
+                    <td>
+                        {{value.dateStart}}
+                    </td>
+                    <td>
+                        {{value.dateEnd}}
+                    </td>
+                    <td>
+                        <a>
+                            <i class="write link icon" (click)="editAction(value)"></i>
+                        </a>
+
+                        <a>
+                            <i class="trash outline link icon" (click)="removeAction(value)"></i>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <div class="right aligned five wide column noPaddingRight">
+            <button class="ui button" (click)="onCancel()">Cancelar</button>
         </div>
-    </form>
+        <div class="column">
+            <button class="ui primary button" (click)="onSave()">Salvar</button>
+        </div>
+    </div>
 </div>

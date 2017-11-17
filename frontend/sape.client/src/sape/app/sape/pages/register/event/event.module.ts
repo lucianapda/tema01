@@ -6,9 +6,10 @@ import { NgModule }      from '@angular/core';
 import { EventFormComponent } from "./event.form.component";
 import { EventListComponent } from "./event.list.component";
 import {routing} from "./event.routing";
+import { TabModule } from '../../../../components/tab/tab.module';
 
 @NgModule({
-  imports:      [ routing, ListModule, CalendarModule, SharedModule ],
+  imports:      [ routing, ListModule, CalendarModule, SharedModule, TabModule ],
   declarations: [ EventListComponent, EventFormComponent],
   bootstrap:    [ EventListComponent ], 
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

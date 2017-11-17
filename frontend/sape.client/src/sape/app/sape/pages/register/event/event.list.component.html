@@ -1,4 +1,4 @@
 <div id="eventListPage">
     <h1>Eventos</h1>
-    <list [service]='eventCrudService()'></list>
+    <list [service]='eventCrudService()' [actions]='getActions()' [columns]='getColumns()'></list>
 </div>

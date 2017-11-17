@@ -1,4 +1,5 @@
-import { SAPE_PAGES_REGISTER_EVENTS, SAPE_PAGES_REGISTER_EVENTS_ACTIVITIES } from './../../../../app.routing.mapping';
+import { StringUtils } from './../../../../util/string/string.utils';
+import { SAPE_PAGES_REGISTER_EVENTS } from './../../../../app.routing.mapping';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ServiceLocator } from './../../../../service/locator/service.locator';
 import {Component} from "@angular/core";
@@ -65,15 +66,11 @@ export class EventFormComponent extends FormComponent<EventDTO> {
       dateEndSubscription: source.dateEndSubscription,
       vacancy: source.vacancy,
       waitingList: source.waitingList,
-      idUser: source.idUser
+      idUser: source.idUser 
     });
   }
 
-  protected openActivities() {
-    this.goTo(SAPE_PAGES_REGISTER_EVENTS_ACTIVITIES.routingFull, this.source.getValue().id);
-  }
-
   protected onCancel() : void {
-    this.goTo(SAPE_PAGES_REGISTER_EVENTS.routingFull);
+    this.goTo([SAPE_PAGES_REGISTER_EVENTS.routingFull]);
   }
 }

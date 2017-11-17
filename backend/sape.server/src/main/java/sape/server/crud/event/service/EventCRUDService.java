@@ -1,5 +1,7 @@
 package sape.server.crud.event.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,8 @@ import sape.server.model.entry.EntryDTO;
 import sape.server.model.entry.EntryEntity;
 import sape.server.model.event.EventDTO;
 import sape.server.model.event.EventEntity;
+import sape.server.model.event.activity.EventActivityDTO;
+import sape.server.model.event.activity.EventActivityEntity;
 import sape.server.model.user.UserEntity;
 
 /**
@@ -57,8 +61,28 @@ public class EventCRUDService extends AbstractCRUDService<EventEntity, EventDTO>
     	Long idUser = dto.getIdUser();
     	if (idUser != null) {
 			entity.setUser(userCRUDService.getEntity(idUser));
-
 		}
+    	dto.getActivities().forEach(activityDTO -> {
+			EventActivityEntity activity = null;
+			if (activityDTO.getId() != null) {
+				Optional<EventActivityEntity> findFirst = entity.getActivities().stream().filter(activityEntity -> activityDTO.getId().equals(activityEntity.getId())).findFirst();
+				if (findFirst.isPresent()) {
+					activity = findFirst.get();
+				}
+
+				activity.setId(activityDTO.getId());
+				activity.setVersion(activityDTO.getVersion());
+				activity.setCode(activityDTO.getCode());
+				activity.setDescription(activityDTO.getDescription());
+		    	activity.setSpeaker(activityDTO.getSpeaker());
+		    	activity.setTheme(activityDTO.getTheme());
+		    	activity.setDateStart(activityDTO.getDateStart());
+		    	activity.setDateEnd(activityDTO.getDateEnd());
+		    	activity.setVacancy(activityDTO.getVacancy());
+		    	activity.setPlace(activityDTO.getPlace());
+		    	activity.setEvent(entity);
+			}
+		});
         return entity;
     }
 
@@ -85,6 +109,21 @@ public class EventCRUDService extends AbstractCRUDService<EventEntity, EventDTO>
     	if (user != null) {
     		dto.setIdUser(user.getId());
 		}
+    	entity.getActivities().forEach(t -> {
+			EventActivityDTO activityDTO = new EventActivityDTO();
+			activityDTO.setId(t.getId());
+			activityDTO.setVersion(t.getVersion());
+			activityDTO.setCode(t.getCode());
+			activityDTO.setDescription(t.getDescription());
+			activityDTO.setSpeaker(t.getSpeaker());
+			activityDTO.setTheme(t.getTheme());
+			activityDTO.setDateStart(t.getDateStart());
+			activityDTO.setDateEnd(t.getDateEnd());
+			activityDTO.setVacancy(t.getVacancy());
+			activityDTO.setPlace(t.getPlace());
+			activityDTO.setIdEvent(t.getEvent().getId());
+			dto.getActivities().add(activityDTO);
+		});
         return dto;
     }
 

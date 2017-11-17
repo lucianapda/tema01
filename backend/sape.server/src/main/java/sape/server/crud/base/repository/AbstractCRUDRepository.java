@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.criteria.CriteriaQuery;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
@@ -23,6 +25,7 @@ import sape.server.core.exception.ValidationException;
 import sape.server.core.exception.crud.ValidationCRUDException;
 import sape.server.core.exception.error.ValidationError;
 import sape.server.core.hibernate.service.HibernateHandleSessionService;
+import sape.server.core.session.RequestService;
 import sape.server.core.spring.context.ManagerInstance;
 import sape.server.core.utils.ClassUtils;
 import sape.server.core.utils.FieldUtils;
@@ -42,6 +45,8 @@ public abstract class AbstractCRUDRepository<E extends BaseEntity> {
     @Autowired
     private HibernateHandleSessionService hibernateHandleSessionService;
 
+    private RequestService requestService;
+
     private CriteriaFactory criteriaFactory;
 
     /**
@@ -54,6 +59,17 @@ public abstract class AbstractCRUDRepository<E extends BaseEntity> {
 		}
         return criteriaFactory;
     }
+
+    /**
+	 * Retorna uma instancia de {@link RequestService}
+	 * @return {@link RequestService}
+	 */
+	public RequestService getRequestService() {
+		if (requestService == null) {
+			requestService = ManagerInstance.get(RequestService.class);
+		}
+		return requestService;
+	}
 
     /**
      * Salva a entidade e retorna a entidade salva.
@@ -89,10 +105,18 @@ public abstract class AbstractCRUDRepository<E extends BaseEntity> {
     @SuppressWarnings("unchecked")
 	@Transactional(rollbackFor = Throwable.class, readOnly = true)
     public List<E> getAll() {
-        return getCriteriaFactory().createCriteria(ClassUtils.getGenericType(getClass(), BaseEntity.class)).list();
+        Criteria createCriteria = getCriteriaFactory().createCriteria(ClassUtils.getGenericType(getClass(), BaseEntity.class));
+        applyFilterToGetAll(createCriteria);
+		return createCriteria.list();
     }
 
     /**
+	 * Sobrescrever para filtros no getAll.
+	 * @param um {@link Criteria}
+	 */
+	protected void applyFilterToGetAll(Criteria createCriteria) {}
+
+	/**
      * Busca todas as entidades, aplicando {@link Criterion}.
      * @return {@link List} of {@link E}.
      * @throws ValidationException
@@ -111,34 +135,40 @@ public abstract class AbstractCRUDRepository<E extends BaseEntity> {
 
         // Filters
         Map<String, Object> mapFilters = new HashMap<>();
-        for (String filter : filters) {
-        	String filterField = filter.substring(0, filter.indexOf("="));
-        	String filterValue = filter.substring(filter.indexOf("=")+1);
-			//String value = entry.getValue();
-			Field fieldFound = null;
-			// Search field
-			try {
-				fieldFound = genericType.getDeclaredField(filterField);
-			} catch (NoSuchFieldException | SecurityException e) {
-				errors.add(new ValidationError(10L, String.format("Campo \"%s\" não encontrado.", filterField), ""));
-			}
-
-			// if not found add error
-			if (fieldFound != null) {
-				Class<?> type = fieldFound.getType();
-				if (ClassUtils.isToAssignableClassFrom(type, Long.class)) {
-					mapFilters.put(fieldFound.getName(), Long.valueOf(filterValue));
+        if (filters != null) {
+	        for (String filter : filters) {
+	        	String filterField = filter.substring(0, filter.indexOf("="));
+	        	String filterValue = filter.substring(filter.indexOf("=")+1);
+				//String value = entry.getValue();
+				Field fieldFound = null;
+				// Search field
+				try {
+					fieldFound = genericType.getDeclaredField(filterField.replaceAll("-", "").replaceAll("%", ""));
+				} catch (NoSuchFieldException | SecurityException e) {
+					errors.add(new ValidationError(10L, String.format("Campo \"%s\" não encontrado.", filterField), ""));
 				}
-			}
+
+				// if not found add error
+				if (fieldFound != null) {
+					Class<?> type = fieldFound.getType();
+					if (ClassUtils.toName(Long.class, type.getName())) {
+						mapFilters.put(filterField, Long.valueOf(filterValue));
+					} else if (ClassUtils.toName(String.class, type.getName())) {
+						mapFilters.put(filterField, filterValue);
+					}
+				}
+	        }
 		}
         // Sort
-        for (String field : sort) {
-			try {
-				genericType.getDeclaredField(field.replace("-", ""));
-			} catch (NoSuchFieldException | SecurityException e) {
-				errors.add(new ValidationError(10L, String.format("Campo \"%s\" não encontrado.", field), ""));
+        if (sort != null) {
+	        for (String field : sort) {
+				try {
+					genericType.getDeclaredField(field.replace("-", ""));
+				} catch (NoSuchFieldException | SecurityException e) {
+					errors.add(new ValidationError(10L, String.format("Campo \"%s\" não encontrado.", field), ""));
+				}
 			}
-		}
+        }
         // Fields
         if (fields != null) {
 	        for (String field : fields) {
@@ -164,28 +194,38 @@ public abstract class AbstractCRUDRepository<E extends BaseEntity> {
 
         	// Config filters
         	mapFilters.forEach((field, value) -> {
-        		if (field.startsWith("-")) {
-        			criteriaQuery.add(Restrictions.ne(field, value));
-        			criteriaQueryCount.add(Restrictions.ne(field, value));
+        		if (field.startsWith("%") || field.endsWith("%")) {
+        			value = field.startsWith("%")? "%" + value : value;
+        			value = field.endsWith("%")? value + "%" : value;
+        			field = field.replaceAll("%", "");
+        			criteriaQuery.add(Restrictions.like(field, value));
+        			criteriaQueryCount.add(Restrictions.like(field, value));
+				} else if (field.startsWith("-")) {
+        			criteriaQuery.add(Restrictions.ne(field.replaceAll("-", ""), value));
+        			criteriaQueryCount.add(Restrictions.ne(field.replaceAll("-", ""), value));
         		} else {
         			criteriaQuery.add(Restrictions.eq(field, value));
         			criteriaQueryCount.add(Restrictions.eq(field, value));
         		}
         	});
 
-        	// Config sort
-        	for (String s : sort) {
-        		if (s.startsWith("-")) {
-        			criteriaQuery.addOrder(Order.desc(s.replaceAll("-", "")));
-        		} else {
-        			criteriaQuery.addOrder(Order.asc(s));
-        		}
-			}
+        	if (sort != null) {
+	        	// Config sort
+	        	for (String s : sort) {
+	        		if (s.startsWith("-")) {
+	        			criteriaQuery.addOrder(Order.desc(s.replaceAll("-", "")));
+	        		} else {
+	        			criteriaQuery.addOrder(Order.asc(s));
+	        		}
+				}
+        	}
 
 //        	Number countResults = ClassUtils.toAssignable(Number.class, criteriaQueryCount.uniqueResult());
 
+        	applyQuery(criteriaQuery, query);
+
         	// Cofing page and number of result
-        	if (page != null) {
+        	if (page == null) {
 				page = 1;
 			}
         	if (per_page == null) {
@@ -219,6 +259,14 @@ public abstract class AbstractCRUDRepository<E extends BaseEntity> {
     }
 
     /**
+	 * Sobrescrever para implementar uma query especifica
+	 * @param criteriaQuery - {@link CriteriaQuery}
+	 * @param query - {@link String}
+	 * @return {@link void}
+	 */
+	protected void applyQuery(Criteria criteriaQuery, String query) {}
+
+	/**
      * Busca a entidade a partir do id.
      * @param criterions - {@link Criterion}[]
      * @return {@link List} of {@link E}

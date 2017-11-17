@@ -1,15 +1,15 @@
-package sape.server.model.activity;
+package sape.server.model.event.activity;
 
 import java.time.LocalDateTime;
 
 import sape.server.model.base.BaseDTO;
 
 /**
- * Representa um {@link ActivityEntity}.
+ * Representa um {@link EventActivityEntity}.
  *
  * @author Guilherme Dalmarco (dalmarco.gd@gmail.com)
  */
-public class ActivityDTO extends BaseDTO {
+public class EventActivityDTO extends BaseDTO {
 
 	private Long code;
 	private String description;

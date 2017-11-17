@@ -12,11 +12,12 @@ import { AppActionTask, AppActionType } from './../../core/task/action/app.actio
 import {BaseComponent} from '../base/base.component';
 import {BaseDTO} from '../../model/base/base.dto';
 import {BaseCrudService} from '../../service/crud/base.crud';
+import { NavigationExtras } from '@angular/router/src/router';
 
-export abstract class FormComponent<T extends BaseDTO > extends BaseComponent {
+export abstract class FormComponent<T extends BaseDTO | BaseDTO> extends BaseComponent {
   
   protected orinialSource: T;
-  protected source: BehaviorSubject<T>;
+  protected source: BehaviorSubject<T> = new BehaviorSubject<T>(this.newSource());
   public sourceForm: FormGroup = this.buildForm(this.formBuilder, this.newSource());
   protected loading: boolean = false;
   protected menuOption: MenuOption;
@@ -27,7 +28,7 @@ export abstract class FormComponent<T extends BaseDTO > extends BaseComponent {
   protected abstract newSource(): T;
   protected abstract onCancel() : void;
 
-  constructor(private route: ActivatedRoute, protected formBuilder: FormBuilder, private router: Router) {
+  constructor(protected route: ActivatedRoute, protected formBuilder: FormBuilder, private router: Router) {
     super();
   }
 
@@ -36,18 +37,25 @@ export abstract class FormComponent<T extends BaseDTO > extends BaseComponent {
     return this.createAction(AppActionType.READING)
       ._before(() => {this.loading = true}) 
       ._execute(() => { 
-        this.getCrudService().readById(this.route.snapshot.params['id']).then((values: Array<T> | T) => {
-            if (values instanceof Array) {
-              this.source = new BehaviorSubject(values[0]);
-            } if (values instanceof Object) {
-              this.source = new BehaviorSubject(<T> values);
-            } else {
-              this.source = new BehaviorSubject(this.newSource());
-            }
-            this.orinialSource = this.source.getValue();
-            this.bindForm(this.sourceForm, this.source.getValue());
-            this.sourceForm.valueChanges.subscribe((value: T) => {this.source.next(value)});
+        let id = this.route.snapshot.params['id'];
+        if (id) {
+          this.getCrudService().readById(this.route.snapshot.params['id']).then((values: Array<T> | T) => {
+              if (values instanceof Array) {
+                this.source = new BehaviorSubject(values[0]);
+              } if (values instanceof Object) {
+                this.source = new BehaviorSubject(<T> values);
+              } else {
+                this.source = new BehaviorSubject(this.newSource());
+              }
+              this.orinialSource = this.source.getValue();
+              this.bindForm(this.sourceForm, this.source.getValue());
+              this.sourceForm.valueChanges.subscribe((value: T) => {this.source.next(value)});
           });
+        } else {
+          this.orinialSource = this.newSource();
+          this.bindForm(this.sourceForm, this.orinialSource);
+          this.sourceForm.valueChanges.subscribe((value: T) => {this.source.next(value)});
+        }
         })._after(() => {this.loading = false});
   }
 
@@ -102,15 +110,15 @@ export abstract class FormComponent<T extends BaseDTO > extends BaseComponent {
     this.menuOption = this.menuService().getMenuOptionSelected();
   } 
 
-  protected goTo(to: string, params? : any) {
-    this.router.navigate([to, params]);
+  protected goTo(commands: any[], extras?: NavigationExtras) {
+    this.router.navigate(commands, extras);
   }
 
-  private menuService() : MenuService {
+  protected menuService() : MenuService {
     return ServiceLocator.get(MenuService);
   }
 
-  private messageService() : MessageService {
+  protected messageService() : MessageService {
     return ServiceLocator.get(MessageService);
   }
 }

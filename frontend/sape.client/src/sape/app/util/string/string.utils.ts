@@ -18,4 +18,11 @@ export class StringUtils {
   public static test(regexp: RegExp, value: string) {
     return regexp && value && regexp.test(value);
   }
+
+  public static replace(str: string, replaces : Map<string, any>) : string {
+    replaces.forEach((value: any, key: string) => {
+      str = str.replace(key, value);
+    });
+    return str;
+  }
 }

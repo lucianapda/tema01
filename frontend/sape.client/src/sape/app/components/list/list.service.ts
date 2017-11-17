@@ -21,14 +21,4 @@ export interface ListService<T extends BaseDTO> {
     * Retorna o dado especificado ou os dados do backend.
     */
     readByParams(params: Map<string, any>) : Promise<Array<T>>;
-
-    /**
-    * Retorna as colunas que serão utilizadas
-    */
-    getColumns() : Array<ListColumn>;
-
-    /**
-    * Retorna as ações que serão utilizadas
-    */
-    getActions() : Array<ListAction>;
  }

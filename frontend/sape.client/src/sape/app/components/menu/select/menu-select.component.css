@@ -3,10 +3,6 @@
     text-align: center;
 }
 
-#menuSelectComponent sui-search {
-    width: 100%;
-}
-
 #menuSelectComponent sui-search div {
     width: 100% !important;
 }

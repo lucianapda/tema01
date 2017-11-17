@@ -14,9 +14,6 @@ export abstract class BaseCrudService<T extends BaseDTO> extends BaseService imp
   
   private path: string;
 
-  public abstract getColumns(): Array<ListColumn>;
-  public abstract getActions(): Array<ListAction>;
-
   constructor (path: string) {
     super();
     this.path = path;

@@ -54,18 +54,18 @@ export class CalendarComponent implements AfterViewInit, ControlValueAccessor {
   dateTabCompletion(evr: any) {
     if (this.options.type !== 'date') { return; }
 
-    const parsePattern = /^(\d{2})(\d{2})(\d{2}|\d{4})$/;
+    const parsePattern = /^(\d{2})(\/)?(\d{2})?(\/)?(\d{2}|\d{4})?$/;
     let matches = parsePattern.exec(evr.target.value);
 
-    if(!matches && matches.length !== 5) { return; }
+    if(matches && matches.length !== 5) { return; }
 
     let [, day, month, year] = matches;
-    console.log(day, month, year);
+    // console.log(day, month, year);
     this.$control.calendar('set date', new Date(parseInt(year), parseInt(month)-1, parseInt(day)));
     this.propagateChange(this.$control.calendar('get date'));
   }
 
-  emit(date: Date) {
+  emit(date: Date) { 
     if (!date || typeof date.getMonth !== 'function') { return; }
 
     if (this.options.type === 'date') {

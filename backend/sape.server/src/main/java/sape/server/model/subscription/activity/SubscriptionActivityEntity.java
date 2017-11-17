@@ -14,8 +14,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import sape.server.model.activity.ActivityEntity;
+import org.hibernate.annotations.Type;
+
 import sape.server.model.base.BaseEntity;
+import sape.server.model.event.activity.EventActivityEntity;
 import sape.server.model.subscription.SubscriptionEntity;
 
 /**
@@ -48,12 +50,13 @@ public class SubscriptionActivityEntity extends BaseEntity {
 
 	@NotNull
 	@Column(nullable = false, name = "waiting_list_subscription_activity")
+	@Type(type = "yes_no")
     private Boolean waitingList;
 
 	@NotNull
-    @ManyToOne(targetEntity = ActivityEntity.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = EventActivityEntity.class, fetch = FetchType.LAZY)
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_subsc_act_activity"), nullable = false, name = "activity_id_activity")
-    private ActivityEntity activity;
+    private EventActivityEntity activity;
 
 	@NotNull
     @ManyToOne(targetEntity = SubscriptionEntity.class, fetch = FetchType.LAZY)
@@ -125,18 +128,18 @@ public class SubscriptionActivityEntity extends BaseEntity {
 	}
 
 	/**
-	 * Retorna uma instancia de {@link ActivityEntity}
-	 * @return {@link ActivityEntity}
+	 * Retorna uma instancia de {@link EventActivityEntity}
+	 * @return {@link EventActivityEntity}
 	 */
-	public ActivityEntity getActivity() {
+	public EventActivityEntity getActivity() {
 		return activity;
 	}
 
 	/**
-	 * Atribui um {@link ActivityEntity}
-	 * @param activity - {@link ActivityEntity}
+	 * Atribui um {@link EventActivityEntity}
+	 * @param activity - {@link EventActivityEntity}
 	 */
-	public void setActivity(ActivityEntity activity) {
+	public void setActivity(EventActivityEntity activity) {
 		this.activity = activity;
 	}
 

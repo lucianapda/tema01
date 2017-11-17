@@ -1,8 +1,11 @@
 package sape.server.model.event;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import sape.server.model.base.BaseDTO;
+import sape.server.model.event.activity.EventActivityDTO;
+import sape.server.model.subscription.activity.SubscriptionActivityEntity;
 
 /**
  * Representa um {@link SubscriptionActivityEntity}.
@@ -21,6 +24,7 @@ public class EventDTO extends BaseDTO {
 	private Integer vacancy;
 	private Boolean waitingList;
 	private Long idUser;
+	private ArrayList<EventActivityDTO> activities = new ArrayList<>();
 
 	/**
 	 * Retorna uma instancia de {@link Long}
@@ -180,5 +184,21 @@ public class EventDTO extends BaseDTO {
 	 */
 	public void setIdUser(Long idUser) {
 		this.idUser = idUser;
+	}
+
+	/**
+	 * Retorna uma instancia de {@link ArrayList<EventActivityDTO>}
+	 * @return {@link ArrayList<EventActivityDTO>}
+	 */
+	public ArrayList<EventActivityDTO> getActivities() {
+		return activities;
+	}
+
+	/**
+	 * Atribui um {@link ArrayList<EventActivityDTO>}
+	 * @param activities - {@link ArrayList<EventActivityDTO>}
+	 */
+	public void setActivities(ArrayList<EventActivityDTO> activities) {
+		this.activities = activities;
 	}
 }

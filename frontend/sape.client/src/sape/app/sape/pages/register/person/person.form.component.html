@@ -1,0 +1,108 @@
+<div id="personFormPage" [ngClass]="{loading: loading}" class="ui left aligned container">
+    <div class="ui center aligned container">
+        <h2 class="ui header">
+            <i class="{{menuOption.icon}} icon"></i>
+            <div class="content">
+                {{menuOption.name}}
+                <div class="sub header">{{menuOption.text}}</div>
+            </div>
+        </h2>
+    </div>
+    <div class="ui pointing secondary menu" tab>
+        <a class="item active" data-tab="first">Pessoa</a>
+        <a class="item" data-tab="second">Contatos</a>
+    </div>
+    <div class="ui tab active" data-tab="first">
+        <form class="ui form" [formGroup]="sourceForm">
+            <div class="ui two column grid">
+                <div class="noPaddingBottom row">
+                    <div class="right aligned five wide column noPaddingRight">
+                        <label>Código:</label>
+                    </div>
+                    <div class="column">
+                        <div class="ui input">
+                            <input type="text" formControlName="code">
+                        </div>
+                    </div>
+                </div>
+                <div class="noPaddingBottom row">
+                    <div class="right aligned five wide column noPaddingRight">
+                        <label>Nome:</label>
+                    </div>
+                    <div class="column">
+                        <div class="ui fluid input">
+                            <input type="text" formControlName="name">
+                        </div>
+                    </div>
+                </div>
+                <div class="noPaddingBottom row">
+                    <div class="right aligned five wide column noPaddingRight">
+                        <label>Data de nascimento:</label>
+                    </div>
+                    <div class="column">
+                        <calendar type="date" formControlName="birthDate"></calendar>
+                    </div>
+                </div>
+                <div class="noPaddingBottom row">
+                    <div class="right aligned five wide column noPaddingRight">
+                        <label>CPF:</label>
+                    </div>
+                    <div class="column">
+                        <div class="ui fluid input">
+                            <input type="text" maxlength="5" formControlName="cpf">
+                        </div>
+                    </div>
+                </div>
+                <div class="row"></div>
+            </div>
+        </form>
+    </div>
+    <div class="ui tab " data-tab="second">
+        <table class="ui fixed single line celled table">
+            <thead>
+                <tr>
+                    <th>
+                        Código
+                    </th>
+                    <th>
+                        Descrição
+                    </th>
+                    <th>
+                        Ações
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let value of source.getValue().contacts; trackBy: index;">
+                    <td>
+                        {{value.code}}
+                    </td>
+
+                    <td>
+                        {{value.dateStart}}
+                    </td>
+                    <td>
+                        {{value.dateEnd}}
+                    </td>
+                    <td>
+                        <a>
+                            <i class="write link icon" (click)="editAction(value)"></i>
+                        </a>
+
+                        <a>
+                            <i class="trash outline link icon" (click)="removeAction(value)"></i>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <div class="right aligned five wide column noPaddingRight">
+            <button class="ui button" (click)="onCancel()">Cancelar</button>
+        </div>
+        <div class="column">
+            <button class="ui primary button" (click)="onSave()">Salvar</button>
+        </div>
+    </div>
+</div>

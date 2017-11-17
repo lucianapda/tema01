@@ -1,0 +1,116 @@
+<div id="subscriptionFormPage" class="ui left aligned container">
+    <div class="ui center aligned container">
+        <h2 class="ui header">
+            <i class="{{menuOption.icon}} icon"></i>
+            <div class="content">
+                {{menuOption.name}}
+                <div class="sub header">{{menuOption.text}}</div>
+            </div>
+        </h2>
+    </div>
+    <br />
+    <modal>
+        <div class="header">
+            Inscrição
+        </div>
+        <div class="content">
+            <div>
+                <form class="ui form" [formGroup]="sourceForm" [ngClass]="{'loading': loading}">
+                    <div class="ui two column grid">
+                        <div class="noPaddingBottom row">
+                            <div class="right aligned five wide column noPaddingRight">
+                                <label>Evento:</label>
+                            </div>
+                            <div class="column">
+                                <label>    {{source.getValue().event.description}}</label>
+                            </div>
+                        </div>
+                        <div class="noPaddingBottom row">
+                            <div class="right aligned five wide column noPaddingRight">
+                                <label>Código:</label>
+                            </div>
+                            <div class="column">
+                                <div class="ui input">
+                                    <input type="text" formControlName="code">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="noPaddingBottom row">
+                            <div class="right aligned five wide column noPaddingRight">
+                                <label>Data:</label>
+                            </div>
+                            <div class="column">
+                                <calendar type="date" formControlName="date"></calendar>
+                            </div>
+                        </div>
+
+                        <div class="noPaddingBottom row">
+                            <div class="right aligned five wide column noPaddingRight">
+                                <label>Pessoa:</label>
+                            </div>
+                            <div class="column">
+                                <person-search formControlName="idPerson"></person-search>
+                            </div>
+                        </div>
+
+                        <div class="row"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui red cancel inverted button">
+                <i class="remove icon"></i> Cancelar
+            </div>
+            <div class="ui green ok inverted button">
+                <i class="checkmark icon"></i> Salvar
+            </div>
+        </div>
+    </modal>
+    <table class="ui fixed single line celled table">
+        <thead>
+            <tr>
+                <th>
+                    Código
+                </th>
+                <th>
+                    Pessoa
+                </th>
+                <th>
+                    Ações
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let value of source.getValue().subscriptions; trackBy: index;">
+                <td>
+                    {{value.code}}
+                </td>
+
+                <td>
+                    {{value.namePerson}}
+                </td>
+                <td>
+                    <a>
+                        <i class="write link icon" (click)="editAction(value)"></i>
+                    </a>
+
+                    <a>
+                        <i class="trash outline link icon" (click)="removeAction(value)"></i>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <div class="ui form">
+        <div class="inline fields">
+            <div class="field">
+                <button class="ui button" (click)="onCancel()">Cancelar</button>
+            </div>
+            <div class="field">
+                <button class="ui primary button" (click)="onSave()">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>

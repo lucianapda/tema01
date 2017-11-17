@@ -60,6 +60,5 @@ export class UserFormComponent extends FormComponent<UserDTO> {
   }
 
   protected onCancel() : void {
-    this.goTo(SAPE_PAGES_REGISTER_EVENTS.routingFull);
   }
 }

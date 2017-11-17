@@ -27,11 +27,11 @@ export class ListComponent<T extends BaseDTO> extends BaseComponent{
   @Output() afterDelete = new EventEmitter<T>();
   // Serviço para leitura.
   @Input() service: ListService<T>;  
-  @Input() params: Map<string, any>;  
+  @Input() params: Map<string, any>;
+  @Input() columns: ListColumn[] = [];
+  @Input() actions: ListAction[] = [];
   
   values: T[] = []; 
-  columns: ListColumn[] = [];
-  actions: ListAction[] = [];
   isFormatValue: Boolean = false;
   collectionSize: number = 10;
   maxSize: number = 10;
@@ -45,29 +45,33 @@ export class ListComponent<T extends BaseDTO> extends BaseComponent{
     return this.createAction(AppActionType.READING)
       ._before(() => {this.beforeLoad.emit();})
       ._execute(() => { 
-        this.actions = this.service.getActions();
-        this.columns = this.service.getColumns();
-        
-        if(this.params) {
-          this.service.readByParams(this.params).then((values: Array<T>) => {
-            if (values instanceof Array) {
-              values.forEach((t: T) => this.values.push(t))
-            }
-        });
-        } else {
-          this.service.read().then((values: Array<T>) => {
-            if (values instanceof Array) {
-              values.forEach((t: T) => this.values.push(t))
-            }
-        });
+        if(!this.params) {
+          this.params = new Map<string, any>();
         }
+
+        if (this.columns) {
+          let columnsFormat: string = "";
+          this.columns.forEach((column: ListColumn) =>{
+            if (columnsFormat !== "") {
+              columnsFormat += ", ";
+            } 
+            columnsFormat += column.name;
+          });
+          this.params.set('fields', columnsFormat);
+        } 
+
+        this.service.readByParams(this.params).then((values: Array<T>) => {
+          if (values instanceof Array) {
+            values.forEach((t: T) => this.values.push(t))
+          }
+        });
         
       })._after(() => {this.afterLoad.emit();});
   }
 }
 
 export class ListColumn {
-  constructor(private name: string, private  title: string, private  index: number, private style: string) {}
+  constructor(public name: string, private  title: string, private  index: number, private style: string) {}
 }
 
 export class ListAction {

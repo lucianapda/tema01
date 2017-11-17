@@ -1,7 +1,10 @@
 package sape.server.model.subscription;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,11 +14,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import sape.server.model.base.BaseEntity;
 import sape.server.model.person.PersonEntity;
+import sape.server.model.subscription.activity.SubscriptionActivityEntity;
 
 /**
  * Representa um evento.
@@ -29,6 +34,7 @@ public class SubscriptionEntity extends BaseEntity {
 	public static final String CODE = "code";
 	public static final String DATE = "date";
 	public static final String PERSON = "person";
+	public static final String ACTIVITIES = "activities";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,6 +53,9 @@ public class SubscriptionEntity extends BaseEntity {
     @ManyToOne(targetEntity = PersonEntity.class, fetch = FetchType.LAZY)
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_subscription_person"), nullable = false, name = "person_id_person")
     private PersonEntity person;
+
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = SubscriptionActivityEntity.class, fetch = FetchType.LAZY, mappedBy = SubscriptionActivityEntity.SUBSCRIPTION)
+	private List<SubscriptionActivityEntity> activities = new ArrayList<>();
 
 	/**
 	 * {@inheritDoc}
@@ -110,5 +119,21 @@ public class SubscriptionEntity extends BaseEntity {
 	 */
 	public void setPerson(PersonEntity person) {
 		this.person = person;
+	}
+
+	/**
+	 * Retorna uma instancia de {@link List<SubscriptionActivityEntity>}
+	 * @return {@link List<SubscriptionActivityEntity>}
+	 */
+	public List<SubscriptionActivityEntity> getActivities() {
+		return activities;
+	}
+
+	/**
+	 * Atribui um {@link List<SubscriptionActivityEntity>}
+	 * @param activities - {@link List<SubscriptionActivityEntity>}
+	 */
+	public void setActivities(List<SubscriptionActivityEntity> activities) {
+		this.activities = activities;
 	}
 }

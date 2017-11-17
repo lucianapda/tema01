@@ -1,4 +1,4 @@
-package sape.server.crud.subscription.activity.repository;
+package sape.server.crud.subscription.repository;
 
 import org.springframework.stereotype.Repository;
 
