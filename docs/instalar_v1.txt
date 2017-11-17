@@ -1,0 +1,17 @@
+Baixar servidor WildFly
+
+http://download.jboss.org/wildfly/9.0.2.Final/wildfly-9.0.2.Final.zip
+
+Descompactar
+
+Na pasta que for descompactada, entrar em wildfly-9.0.2.Final\bin\standalone.bat
+
+Importar o projeto backend no eclipse
+
+instalar o plugin do gradle
+
+executar a task gradle: build java war
+
+dentro do projeto ir na pasta build/libs/sape-server.war
+
+realizar o deploy deste arquivo no wildfly
