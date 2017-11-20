@@ -1,3 +1,4 @@
+import { URL_SERVER } from './../http/http.constants';
 import { HttpConfigMethod } from './../http/http.config.method';
 import { Config } from './../../shared/config/env.config';
 import { HttpHeaders } from './../http/http.headers';
@@ -74,5 +75,19 @@ export abstract class BaseCrudService<T extends BaseDTO> extends BaseService imp
     } else {
       return data;
     }
+  }
+
+  /**
+   * Retorna o path do serviço.
+   */
+  public getPath() : string{
+    return this.path;
+  }
+
+  /**
+   * Retorna o path final do serviço.
+   */
+  public getFinalPath() : string{
+    return URL_SERVER + this.getPath();;
   }
 }

@@ -28,6 +28,7 @@ export const SAPE_PAGES_REGISTER = { routingFull: "/sape/pages/register",  routi
 // Events
 export const SAPE_PAGES_REGISTER_EVENTS = { routingFull: "/sape/pages/register/events", routingFullRegExp: /^\/sape\/pages\/register\/events$/, routingSimple: "events" };
 export const SAPE_PAGES_REGISTER_EVENTS_EDIT = { routingFull: "/sape/pages/register/events/edit/:id", routingFullRegExp: /^\/sape\/pages\/register\/events\/edit\/([0-9])+$/ , routingSimple: "events/edit" };
+export const SAPE_PAGES_REGISTER_EVENTS_NEW = { routingFull: "/sape/pages/register/events/edit", routingFullRegExp: /^\/sape\/pages\/register\/events\/edit$/ , routingSimple: "events/edit" };
 
 // Entradas
 export const SAPE_PAGES_REGISTER_ENTRIES = { routingFull: "/sape/pages/register/entries", routingFullRegExp: /^\/sape\/pages\/register\/entries(\/([0-9]+))?$/, routingSimple: "entries" };

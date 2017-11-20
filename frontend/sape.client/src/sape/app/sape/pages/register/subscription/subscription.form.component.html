@@ -9,7 +9,7 @@
         </h2>
     </div>
     <br />
-    <modal>
+    <modal [control]="this">
         <div class="header">
             Inscrição
         </div>
@@ -22,7 +22,7 @@
                                 <label>Evento:</label>
                             </div>
                             <div class="column">
-                                <label>    {{source.getValue().event.description}}</label>
+                                <label>{{source.getValue().event.description}}</label>
                             </div>
                         </div>
                         <div class="noPaddingBottom row">
@@ -49,7 +49,7 @@
                                 <label>Pessoa:</label>
                             </div>
                             <div class="column">
-                                <person-search formControlName="idPerson"></person-search>
+                                <person-search [afterSelected]="" formControlName="idPerson"></person-search>
                             </div>
                         </div>
 

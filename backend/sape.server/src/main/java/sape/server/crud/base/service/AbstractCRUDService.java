@@ -22,6 +22,12 @@ import sape.server.model.base.BaseEntity;
  */
 public abstract class AbstractCRUDService<E extends BaseEntity, O extends BaseDTO> {
 
+	/**
+	 * Executa antes de salvar o objeto.
+	 * @param entity - {@link E}
+	 */
+	protected void beforeSave(E entity) {}
+
     /**
      * Salva a entidade e retorna a entidade salva.
      * @param entity - {@link E}
@@ -29,11 +35,20 @@ public abstract class AbstractCRUDService<E extends BaseEntity, O extends BaseDT
      */
     @Transactional(rollbackFor = Throwable.class)
     public E save(E entity) throws ValidationException {
+    	beforeSave(entity);
     	this.validate(entity);
-        return getCRUDRepository().save(entity);
+        E save = getCRUDRepository().save(entity);
+        afterSave(entity);
+		return save;
     }
 
     /**
+	 * Executa após salvar o objeto.
+	 * @param entity - {@link E}
+	 */
+	private void afterSave(E entity) {}
+
+	/**
      * Salva a entidade e retorna a entidade salva.
      * @param dto - {@link O}
      * @return {@link E} - salvo.

@@ -440,7 +440,7 @@ export class SeedConfig {
       'ng2-completer': 'node_modules/ng2-completer/ng2-completer.umd.js',
       'lodash': 'node_modules/lodash/lodash.min.js',
       'traceur': 'node_modules/traceur/bin/traceur.js',
-      'ng2-semantic-ui': 'node_modules/ng2-semantic-ui/bundles/ng2-semantic-ui.umd.min.js',
+      'ng2-semantic-ui': 'node_modules/ng2-semantic-ui/bundles/ng2-semantic-ui.umd.js',
 
       'app/': `${this.APP_BASE}app/`,
       // For test config

@@ -10,6 +10,9 @@ const routes: Routes = [
     path: '', component: EventListComponent
   },
   {
+    path: 'edit', component: EventFormComponent
+  },
+  {
     path: 'edit/:id', component: EventFormComponent
   }
 ];

@@ -1,6 +1,7 @@
 import { ModalOptions } from './modal.options';
 
 export class DefaultModalOptions implements ModalOptions {
+
     detachable = true;
     autofocus = true;
     observeChanges = false;

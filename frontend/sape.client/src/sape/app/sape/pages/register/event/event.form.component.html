@@ -21,7 +21,7 @@
                     </div>
                     <div class="column">
                         <div class="ui input">
-                            <input type="text" formControlName="code">
+                            <input type="number" formControlName="code">
                         </div>
                     </div>
                 </div>
@@ -83,7 +83,7 @@
                     </div>
                     <div class="column">
                         <div class="ui fluid input">
-                            <input type="text" maxlength="5" formControlName="vacancy">
+                            <input type="number" maxlength="5" formControlName="vacancy">
                         </div>
                     </div>
                 </div>
@@ -144,13 +144,18 @@
                 </tr>
             </tbody>
         </table>
+        <br />
     </div>
-    <div class="row">
-        <div class="right aligned five wide column noPaddingRight">
-            <button class="ui button" (click)="onCancel()">Cancelar</button>
-        </div>
-        <div class="column">
-            <button class="ui primary button" (click)="onSave()">Salvar</button>
+    <div class="ui center aligned container">
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="field">
+                    <button class="ui button" (click)="onCancel()">Cancelar</button>
+                </div>
+                <div class="field">
+                    <button class="ui primary button" (click)="onSave()">Salvar</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

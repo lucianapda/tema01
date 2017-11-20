@@ -1,8 +1,8 @@
 import { DefaultModalOptions } from './default-modal.options';
 import { ModalOptions } from './modal.options';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ElementRef } from '@angular/core';
-import { Input } from '@angular/core';
+import { ModalControl } from './modal.control';
 
 declare var $: any;
 
@@ -12,9 +12,11 @@ declare var $: any;
     styleUrls: ['./modal.component.css'],
     templateUrl: `./modal.component.html`,
   })
-export class ModalComponent implements OnInit {
+export class ModalComponent<T> implements OnInit {
   
   @Input() options: ModalOptions;
+
+  @Input() control: ModalControl<T>;
 
   private modal: any;
 
@@ -27,15 +29,17 @@ export class ModalComponent implements OnInit {
   /**
    * Ativa o modal
    */
-  public show() {
+  public show(value: T) {
     this.getModal().modal('show');
+    this.control.setModalValue(value);
   }
 
   /**
    * Ativa o modal
    */
-  public hide() {
-    this.getModal().modal('hide')
+  public hide() : any {
+    this.getModal().modal('hide');
+    return this.control.getModalValue();
   }
 
   private getModal() : any {
@@ -65,8 +69,8 @@ export class ModalComponent implements OnInit {
         onVisible: this.options.onVisible,
         onHide: this.options.onHide,
         onHidden: this.options.onHidden,
-        onApprove: this.options.onApprove,
-        onDeny: this.options.onDeny,
+        onApprove: () => { this.control.getModalApprove(this.control.getModalValue()) },
+        onDeny: () => { this.control.getModalDeny(this.control.getModalValue()) },
       });
     }
     return this.modal;

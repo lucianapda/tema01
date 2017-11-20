@@ -1,82 +1,77 @@
-import { PersonDTO } from './../../../model/person/person.dto';
-import { ServiceLocator } from './../../../service/locator/service.locator';
-import { ControlValueAccessor } from '@angular/forms';
-import { Component, ViewChild } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { forwardRef } from '@angular/core';
-import { PersonCrudService } from '../../../service/crud/person/person.crud.service';
- 
+import {PersonDTO} from '../../../model/person/person.dto';
+import {PersonCrudService} from '../../../service/crud/person/person.crud.service';
+import {ServiceLocator} from '../../../service/locator/service.locator';
+import { Component, Inject, ViewChild, AfterViewInit, Input, ElementRef, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
 declare var $: any;
 
 @Component({
-    moduleId: module.id,
-    selector: 'person-search',
-    template: `
-        <sui-select
-            class="selection"
-            [optionsLookup]="optionsSearch"
-            labelField="name"
-            valueField="id"
-            [(ngModel)]="selected"
-            [isSearchable]="true"
-            #searchSelect>
-            <div class="ui icon search input">
-                <i class="search icon"></i>
-                <input suiSelectSearch type="text" placeholder="Pesquisa por nome...">
+  selector: 'person-search',
+  template: `
+    <div class="ui {{loading? 'loading disabled' : ''}} search selection dropdown">
+        <input name="tags" type="person">
+        <i class="dropdown icon"></i>
+        <div class="default text">Selecione a pessoa...</div>
+        <div class="menu">
+            <div *ngFor="let person of results" class="item" (click)="onSelect(person)">
+                {{person.name}}
             </div>
-            <div class="divider"></div>
-            <div class="header">
-                <i class="list icon"></i>
-                Pessoas
-            </div>
-            <div class="scrolling menu">
-                <sui-select-option *ngFor="let o of searchSelect.filteredOptions" [value]="o"></sui-select-option>
-            </div>
-        </sui-select>
-    `,
-    providers: [{
-        provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => PersonSearchComponent), multi: true
-    }]
+        </div>
+    </div>
+  `,
+  providers: [{
+    provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => PersonSearchComponent), multi: true
+  }]
 })
-export class PersonSearchComponent implements ControlValueAccessor {
+export class PersonSearchComponent implements AfterViewInit, ControlValueAccessor {
 
-    private selected: Object;
-    private propagateChange: Function = (person: PersonDTO) => { };
+  private loading: boolean = false;
+  private value: number = null;
+  private results: PersonDTO[] = [];
+  private propagateChange: Function = (date: Date) => { };
+  private component: any;
 
-    private personCrudService() : PersonCrudService {
-        return ServiceLocator.get(PersonCrudService);
-    }
- 
-    private optionsSearch = (query: string) : Promise<PersonDTO[]> => {
-        let params: Map<string, any> = new Map<string, any>();
-        params.set('filters', '%name%='+ query); 
-        return this.personCrudService().readByParams(params).then((values: Array<PersonDTO>) => {return values;});
-    } 
+  ngAfterViewInit() {
+    this.component = $('.ui.dropdown').dropdown({});
+  }
 
-    public setSelected(value?: PersonDTO | Object) {
-        this.selected = value;
-    }
+  private onSelect(value: PersonDTO) : void {
+      this.value = value.id;
+      this.propagateChange(value.id);
+  }
 
-    writeValue(person: PersonDTO | number) {
-        if(!person) { return; }
-
-        if (typeof person == 'number') {
-            //  this.personCrudService().readById(person).then((values: Array<PersonDTO> | PersonDTO) => {
-            //      if (values instanceof Array) {
-            //          this.setSelected(values[0]); 
-            //      } else if (values instanceof Object) {
-            //          this.setSelected(values);
-            //      } 
-            //  });
-            this.selected = 2;
-        } else if (person instanceof PersonDTO) {
-            this.setSelected(person);
-        }
-    }
-
-    registerOnChange(fn: Function) {
-        this.propagateChange = fn;
-    } 
+  writeValue(value: number) {
+    if(!value || !this.component) { return; }
     
-    registerOnTouched(fn: any) { }
+    this.value = value;
+
+    let params: Map<string, any> = new Map<string, any>();
+    this.personCrudService().readByParams(params).then((values: Array<PersonDTO> | PersonDTO) => {
+        if (values instanceof Array) {
+            this.results = values;
+        } else if (values instanceof Object) {
+            this.results = [values];
+        }
+        this.results.forEach((person: any) => {
+            if (person.id == this.value) {
+                this.component.dropdown('refresh');
+                setTimeout(() => {
+                    this.component.dropdown('set selected', person.name);
+                }, 1);
+            }
+        });
+    });
+    
+  }
+
+  registerOnChange(fn: Function) {
+    this.propagateChange = fn;
+  } 
+
+  registerOnTouched(fn: any) { }
+
+  private personCrudService() : PersonCrudService {
+    return ServiceLocator.get(PersonCrudService);
+  }
 }

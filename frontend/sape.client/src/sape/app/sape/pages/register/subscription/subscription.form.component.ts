@@ -1,3 +1,5 @@
+import { PersonDTO } from './../../../../model/person/person.dto';
+import { ModalControl } from './../../../../components/modal/modal.control';
 import { ModalComponent } from './../../../../components/modal/modal.component';
 import { SubscriptionDTO } from './../../../../model/subscription/subscription.dto';
 import { PersonCrudService } from './../../../../service/crud/person/person.crud.service';
@@ -18,6 +20,7 @@ import { SubscriptionFormDTO } from './subscription.form.dto';
 import { BaseDTO } from '../../../../model/base/base.dto';
 import { ViewChild } from '@angular/core';
 import { ElementRef } from '@angular/core';
+import { DefaultModalOptions } from '../../../../components/modal/default-modal.options';
 
 /**
  * Created by Guilherme 
@@ -28,9 +31,9 @@ import { ElementRef } from '@angular/core';
   styleUrls: ['./subscription.form.component.css'],
   templateUrl: './subscription.form.component.html'
 })
-export class SubscriptionFormComponent extends FormComponent<BaseDTO> {
+export class SubscriptionFormComponent extends FormComponent<BaseDTO> implements ModalControl<SubscriptionFormDTO> {
 
-  @ViewChild(ModalComponent) componentModal: ModalComponent;
+  @ViewChild(ModalComponent) componentModal: ModalComponent<SubscriptionFormDTO>;
 
   constructor(route: ActivatedRoute, formBuilder: FormBuilder, router: Router) {
     super(route, formBuilder, router);
@@ -64,7 +67,9 @@ export class SubscriptionFormComponent extends FormComponent<BaseDTO> {
       code: new FormControl(source.currentSubscription.code),
       date: new FormControl(source.currentSubscription.date),
       idPerson: new FormControl(source.currentSubscription.idPerson),
-      subscriptions: new FormControl(source.subscriptions)
+      namePerson: new FormControl(source.currentSubscription.namePerson),
+      subscriptions: new FormControl(source.subscriptions),
+      currentSubscription: new FormControl(source.currentSubscription),
     });  
   }
 
@@ -76,6 +81,8 @@ export class SubscriptionFormComponent extends FormComponent<BaseDTO> {
       code: source.currentSubscription.code,
       date: source.currentSubscription.date, 
       idPerson: source.currentSubscription.idPerson,
+      namePerson: source.currentSubscription.namePerson,
+      currentSubscription: source.currentSubscription,
       subscriptions: source.subscriptions
     });
   }
@@ -87,7 +94,7 @@ export class SubscriptionFormComponent extends FormComponent<BaseDTO> {
   protected editAction(value: SubscriptionDTO) {
     (<SubscriptionFormDTO> this.source.getValue()).currentSubscription = value;
     this.bindForm(this.sourceForm, (<SubscriptionFormDTO> this.source.getValue()));
-    this.componentModal.show();
+    this.componentModal.show(<SubscriptionFormDTO> this.source.getValue());
   }
 
   protected getActionInit() : AppActionTask {
@@ -121,5 +128,25 @@ export class SubscriptionFormComponent extends FormComponent<BaseDTO> {
             this.sourceForm.valueChanges.subscribe((value: SubscriptionFormDTO) => {this.source.next(value)});
           });
         })._after(() => {this.loading = false});
+  }
+
+  getModalApprove(value: SubscriptionFormDTO) : boolean {
+    console.log(value);
+    return true
+  }
+
+  getModalDeny(value: SubscriptionFormDTO) : boolean {
+    console.log(value);
+    return true
+  }
+
+  setModalValue(value: SubscriptionFormDTO) : void {}
+
+  getModalValue() : SubscriptionFormDTO {
+    return <SubscriptionFormDTO> this.source.getValue();
+  }
+
+  afterSelected(person: PersonDTO) {
+    this.sourceForm.controls['name'].setValue(person.name);
   }
 }

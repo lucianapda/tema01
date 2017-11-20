@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sape.server.core.session.RequestService;
 import sape.server.crud.base.repository.AbstractCRUDRepository;
 import sape.server.crud.base.service.AbstractCRUDService;
 import sape.server.crud.event.repository.EventCRUDRepository;
@@ -31,12 +32,26 @@ public class EventCRUDService extends AbstractCRUDService<EventEntity, EventDTO>
     @Autowired
     private UserCRUDService userCRUDService;
 
+    @Autowired
+    private RequestService requestService;
+
     /**
      * {@inheritDoc}
      */
     @Override
     protected AbstractCRUDRepository<EventEntity> getCRUDRepository() {
         return eventCRUDRepository;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void beforeSave(EventEntity entity) {
+    	super.beforeSave(entity);
+    	if (entity.getId() == null  && entity.getVersion() == null && entity.getUser() == null) {
+			entity.setUser(requestService.getCurrentUser());
+		}
     }
 
     /**

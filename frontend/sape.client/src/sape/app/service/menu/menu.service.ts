@@ -1,4 +1,4 @@
-import { SAPE_PAGES, SAPE_PAGES_HOME, SAPE_PAGES_REGISTER, SAPE_PAGES_CONFIGURATION, SAPE_PAGES_REGISTER_EVENTS, SAPE_PAGES_REGISTER_SUBSCRIPTIONS, SAPE_PAGES_REGISTER_PEOPLE, SAPE_PAGES_REGISTER_EVENTS_EDIT, SAPE_LOGIN, SAPE_NOT_FOUND, SAPE_PAGES_REGISTER_ENTRIES, SAPE_PAGES_REGISTER_PEOPLE_EDIT, SAPE_PAGES_REGISTER_SUBSCRIPTIONS_EDIT, SAPE_PAGES_REGISTER_ENTRIES_EDIT } from './../../app.routing.mapping';
+import { SAPE_PAGES, SAPE_PAGES_HOME, SAPE_PAGES_REGISTER, SAPE_PAGES_CONFIGURATION, SAPE_PAGES_REGISTER_EVENTS, SAPE_PAGES_REGISTER_SUBSCRIPTIONS, SAPE_PAGES_REGISTER_PEOPLE, SAPE_PAGES_REGISTER_EVENTS_EDIT, SAPE_LOGIN, SAPE_NOT_FOUND, SAPE_PAGES_REGISTER_ENTRIES, SAPE_PAGES_REGISTER_PEOPLE_EDIT, SAPE_PAGES_REGISTER_SUBSCRIPTIONS_EDIT, SAPE_PAGES_REGISTER_ENTRIES_EDIT, SAPE_PAGES_REGISTER_EVENTS_NEW } from './../../app.routing.mapping';
 import { StringUtils } from './../../util/string/string.utils';
 import { Injectable } from '@angular/core';
 import { MenuGroup } from './menu.group';
@@ -32,6 +32,7 @@ export class MenuService {
     
     let event: MenuOption = new MenuOption('Eventos', 'event', 'calendar outline', SAPE_PAGES_REGISTER_EVENTS.routingFull, SAPE_PAGES_REGISTER_EVENTS.routingFullRegExp, register);
     event.subMenuOptions.push(new MenuOption('Eventos', 'event', 'calendar outline', SAPE_PAGES_REGISTER_EVENTS_EDIT.routingFull, SAPE_PAGES_REGISTER_EVENTS_EDIT.routingFullRegExp, event));
+    event.subMenuOptions.push(new MenuOption('Eventos', 'event', 'calendar outline', SAPE_PAGES_REGISTER_EVENTS_NEW.routingFull, SAPE_PAGES_REGISTER_EVENTS_NEW.routingFullRegExp, event));
     
     let entry: MenuOption = new MenuOption('Entradas', 'entry', 'wait', SAPE_PAGES_REGISTER_ENTRIES.routingFull, SAPE_PAGES_REGISTER_ENTRIES.routingFullRegExp, register);
     entry.subMenuOptions.push(new MenuOption('Entradas', 'entry', 'wait', SAPE_PAGES_REGISTER_ENTRIES_EDIT.routingFull, SAPE_PAGES_REGISTER_ENTRIES_EDIT.routingFullRegExp, entry));
