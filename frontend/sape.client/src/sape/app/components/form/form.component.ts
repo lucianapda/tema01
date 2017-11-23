@@ -1,4 +1,4 @@
-import { MessageService } from './../../service/message/message.service';
+import { MessageService, MESSAGE_SUCCESS } from './../../service/message/message.service';
 import { ServiceLocator } from './../../service/locator/service.locator';
 import { MenuService } from './../../service/menu/menu.service';
 import { MenuOption } from './../../service/menu/menu.option';
@@ -27,6 +27,7 @@ export abstract class FormComponent<T extends BaseDTO | BaseDTO> extends BaseCom
   protected abstract buildForm(formBuilder: FormBuilder, source: T): FormGroup;
   protected abstract bindForm(sourceForm: FormGroup, source: T): void;
   protected abstract newSource(): T;
+  protected abstract onCancel() : void;
   protected abstract onCancel() : void;
 
   constructor(protected route: ActivatedRoute, protected formBuilder: FormBuilder, private router: Router) {
@@ -80,6 +81,7 @@ export abstract class FormComponent<T extends BaseDTO | BaseDTO> extends BaseCom
               this.source.next(this.newSource());
             }
             this.bindForm(this.sourceForm, this.source.getValue());
+            this.messageService().success("Registro atualizado com sucesso!", MESSAGE_SUCCESS);
           });
         })
         ._after(() => this.hideLoading());
@@ -98,6 +100,7 @@ export abstract class FormComponent<T extends BaseDTO | BaseDTO> extends BaseCom
                 this.source.next(this.newSource());
               }
               this.bindForm(this.sourceForm, this.source.getValue());
+              this.messageService().success("Registro criado com sucesso!", MESSAGE_SUCCESS);
             });
           })
           ._after(() => this.hideLoading());

@@ -8,9 +8,10 @@ import { PersonFormComponent } from "./person.form.component";
 import { PersonListComponent } from "./person.list.component";
 import {routing} from "./person.routing";
 import { TabModule } from '../../../../components/tab/tab.module';
+import { NgxMaskModule } from '../../../../components/mask/mask.module';
 
 @NgModule({
-  imports:      [ routing, ListModule, CalendarModule, SharedModule, TabModule, ModalModule ],
+  imports:      [ routing, ListModule, CalendarModule, SharedModule, TabModule, ModalModule, NgxMaskModule ],
   declarations: [ PersonListComponent, PersonFormComponent],
   bootstrap:    [ PersonListComponent ], 
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

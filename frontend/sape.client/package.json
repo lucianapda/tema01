@@ -160,10 +160,11 @@
     "jquery": "^3.2.1",
     "ng2-semantic-ui": "^0.9.6",
     "ng2-smart-table": "^1.2.1",
-    "ng2-toastr": "^4.1.2",
+    "ngx-toastr": "^6.5.0",
     "rxjs": "^5.4.2",
     "semantic-ui-calendar": "0.0.8",
     "systemjs": "0.20.14",
+    "text-mask-addons": "^3.7.1",
     "zone.js": "0.8.12"
   }
 }

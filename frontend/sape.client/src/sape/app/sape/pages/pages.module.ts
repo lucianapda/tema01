@@ -1,3 +1,4 @@
+import { MessageModule } from './../../components/message/message.module';
 import { BreadcrumbModule } from './../../components/breadcrumb/breadcrumb.module';
 import { MenuSideBarModule } from './../../components/menu/sidebar/menu-sidebar.module';
 import { NgModule }      from '@angular/core';
@@ -14,7 +15,8 @@ import { BarfooterModule } from '../../components/batfooter/barfooter.module';
                   BartopModule,
                   MenuSideBarModule,
                   BreadcrumbModule,
-                  BarfooterModule ],
+                  BarfooterModule,
+                  MessageModule ],
   declarations: [ PagesComponent ],
   bootstrap:    [ PagesComponent ]
 })

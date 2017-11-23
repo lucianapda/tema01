@@ -1,6 +1,7 @@
+import { ServiceLocator } from './../../service/locator/service.locator';
 import { MessageService } from './../../service/message/message.service';
-import { Message } from './../../service/message/message';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { ToastContainerDirective } from 'ngx-toastr';
 
 @Component({
     moduleId: module.id,
@@ -9,16 +10,15 @@ import { Component } from '@angular/core';
   })
 export class MessageComponent {
 
-    private messages: Array<Message> = [];
+    @ViewChild(ToastContainerDirective) toastContainer: ToastContainerDirective;
 
-    constructor(private messageService: MessageService) {
-        this.messageService.registerOnChange(() => {
-            this.refresh();
-        })
+    constructor() {}
+
+    private messageService() : MessageService {
+        return ServiceLocator.get(MessageService)
     }
-
-    public refresh() {
-        this.messages = new Array<Message>();
-        this.messages.concat(this.messageService.getMessages());
+    
+    ngOnInit() {
+        this.messageService().overlayContainer = this.toastContainer;
     }
 }

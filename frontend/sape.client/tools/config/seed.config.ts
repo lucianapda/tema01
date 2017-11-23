@@ -441,6 +441,7 @@ export class SeedConfig {
       'lodash': 'node_modules/lodash/lodash.min.js',
       'traceur': 'node_modules/traceur/bin/traceur.js',
       'ng2-semantic-ui': 'node_modules/ng2-semantic-ui/bundles/ng2-semantic-ui.umd.js',
+      'ngx-toastr': 'node_modules/ngx-toastr/toastr.umd.js',
 
       'app/': `${this.APP_BASE}app/`,
       // For test config
