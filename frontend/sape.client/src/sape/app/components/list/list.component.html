@@ -17,7 +17,7 @@
             <table class="ui sortable selectable celled striped table">
                 <thead>
                     <tr>
-                        <th *ngFor='let column of columns; trackBy: index;' class="{{column.style}}">
+                        <th *ngFor='let column of columns; trackBy: index;' class="{{column.style}}{{column.hide?' hide ':''}}">
                             {{column.title}}
                         </th>
                         <th class="one wide">Ações</th>
@@ -27,14 +27,14 @@
                     <tr *ngFor="let value of values; trackBy: index;">
                         <!-- Valores que precisam de formatação.  -->
                         <ng-container *ngIf="isFormatValue">
-                            <td class="{{column.style}}" *ngFor='let column of columns; trackBy: index;'>
+                            <td class="{{column.style}}{{column.hide?' hide ':''}}" *ngFor='let column of columns; trackBy: index;'>
                                 {{formatValue(value[column.name])}}
                             </td>
                         </ng-container>
 
                         <!-- Valores que não precisam de formatação.  -->
                         <ng-container *ngIf="!isFormatValue">
-                            <td class="{{column.style}}" *ngFor='let column of columns; trackBy: index;'>
+                            <td class="{{column.style}}{{column.hide?' hide ':''}}" *ngFor='let column of columns; trackBy: index;'>
                                 {{value[column.name]}}
                             </td>
                         </ng-container>

@@ -136,7 +136,7 @@ public class EventCRUDService extends AbstractCRUDService<EventEntity, EventDTO>
 			activityDTO.setDateEnd(t.getDateEnd());
 			activityDTO.setVacancy(t.getVacancy());
 			activityDTO.setPlace(t.getPlace());
-			activityDTO.setIdEvent(t.getEvent().getId());
+			activityDTO.setIdEvent(entity.getId());
 			dto.getActivities().add(activityDTO);
 		});
         return dto;

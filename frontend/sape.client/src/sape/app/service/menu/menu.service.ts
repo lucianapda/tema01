@@ -1,4 +1,4 @@
-import { SAPE_PAGES, SAPE_PAGES_HOME, SAPE_PAGES_REGISTER, SAPE_PAGES_CONFIGURATION, SAPE_PAGES_REGISTER_EVENTS, SAPE_PAGES_REGISTER_SUBSCRIPTIONS, SAPE_PAGES_REGISTER_PEOPLE, SAPE_PAGES_REGISTER_EVENTS_EDIT, SAPE_LOGIN, SAPE_NOT_FOUND, SAPE_PAGES_REGISTER_ENTRIES, SAPE_PAGES_REGISTER_PEOPLE_EDIT, SAPE_PAGES_REGISTER_SUBSCRIPTIONS_EDIT, SAPE_PAGES_REGISTER_ENTRIES_EDIT, SAPE_PAGES_REGISTER_EVENTS_NEW } from './../../app.routing.mapping';
+import { SAPE_PAGES, SAPE_PAGES_HOME, SAPE_PAGES_REGISTER, SAPE_PAGES_CONFIGURATION, SAPE_PAGES_REGISTER_EVENTS, SAPE_PAGES_REGISTER_SUBSCRIPTIONS, SAPE_PAGES_REGISTER_PEOPLE, SAPE_PAGES_REGISTER_EVENTS_EDIT, SAPE_LOGIN, SAPE_NOT_FOUND, SAPE_PAGES_REGISTER_ENTRIES, SAPE_PAGES_REGISTER_PEOPLE_EDIT, SAPE_PAGES_REGISTER_SUBSCRIPTIONS_EDIT, SAPE_PAGES_REGISTER_ENTRIES_EDIT, SAPE_PAGES_REGISTER_EVENTS_NEW, SAPE_PAGES_REGISTER_PEOPLE_NEW } from './../../app.routing.mapping';
 import { StringUtils } from './../../util/string/string.utils';
 import { Injectable } from '@angular/core';
 import { MenuGroup } from './menu.group';
@@ -42,6 +42,7 @@ export class MenuService {
     
     let people: MenuOption = new MenuOption('Pessoas', 'person', 'users', SAPE_PAGES_REGISTER_PEOPLE.routingFull, SAPE_PAGES_REGISTER_PEOPLE.routingFullRegExp, register);
     people.subMenuOptions.push(new MenuOption('Pessoas', 'person', 'users', SAPE_PAGES_REGISTER_PEOPLE_EDIT.routingFull, SAPE_PAGES_REGISTER_PEOPLE_EDIT.routingFullRegExp, people));
+    people.subMenuOptions.push(new MenuOption('Pessoas', 'person', 'users', SAPE_PAGES_REGISTER_PEOPLE_EDIT.routingFull, SAPE_PAGES_REGISTER_PEOPLE_NEW.routingFullRegExp, people));
     
     this.rootGroup.menuOptions.push(event);
     this.rootGroup.menuOptions.push(entry);

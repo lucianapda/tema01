@@ -1,4 +1,4 @@
-<div id="eventFormPage" [ngClass]="{loading: loading}" class="ui left aligned container">
+<div id="eventFormPage" class="ui left aligned container">
     <div class="ui center aligned container">
         <h2 class="ui header">
             <i class="{{menuOption.icon}} icon"></i>
@@ -13,7 +13,7 @@
         <a class="item" data-tab="second">Atividades</a>
     </div>
     <div class="ui tab active" data-tab="first">
-        <form class="ui form" [formGroup]="sourceForm">
+        <form class="ui {{loading? ' loading ':''}} form" [formGroup]="sourceForm">
             <div class="ui two column grid">
                 <div class="noPaddingBottom row">
                     <div class="right aligned five wide column noPaddingRight">

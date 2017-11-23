@@ -94,7 +94,18 @@ export class ListComponent<T extends BaseDTO> extends BaseComponent{
 }
 
 export class ListColumn {
-  constructor(public name: string, private  title: string, private  index: number, private style: string) {}
+  public name: string;
+  public title: string; 
+  public index: number; 
+  public style: string;
+  public hide: boolean;
+  constructor(name: string, title: string, index: number, style: string, hide: boolean) {
+    this.name = name;
+    this.title = title;
+    this.index = index;
+    this.style = style;
+    this.hide = hide;
+  }
 }
 
 export class ListAction {

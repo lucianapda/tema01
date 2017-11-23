@@ -4,7 +4,7 @@ import { EventDTO } from '../../../../model/event/event.dto';
 
 
 export class SubscriptionFormDTO extends BaseDTO {
-    event: EventDTO = new EventDTO();
+    idEvent: number = null;
     currentSubscription : SubscriptionDTO = new SubscriptionDTO();
     subscriptions: SubscriptionDTO[] = [];
 }

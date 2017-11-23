@@ -26,17 +26,17 @@ export class SapeComponent {
         // localizationService.load("pt", pt);
 
         // Next, modify the "fallback" language with your custom values:
-        localizationService.patch("pt", {
-            search: {
-                noResults: { // Message shown when there are no search results
-                    header:'Nenhum registro foi encontrado...',
-                    message:'Tente utilizar outros critérios!'
-                }
-            }  
-        });
+        // localizationService.patch("pt", {
+        //     search: {
+        //         noResults: { // Message shown when there are no search results
+        //             header:'Nenhum registro foi encontrado...',
+        //             message:'Tente utilizar outros critérios!'
+        //         }
+        //     }  
+        // });
 
-        // Finally, update the current language:
-        localizationService.setLanguage("pt");
+        // // Finally, update the current language:
+        // localizationService.setLanguage("pt");
     }
 
     private menuService() : MenuService {

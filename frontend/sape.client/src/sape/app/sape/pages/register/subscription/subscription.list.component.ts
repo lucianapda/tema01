@@ -39,12 +39,12 @@ export class SubscriptionListComponent {
     */
     getColumns() : Array<ListColumn> {
       return [
-        new ListColumn('id',  'ID', -1, ''),
-        new ListColumn('code',  'Código', 0, 'sorted one wide'),
-        new ListColumn('place', 'Local', 1, 'sorted four wide'),
-        new ListColumn('description', 'Descrição', 2, 'sorted four wide'),
-        new ListColumn('dateStart', 'Data de início', 3, 'sorted three wide'),
-        new ListColumn('dateEnd', 'Data de fim', 4, 'sorted three wide')
+        new ListColumn('id',  'ID', -1, '', true),
+        new ListColumn('code',  'Código', 0, 'sorted one wide', false),
+        new ListColumn('place', 'Local', 1, 'sorted four wide', false),
+        new ListColumn('description', 'Descrição', 2, 'sorted four wide', false),
+        new ListColumn('dateStart', 'Data de início', 3, 'sorted three wide', false),
+        new ListColumn('dateEnd', 'Data de fim', 4, 'sorted three wide', false)
       ];
     }
      

@@ -73,4 +73,8 @@ export class EventFormComponent extends FormComponent<EventDTO> {
   protected onCancel() : void {
     this.goTo([SAPE_PAGES_REGISTER_EVENTS.routingFull]);
   }
+
+  protected afterSave() : void {
+    this.onCancel();
+  };
 }

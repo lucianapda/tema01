@@ -1,5 +1,10 @@
 package sape.server.crud.person.service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +26,14 @@ import sape.server.model.person.contact.PersonContactEntity;
 public class PersonCRUDService extends AbstractCRUDService<PersonEntity, PersonDTO> {
 
     @Autowired
-    private PersonCRUDRepository activityCRUDRepository;
+    private PersonCRUDRepository personCRUDRepository;
 
     /**
      * {@inheritDoc}
      */
     @Override
     protected AbstractCRUDRepository<PersonEntity> getCRUDRepository() {
-        return activityCRUDRepository;
+        return personCRUDRepository;
     }
 
     /**
@@ -45,15 +50,36 @@ public class PersonCRUDService extends AbstractCRUDService<PersonEntity, PersonD
     	entity.setName(dto.getName());
     	entity.setBirthDate(dto.getBirthDate());
     	entity.setCpf(dto.getCpf());
+
+    	List<PersonContactEntity> contactsUpdated = new ArrayList<>();
     	dto.getContacts().forEach(contact -> {
-    		PersonContactEntity personContactEntity = new PersonContactEntity();
-    		personContactEntity.setId(contact.getId());
-    		personContactEntity.setVersion(contact.getVersion());
+    		PersonContactEntity personContactEntity = null;
+    		if (contact.getId() != null) {
+    			Optional<PersonContactEntity> findFirst = entity.getContacts().stream().filter(t -> contact.getId() == t.getId()).findFirst();
+    			if (findFirst.isPresent()) {
+					personContactEntity = findFirst.get();
+    			}
+			}
+    		if (personContactEntity == null){
+				personContactEntity = new PersonContactEntity();
+				personContactEntity.setId(contact.getId());
+				personContactEntity.setVersion(contact.getVersion());
+			}
     		personContactEntity.setCode(contact.getCode());
     		personContactEntity.setDescription(contact.getDescription());
     		personContactEntity.setPerson(entity);
+    		contactsUpdated.add(personContactEntity);
 			entity.getContacts().add(personContactEntity);
 		});
+
+
+		for (Iterator<PersonContactEntity> iterator = entity.getContacts().iterator(); iterator.hasNext();) {
+			PersonContactEntity personContactEntity = iterator.next();
+			if (!contactsUpdated.stream().filter(t -> t.getId() == null || personContactEntity.getId() == t.getId()).findFirst().isPresent()) {
+				iterator.remove();
+			}
+		}
+
         return entity;
     }
 

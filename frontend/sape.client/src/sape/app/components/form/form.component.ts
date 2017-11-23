@@ -16,9 +16,10 @@ import { NavigationExtras } from '@angular/router/src/router';
 
 export abstract class FormComponent<T extends BaseDTO | BaseDTO> extends BaseComponent {
   
-  protected orinialSource: T;
-  protected source: BehaviorSubject<T> = new BehaviorSubject<T>(this.newSource());
-  public sourceForm: FormGroup = this.buildForm(this.formBuilder, this.newSource());
+  protected originalSource: T;
+  protected currentSource: T;
+  protected source: BehaviorSubject<T> ;
+  public sourceForm: FormGroup;
   protected loading: boolean = false;
   protected menuOption: MenuOption;
   
@@ -30,12 +31,18 @@ export abstract class FormComponent<T extends BaseDTO | BaseDTO> extends BaseCom
 
   constructor(protected route: ActivatedRoute, protected formBuilder: FormBuilder, private router: Router) {
     super();
+    this.originalSource = this.newSource();
+    this.currentSource = Object.assign({}, this.originalSource);
+    this.source = new BehaviorSubject<T>(this.currentSource);
+    this.sourceForm = this.buildForm(this.formBuilder, this.currentSource);
+    this.bindForm(this.sourceForm, this.currentSource);
+    this.sourceForm.valueChanges.subscribe((value: T) => {this.source.next(value)});
   }
 
   protected getActionInit() : AppActionTask {
     this.menuOption = this.menuService().getMenuOptionSelected();
     return this.createAction(AppActionType.READING)
-      ._before(() => {this.loading = true}) 
+      ._before(() => this.showLoading()) 
       ._execute(() => { 
         let id = this.route.snapshot.params['id'];
         if (id) {
@@ -47,16 +54,12 @@ export abstract class FormComponent<T extends BaseDTO | BaseDTO> extends BaseCom
               } else {
                 this.source = new BehaviorSubject(this.newSource());
               }
-              this.orinialSource = this.source.getValue();
-              this.bindForm(this.sourceForm, this.source.getValue());
-              this.sourceForm.valueChanges.subscribe((value: T) => {this.source.next(value)});
+              this.originalSource = this.source.getValue();
+              this.currentSource = Object.assign({}, this.originalSource);
+              this.bindForm(this.sourceForm, this.currentSource);
           });
-        } else {
-          this.orinialSource = this.newSource();
-          this.bindForm(this.sourceForm, this.orinialSource);
-          this.sourceForm.valueChanges.subscribe((value: T) => {this.source.next(value)});
-        }
-        })._after(() => {this.loading = false});
+        } 
+      })._after(() => this.hideLoading());
   }
 
   protected onSave(): void {
@@ -66,7 +69,7 @@ export abstract class FormComponent<T extends BaseDTO | BaseDTO> extends BaseCom
       if (!sourceValue.id) {
         task =  this.createAction(AppActionType.CREATING);
         task
-        ._before(() => {this.loading = true}) 
+        ._before(() => this.showLoading()) 
         ._execute(() => {
           this.getCrudService().create(sourceValue).then((values: Array<T> | T) => {
             if (values instanceof Array) {
@@ -79,12 +82,12 @@ export abstract class FormComponent<T extends BaseDTO | BaseDTO> extends BaseCom
             this.bindForm(this.sourceForm, this.source.getValue());
           });
         })
-        ._after(() => {this.loading = false});
+        ._after(() => this.hideLoading());
       } else {
         if (sourceValue.id) {
-          task =  this.createAction(AppActionType.CHANGING);
+          task =  this.createAction(AppActionType.UPDATING);
           task
-          ._before(() => {this.loading = true}) 
+          ._before(() => {this.showLoading()}) 
           ._execute(() => {
             this.getCrudService().update(sourceValue).then((values: Array<T> | T) => {
               if (values instanceof Array) {
@@ -97,13 +100,21 @@ export abstract class FormComponent<T extends BaseDTO | BaseDTO> extends BaseCom
               this.bindForm(this.sourceForm, this.source.getValue());
             });
           })
-          ._after(() => {this.loading = false});
+          ._after(() => this.hideLoading());
         }
       }
       if (task) {
         this.runner(task);
       }
     }
+  }
+
+  protected showLoading() : void {
+    this.loading = true;
+  }
+
+  protected hideLoading() : void {
+    this.loading = false;
   }
 
   ngAfterViewInit() {
@@ -113,6 +124,8 @@ export abstract class FormComponent<T extends BaseDTO | BaseDTO> extends BaseCom
   protected goTo(commands: any[], extras?: NavigationExtras) {
     this.router.navigate(commands, extras);
   }
+
+  protected afterSave() : void {};
 
   protected menuService() : MenuService {
     return ServiceLocator.get(MenuService);

@@ -61,28 +61,30 @@ export class SubscriptionFormComponent extends FormComponent<BaseDTO> implements
 
   protected buildForm(formBuilder: FormBuilder, source: SubscriptionFormDTO) : FormGroup{
     return formBuilder.group({
-      event: new FormControl(source.event),
-      id: new FormControl(source.currentSubscription.id),
-      version: new FormControl(source.currentSubscription.version),
-      code: new FormControl(source.currentSubscription.code),
-      date: new FormControl(source.currentSubscription.date),
-      idPerson: new FormControl(source.currentSubscription.idPerson),
-      namePerson: new FormControl(source.currentSubscription.namePerson),
+      currentSubscription: formBuilder.group({
+        id: new FormControl(source.currentSubscription.id),
+        version: new FormControl(source.currentSubscription.version),
+        code: new FormControl(source.currentSubscription.code),
+        date: new FormControl(source.currentSubscription.date),
+        idPerson: new FormControl(source.currentSubscription.idPerson),
+        namePerson: new FormControl(source.currentSubscription.namePerson)
+      }),
       subscriptions: new FormControl(source.subscriptions),
-      currentSubscription: new FormControl(source.currentSubscription),
+      idEvent: new FormControl(source.idEvent),
     });  
   }
 
   protected bindForm(sourceForm: FormGroup, source: SubscriptionFormDTO): void  {
     sourceForm.setValue({
-      event: source.event,
-      id: source.currentSubscription.id,
-      version: source.currentSubscription.version,
-      code: source.currentSubscription.code,
-      date: source.currentSubscription.date, 
-      idPerson: source.currentSubscription.idPerson,
-      namePerson: source.currentSubscription.namePerson,
-      currentSubscription: source.currentSubscription,
+      currentSubscription: {
+        id: source.currentSubscription.id,
+        code: source.currentSubscription.code,
+        version: source.currentSubscription.version,
+        date: source.currentSubscription.date, 
+        idPerson: source.currentSubscription.idPerson,
+        namePerson: source.currentSubscription.namePerson,
+      },
+      idEvent: source.idEvent,
       subscriptions: source.subscriptions
     });
   }
@@ -102,41 +104,16 @@ export class SubscriptionFormComponent extends FormComponent<BaseDTO> implements
     return this.createAction(AppActionType.READING)
       ._before(() => {this.loading = true}) 
       ._execute(() => { 
-        let params: Map<string, any> = new Map<string, any>();
-        let idEvent: number = this.route.snapshot.params['id'];
-        this.source = new BehaviorSubject(new SubscriptionFormDTO());
-        params.set('search', 'idEvent='+ idEvent);
-
-        this.eventCrudService().readById(idEvent).then((values: Array<EventDTO> | EventDTO) => {
-          if (values instanceof Array) {
-            (<SubscriptionFormDTO> this.source.getValue()).event = values[0];
-          } if (values instanceof Object) {
-            (<SubscriptionFormDTO> this.source.getValue()).event = <EventDTO> values;
-          }
-        });
-
-        this.getCrudService().readByParams(params).then((values: Array<SubscriptionDTO> | SubscriptionDTO) => {
-            if (values instanceof Array) {
-              (<SubscriptionFormDTO> this.source.getValue()).subscriptions = values;
-            } if (values instanceof SubscriptionDTO) {
-              (<SubscriptionFormDTO> this.source.getValue()).subscriptions = [<SubscriptionDTO> values];
-            } else {
-              (<SubscriptionFormDTO> this.source.getValue()).currentSubscription = new SubscriptionDTO();
-            }
-            this.orinialSource = this.source.getValue();
-            this.bindForm(this.sourceForm, (<SubscriptionFormDTO> this.source.getValue()));
-            this.sourceForm.valueChanges.subscribe((value: SubscriptionFormDTO) => {this.source.next(value)});
-          });
-        })._after(() => {this.loading = false});
+        this.refresh();
+      })._after(() => {this.loading = false});
   }
 
   getModalApprove(value: SubscriptionFormDTO) : boolean {
-    console.log(value);
+    this.onSave();
     return true
   }
 
   getModalDeny(value: SubscriptionFormDTO) : boolean {
-    console.log(value);
     return true
   }
 
@@ -148,5 +125,68 @@ export class SubscriptionFormComponent extends FormComponent<BaseDTO> implements
 
   afterSelected(person: PersonDTO) {
     this.sourceForm.controls['name'].setValue(person.name);
+  }
+
+  private onNew() {
+    this.editAction(new SubscriptionDTO())
+  }
+
+  private setNamePerson(personDTO : PersonDTO, currentSubscription: SubscriptionDTO) {
+    currentSubscription.namePerson = personDTO.name;
+  }
+
+  protected onSave(): void {
+    let sourceValue : SubscriptionFormDTO = <SubscriptionFormDTO>this.source.getValue();
+    if (sourceValue) {
+      let task: AppActionTask = null;
+      if (!sourceValue.currentSubscription.id) {
+        task =  this.createAction(AppActionType.CREATING);
+        task
+        ._before(() => {this.loading = true}) 
+        ._execute(() => {
+          this.getCrudService().create(sourceValue.currentSubscription).then(() => {
+            this.refresh(); 
+          });
+        })
+        ._after(() => { this.refresh(); this.loading = false; });
+      } else if (sourceValue.currentSubscription.id) {
+          task =  this.createAction(AppActionType.UPDATING);
+          task
+          ._before(() => {this.loading = true}) 
+          ._execute(() => {
+            this.getCrudService().update(sourceValue.currentSubscription).then(() => {
+              this.refresh(); 
+            });
+          })
+          ._after(() => { this.loading = false; });
+      }
+      if (task) {
+        this.runner(task);
+      }
+    }
+  }
+
+  private refresh() : void {
+    if (!this.source) {
+      let newSource = new SubscriptionFormDTO();
+      let idEvent: number = this.route.snapshot.params['id'];
+      newSource.idEvent = idEvent;
+    }
+
+    (<SubscriptionFormDTO> this.source.getValue()).subscriptions = [];
+    
+    let params: Map<string, any> = new Map<string, any>();
+    this.getCrudService().readByParams(params).then((values: Array<SubscriptionDTO> | SubscriptionDTO) => {
+        if (values instanceof Array) {
+          (<SubscriptionFormDTO> this.source.getValue()).subscriptions = values;
+        } if (values instanceof SubscriptionDTO) {
+          (<SubscriptionFormDTO> this.source.getValue()).subscriptions = [<SubscriptionDTO> values];
+        } else {
+          (<SubscriptionFormDTO> this.source.getValue()).currentSubscription = new SubscriptionDTO();
+        }
+        this.orinialSource = this.source.getValue();
+        this.bindForm(this.sourceForm, (<SubscriptionFormDTO> this.source.getValue()));
+        this.sourceForm.valueChanges.subscribe((value: SubscriptionFormDTO) => {this.source.next(value)});
+      });
   }
 }

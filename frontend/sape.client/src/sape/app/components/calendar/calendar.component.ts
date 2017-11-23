@@ -10,7 +10,7 @@ declare var $: any;
     <div class="ui calendar" style="display: inherit !important" #calendar>
       <div class="ui input left icon">
         <i class="calendar icon"></i>
-        <input (change)="dateTabCompletion($event)" type="text"  placeholder="Date/Time">
+        <input (change)="dateTabCompletion($event)" type="text"  placeholder="{{placeholder}}">
       </div>
     </div>
   `,
@@ -36,7 +36,18 @@ export class CalendarComponent implements AfterViewInit, ControlValueAccessor {
                          { type: this.type },
                          { minDate: this.minDate },
                          { maxDate: this.maxDate },
-                         { onChange: (date: Date) => this.emit(date) });
+                         { onChange: (date: Date) => this.emit(date) },
+                         { 
+                           text: {
+                            days: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+                            months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                            monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                            today: 'Hoje',
+                            now: 'Agora',
+                            am: 'AM',
+                            pm: 'PM'
+                          }
+                        });
   }
 
   constructor(@Inject(CalendarOptions) options: CalendarOptions) {
@@ -48,7 +59,7 @@ export class CalendarComponent implements AfterViewInit, ControlValueAccessor {
   }
 
   useSemanticUiCalendar() {
-    this.$control = $(this.componentRoot.nativeElement).calendar(this.options);
+    this.$control = $('.ui.calendar').calendar(this.options);
   }
 
   dateTabCompletion(evr: any) {
@@ -57,9 +68,9 @@ export class CalendarComponent implements AfterViewInit, ControlValueAccessor {
     const parsePattern = /^(\d{2})(\/)?(\d{2})?(\/)?(\d{2}|\d{4})?$/;
     let matches = parsePattern.exec(evr.target.value);
 
-    if(matches && matches.length !== 5) { return; }
+    if(matches == null || (matches && matches.length !== 6)) { return; }
 
-    let [, day, month, year] = matches;
+    let [, day, , month, , year] = matches;
     // console.log(day, month, year);
     this.$control.calendar('set date', new Date(parseInt(year), parseInt(month)-1, parseInt(day)));
     this.propagateChange(this.$control.calendar('get date'));
@@ -76,7 +87,11 @@ export class CalendarComponent implements AfterViewInit, ControlValueAccessor {
   }
 
   writeValue(dateTime: Date) {
-    if(!dateTime || !this.$control) { return; }
+    if(!this.$control) { return; }
+
+    if (!dateTime) {
+      dateTime = new Date();
+    }
 
     this.$control.calendar('set date', dateTime, true, false);
   }

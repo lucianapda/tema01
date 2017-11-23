@@ -28,3 +28,7 @@ body {
 .noPaddingRight {
     padding-right: 0px !important;
 }
+
+.hide {
+    display: none;
+}

@@ -40,6 +40,7 @@ export const SAPE_PAGES_REGISTER_SUBSCRIPTIONS_EDIT = { routingFull: "/sape/page
 
 // Pessoa
 export const SAPE_PAGES_REGISTER_PEOPLE = { routingFull: "/sape/pages/register/people", routingFullRegExp: /^\/sape\/pages\/register\/people(\/([0-9]+))?$/, routingSimple: "people" };
+export const SAPE_PAGES_REGISTER_PEOPLE_NEW = { routingFull: "/sape/pages/register/people/edit", routingFullRegExp: /^\/sape\/pages\/register\/people\/edit$/, routingSimple: "people/edit" };
 export const SAPE_PAGES_REGISTER_PEOPLE_EDIT = { routingFull: "/sape/pages/register/people/edit/:id", routingFullRegExp: /^\/sape\/pages\/register\/people\/edit\/([0-9])+$/, routingSimple: "people/edit" };
 // End Registers
 

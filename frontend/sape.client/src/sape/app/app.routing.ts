@@ -10,4 +10,4 @@ export const routes = [
   {path: '**', redirectTo: SAPE_NOT_FOUND.routingFull, pathMatch: 'full'}
 ];
 
-export const routing = RouterModule.forRoot(routes, { useHash: true, enableTracing: true });
+export const routing = RouterModule.forRoot(routes, { useHash: true, enableTracing: false });

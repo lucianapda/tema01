@@ -1,5 +1,6 @@
 package sape.server.crud.base.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -43,6 +44,33 @@ public abstract class AbstractCRUDService<E extends BaseEntity, O extends BaseDT
     }
 
     /**
+     * Salva a entidade e retorna a entidade salva.
+     * @param entity - {@link E}
+     * @return {@link E} - salvo.
+     */
+    @Transactional(rollbackFor = Throwable.class)
+    public List<E> saveAll(List<E> entities) throws ValidationException {
+    	List<E> entitiesSaved = new ArrayList<>();
+    	List<Exception> errors = new ArrayList<>();
+    	try {
+			for (E e : entities) {
+				e = this.save(e);
+				if (e != null) {
+					entitiesSaved.add(e);
+				}
+			}
+		} catch (Exception e) {
+			errors.add(e);
+		}
+
+    	if (!errors.isEmpty()) {
+    		throw new ValidationException(errors.get(0).getMessage());
+    	}
+
+		return entitiesSaved;
+    }
+
+    /**
 	 * Executa após salvar o objeto.
 	 * @param entity - {@link E}
 	 */
@@ -55,7 +83,13 @@ public abstract class AbstractCRUDService<E extends BaseEntity, O extends BaseDT
      */
     @Transactional(rollbackFor = Throwable.class)
     public O save(O dto) throws ValidationException {
-        return convertToDTO(getCRUDRepository().save(convertToEntity(dto, createEmptyEntity())), dto);
+    	E entity = null;
+    	if (dto.getId() == null) {
+			entity = createEmptyEntity();
+		} else {
+			entity = getEntity(dto.getId());
+		}
+        return convertToDTO(getCRUDRepository().save(convertToEntity(dto, entity)), dto);
     }
 
     /**

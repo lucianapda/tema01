@@ -5,9 +5,9 @@ import { PersonContactDTO } from "./contact/person-contact.dto";
  */
 export class PersonDTO extends BaseDTO {
 
-  code: number;
-	name: string;
-  birthDate: Date;
-	cpf: string;
+  code: number = null;
+	name: string = null;
+  birthDate: Date = null;
+	cpf: string = null;
   contacts: Array<PersonContactDTO> = [];
 }

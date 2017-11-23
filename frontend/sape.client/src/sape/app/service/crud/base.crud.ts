@@ -48,10 +48,24 @@ export abstract class BaseCrudService<T extends BaseDTO> extends BaseService imp
     return super.httpService().post(this.path, {data: data}).then((data) => this.extract(data));
   }
 
+   /**
+   * Executa a criação do dado no backend.
+   */
+  public createAll(data: T[]) : Promise<T[]> {
+    return super.httpService().post(this.path, {data: data}).then((data) => this.extract(data));
+  }
+
   /**
    * Executa a atualização dos dados no backend.
    */
   public update(data: T) : Promise<T> {
+    return super.httpService().put(this.path, {data: data}).then((data) => this.extract(data));
+  }
+
+  /**
+   * Executa a atualização dos dados no backend.
+   */
+  public updateAll(data: T[]) : Promise<T[]> {
     return super.httpService().put(this.path, {data: data}).then((data) => this.extract(data));
   }
 

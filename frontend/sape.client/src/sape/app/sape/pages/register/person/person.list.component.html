@@ -1,4 +1,4 @@
 <div id="personListPage">
     <h1>Pessoas</h1>
-    <list [service]='personCrudService()' [actions]='getActions()' [columns]='getColumns()'></list>
+    <list [service]='personCrudService()' [newAction]="getNewAction()" [actions]='getActions()' [columns]='getColumns()'></list>
 </div>

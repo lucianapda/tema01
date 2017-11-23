@@ -5,6 +5,4 @@
 export abstract class BaseDTO {
   id: number = null;
   version: Date = null;
-  imported: boolean = null;
-  inactive: boolean = null;
 }

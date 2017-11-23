@@ -50,6 +50,35 @@ public abstract class AbstractCRUDController<O extends BaseDTO, E extends BaseEn
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error");
     }
 
+//    /**
+//     * Disponibiliza uma forma de salvar entidade.
+//     * @param dto - {@link BaseDTO}
+//     * @return {@link ResponseEntity}
+//     */
+//    @PostMapping
+//    public @ResponseBody ResponseEntity<Object> createAll(@RequestBody O[] dtos) {
+//    	AbstractCRUDService<E, O> service = getService();
+//        if (dtos != null) {
+//        	List<E> entities = new ArrayList<>();
+//        	for (O dto : dtos) {
+//        		E entityNew = service.createEmptyEntity();
+//        		entityNew = service.convertToEntity(dto, entityNew);
+//				entities.add(entityNew);
+//			}
+//            try {
+//            	List<O> dtosSaved = new ArrayList<>();
+//                for (E e : service.saveAll(entities)) {
+//                	dtosSaved.add(service.convertToDTO(e, getService().createEmptyDTO()));
+//				}
+//                return ResponseEntity.ok(dtosSaved);
+//            } catch(ValidationException e) {
+//                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
+//            }
+//        }
+//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error");
+//
+//    }
+
     /**
      * Disponibiliza uma forma de atualizar a entidade.
      * @param dto - {@link BaseDTO}
@@ -60,16 +89,41 @@ public abstract class AbstractCRUDController<O extends BaseDTO, E extends BaseEn
         AbstractCRUDService<E, O> service = getService();
         if (dto != null && dto.getId() != null) {
             try {
-                E entityOld = service.getEntity(dto.getId());
-                E entityChanged = service.convertToEntity(dto, entityOld);
-                E entityUpdated = service.save(entityChanged);
-                return ResponseEntity.ok(service.convertToDTO(entityUpdated, getService().createEmptyDTO()));
+                return ResponseEntity.ok(service.save(dto));
             } catch (ValidationException e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
             }
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error");
     }
+
+//    /**
+//     * Disponibiliza uma forma de salvar entidade.
+//     * @param dto - {@link BaseDTO}
+//     * @return {@link ResponseEntity}
+//     */
+//    @PostMapping
+//    public @ResponseBody ResponseEntity<Object> updateAll(@RequestBody O[] dtos) {
+//    	AbstractCRUDService<E, O> service = getService();
+//        if (dtos != null) {
+//        	List<E> entities = new ArrayList<>();
+//        	for (O dto : dtos) {
+//        		E entityNew = service.getEntity(dto.getId());;
+//        		entityNew = service.convertToEntity(dto, entityNew);
+//				entities.add(entityNew);
+//			}
+//            try {
+//            	List<O> dtosSaved = new ArrayList<>();
+//                for (E e : service.saveAll(entities)) {
+//                	dtosSaved.add(service.convertToDTO(e, getService().createEmptyDTO()));
+//				}
+//                return ResponseEntity.ok(dtosSaved);
+//            } catch(ValidationException e) {
+//                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
+//            }
+//        }
+//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error");
+//    }
 
     /**
      * Disponibiliza uma forma de exclusao da entidade.

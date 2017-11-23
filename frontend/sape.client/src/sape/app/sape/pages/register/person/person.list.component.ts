@@ -1,8 +1,8 @@
+import { SAPE_PAGES_REGISTER_PEOPLE_EDIT } from './../../../../app.routing.mapping';
 import {ServiceLocator} from '../../../../service/locator/service.locator';
 import {PersonCrudService} from '../../../../service/crud/person/person.crud.service';
 import {ListColumn, ListAction} from '../../../../components/list/list.component';
 import {StringUtils} from '../../../../util/string/string.utils';
-import {SAPE_PAGES_REGISTER_PEOPLE_EDIT} from '../../../../app.routing.mapping';
 import {PersonDTO} from '../../../../model/person/person.dto';
 import {ListService} from '../../../../components/list/list.service';
 import { Component } from '@angular/core';
@@ -30,10 +30,11 @@ export class PersonListComponent {
   }
 
   public getColumns() : Array<ListColumn> { 
-    return [new ListColumn('code',  'Código', 0, 'sorted one wide'),
-            new ListColumn('name', 'Nome', 1, 'sorted four wide'),
-            new ListColumn('birthDate', 'Data de nascimento', 2, 'sorted four wide'),
-            new ListColumn('cpf', 'CPF', 3, 'sorted three wide')];
+    return [new ListColumn('id',  'ID', -1, '', true),
+            new ListColumn('code',  'Código', 0, 'sorted one wide', false),
+            new ListColumn('name', 'Nome', 1, 'sorted four wide', false),
+            new ListColumn('birthDate', 'Data de nascimento', 2, 'sorted four wide', false),
+            new ListColumn('cpf', 'CPF', 3, 'sorted three wide', false)];
   }
 
   public getActions() : Array<ListAction> {
@@ -44,6 +45,12 @@ export class PersonListComponent {
             }), 
             new ListAction('delete', 'trash outline', 1, (value: PersonDTO) => {
               this.personCrudService().deleteById(value.id);
-            })]; 
+            })];  
+  }
+
+  private getNewAction() : ListAction {
+    return new ListAction('new', 'add', -1, () => {
+      this.router.navigate([StringUtils.replace(SAPE_PAGES_REGISTER_PEOPLE_EDIT.routingFull, new Map<string, any>([['/:id', '']]))]);
+    });
   }
 }

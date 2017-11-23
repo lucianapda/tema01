@@ -1,7 +1,7 @@
 export enum AppActionType {
               INITIALIZING = 0,
               READING = 1,
-              CHANGING = 2,
+              UPDATING = 2,
               CREATING = 3,
               DELETING = 4,
               REDIRECTING = 5
