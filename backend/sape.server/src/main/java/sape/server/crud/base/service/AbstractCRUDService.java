@@ -3,12 +3,19 @@ package sape.server.crud.base.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 import org.springframework.transaction.annotation.Transactional;
 
 import sape.server.core.exception.ValidationException;
 import sape.server.core.exception.crud.ValidationCRUDException;
+import sape.server.core.exception.error.ValidationError;
 import sape.server.crud.base.repository.AbstractCRUDRepository;
 import sape.server.model.base.BaseDTO;
 import sape.server.model.base.BaseEntity;
@@ -89,7 +96,7 @@ public abstract class AbstractCRUDService<E extends BaseEntity, O extends BaseDT
 		} else {
 			entity = getEntity(dto.getId());
 		}
-        return convertToDTO(getCRUDRepository().save(convertToEntity(dto, entity)), dto);
+        return convertToDTO(this.save(convertToEntity(dto, entity)), dto);
     }
 
     /**
@@ -191,6 +198,18 @@ public abstract class AbstractCRUDService<E extends BaseEntity, O extends BaseDT
     @Transactional(rollbackFor = Throwable.class)
     public void validate(E entity) throws ValidationCRUDException {
     	// Aplicar as validações do hibernate aqui...
+    	ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+		Validator validator = factory.getValidator();
+		Set<ConstraintViolation<E>> validate = validator.validate(entity);
+		List<ValidationError> errors = new ArrayList<>();
+		if (!validate.isEmpty()) {
+			for (ConstraintViolation<E> constraintViolation : validate) {
+				errors.add(new ValidationError(1L, constraintViolation.getMessage(), ""));
+			}
+		}
+		if (!errors.isEmpty()) {
+			throw new ValidationCRUDException(errors);
+		}
         internalValidate(entity);
     }
 

@@ -1,0 +1,152 @@
+<div id="entryFormPage" class="ui left aligned container">
+    <div class="ui center aligned container">
+        <h2 class="ui header">
+            <i class="edit icon"></i>
+            <div class="content">
+                Inscrições
+                <div class="sub header">Cadastro de Inscrições</div>
+            </div>
+        </h2>
+    </div>
+    <br />
+    <modal [control]="this">
+        <div class="header">
+            Registro de entrada/saída
+        </div>
+        <div class="content">
+            <form class="ui form" [formGroup]="sourceForm" [ngClass]="{'loading': loading}">
+                <div class="ui two column grid">
+                    <div class="noPaddingBottom row">
+                        <div class="right aligned five wide column noPaddingRight">
+                            <label>Evento:</label>
+                        </div>
+                        <div class="column">
+                            <event-search [disable]="true" class="ui disabled" formControlName="idEvent"></event-search>
+                        </div>
+                    </div>
+                    <div class="noPaddingBottom row">
+                        <div class="right aligned five wide column noPaddingRight">
+                            <label>Código:</label>
+                        </div>
+                        <div class="column">
+                            <div class="ui input" formGroupName="currentEntry">
+                                <input type="text" formControlName="code">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="noPaddingBottom row">
+                        <div class="right aligned five wide column noPaddingRight">
+                            <label>Data de entrada:</label>
+                        </div>
+                        <div class="column" formGroupName="currentEntry">
+                            <calendar type="date" formControlName="dateEntry"></calendar>
+                        </div>
+                    </div>
+                    <div class="noPaddingBottom row">
+                        <div class="right aligned five wide column noPaddingRight">
+                            <label>Data de saída:</label>
+                        </div>
+                        <div class="column" formGroupName="currentEntry">
+                            <calendar type="date" formControlName="dateDeparture"></calendar>
+                        </div>
+                    </div>
+                    <div class="noPaddingBottom row">
+                        <div class="right aligned five wide column noPaddingRight">
+                            <label>Atividade:</label>
+                        </div>
+                        <div class="column" formGroupName="currentEntry">
+                            <subscription-activity-search (afterSelected)="setNamePerson($event[0], $event[1])" [objectOwner]="source.getValue()" formControlName="idSubscriptionActivity"></subscription-activity-search>
+                        </div>
+                    </div>
+
+                    <div class="row"></div>
+                </div>
+            </form>
+        </div>
+        <div class="actions">
+            <div class="ui red cancel inverted button">
+                <i class="remove icon"></i> Cancelar
+            </div>
+            <div class="ui green ok inverted button">
+                <i class="checkmark icon"></i> Salvar
+            </div>
+        </div>
+    </modal>
+    <div class="ui right top attached menu">
+        <div class="ui right animated button icon item" (click)="onNew()">
+            <div class="visible content">
+                <i class="large icons">
+                        <i class="edit icon"></i><i class="corner add icon"></i>
+                </i>
+            </div>
+            <div class="hidden content">
+                Novo
+            </div>
+        </div>
+    </div>
+    <div class="ui bottom scrolling attached segment" id="listContent">
+        <table class="ui fixed single line celled table">
+            <thead>
+                <tr>
+                    <th>
+                        Código
+                    </th>
+                    <th>
+                        Pessoa
+                    </th>
+                    <th>
+                        Data de entrada
+                    </th>
+                    <th>
+                        Data de saída
+                    </th>
+                    <th>
+                        Atividade
+                    </th>
+                    <th>
+                        Ações
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let value of source.getValue().entries; trackBy: index;">
+                    <td>
+                        {{value.code}}
+                    </td>
+                    <td>
+                        {{value.namePerson}}
+                    </td>
+                    <td>
+                        {{value.dateEntry}}
+                    </td>
+                    <td>
+                        {{value.dateDeparture}}
+                    </td>
+                    <td>
+                        {{value.descActivity}}
+                    </td>
+                    <td>
+                        <a>
+                            <i class="write link icon" (click)="editAction(value)"></i>
+                        </a>
+
+                        <a>
+                            <i class="trash outline link icon" (click)="removeAction(value)"></i>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br />
+    <div class="ui form">
+        <div class="inline fields">
+            <div class="field">
+                <button class="ui button" (click)="onCancel()">Voltar</button>
+            </div>
+            <!-- <div class="field">
+                <button class="ui primary button" (click)="onSave()">Salvar</button>
+            </div> -->
+        </div>
+    </div>
+</div>

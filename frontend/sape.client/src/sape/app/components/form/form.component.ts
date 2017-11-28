@@ -13,6 +13,7 @@ import {BaseComponent} from '../base/base.component';
 import {BaseDTO} from '../../model/base/base.dto';
 import {BaseCrudService} from '../../service/crud/base.crud';
 import { NavigationExtras } from '@angular/router/src/router';
+import { Subscription } from 'rxjs/Subscription';
 
 export abstract class FormComponent<T extends BaseDTO | BaseDTO> extends BaseComponent {
   
@@ -22,6 +23,7 @@ export abstract class FormComponent<T extends BaseDTO | BaseDTO> extends BaseCom
   public sourceForm: FormGroup;
   protected loading: boolean = false;
   protected menuOption: MenuOption;
+  private subscription: Subscription;
   
   protected abstract getCrudService(): BaseCrudService<T>;
   protected abstract buildForm(formBuilder: FormBuilder, source: T): FormGroup;
@@ -30,24 +32,24 @@ export abstract class FormComponent<T extends BaseDTO | BaseDTO> extends BaseCom
   protected abstract onCancel() : void;
   protected abstract onCancel() : void;
 
-  constructor(protected route: ActivatedRoute, protected formBuilder: FormBuilder, private router: Router) {
+  constructor(protected route: ActivatedRoute, protected formBuilder: FormBuilder, protected router: Router) {
     super();
     this.originalSource = this.newSource();
     this.currentSource = Object.assign({}, this.originalSource);
     this.source = new BehaviorSubject<T>(this.currentSource);
     this.sourceForm = this.buildForm(this.formBuilder, this.currentSource);
     this.bindForm(this.sourceForm, this.currentSource);
-    this.sourceForm.valueChanges.subscribe((value: T) => {this.source.next(value)});
+    this.subscription = this.sourceForm.valueChanges.subscribe((value: T) => {this.source.next(value)});
   }
 
   protected getActionInit() : AppActionTask {
     this.menuOption = this.menuService().getMenuOptionSelected();
     return this.createAction(AppActionType.READING)
-      ._before(() => this.showLoading()) 
-      ._execute(() => { 
+      ._before((v?: any): Promise<any> | any | void => this.showLoading()) 
+      ._execute((v?: any): Promise<any> | any | void => { 
         let id = this.route.snapshot.params['id'];
         if (id) {
-          this.getCrudService().readById(this.route.snapshot.params['id']).then((values: Array<T> | T) => {
+          return this.getCrudService().readById(this.route.snapshot.params['id']).then((values: Array<T> | T) => {
               if (values instanceof Array) {
                 this.source = new BehaviorSubject(values[0]);
               } if (values instanceof Object) {
@@ -58,9 +60,13 @@ export abstract class FormComponent<T extends BaseDTO | BaseDTO> extends BaseCom
               this.originalSource = this.source.getValue();
               this.currentSource = Object.assign({}, this.originalSource);
               this.bindForm(this.sourceForm, this.currentSource);
-          });
+            }).catch( (errors) => {
+              errors.forEach((error: any) => {
+                this.messageService().error(error.message, "Erro o ler o cadastro especificado!");
+              });
+            });
         } 
-      })._after(() => this.hideLoading());
+      })._after((v?: any): Promise<any> | any | void => this.hideLoading());
   }
 
   protected onSave(): void {
@@ -70,40 +76,48 @@ export abstract class FormComponent<T extends BaseDTO | BaseDTO> extends BaseCom
       if (!sourceValue.id) {
         task =  this.createAction(AppActionType.CREATING);
         task
-        ._before(() => this.showLoading()) 
-        ._execute(() => {
-          this.getCrudService().create(sourceValue).then((values: Array<T> | T) => {
-            if (values instanceof Array) {
-              this.source.next(values[0]);
-            } if (values instanceof Object) {
-              this.source.next(<T> values);
-            } else {
-              this.source.next(this.newSource());
-            }
-            this.bindForm(this.sourceForm, this.source.getValue());
-            this.messageService().success("Registro atualizado com sucesso!", MESSAGE_SUCCESS);
-          });
+        ._before((v?: any): Promise<any> | any | void => this.showLoading()) 
+        ._execute((v?: any): Promise<any> | any | void => {
+          return this.getCrudService().create(sourceValue).then((values: Array<T> | T) => {
+                  if (values) {
+                    if (values instanceof Array) {
+                      this.source.next(values[0]);
+                    } if (values instanceof Object) {
+                      this.source.next(<T> values);
+                    } 
+                    this.bindForm(this.sourceForm, this.source.getValue());
+                    this.messageService().success("Registro atualizado com sucesso!", MESSAGE_SUCCESS);
+                  }
+                }).catch((errors: any) => {
+                  errors.forEach((error: any) => {
+                    this.messageService().error(error.message, "Erro ao criar o cadastro especificado!");
+                  });
+                });
         })
-        ._after(() => this.hideLoading());
+        ._after((v?: any): Promise<any> | any | void => this.hideLoading());
       } else {
         if (sourceValue.id) {
           task =  this.createAction(AppActionType.UPDATING);
           task
-          ._before(() => {this.showLoading()}) 
-          ._execute(() => {
-            this.getCrudService().update(sourceValue).then((values: Array<T> | T) => {
-              if (values instanceof Array) {
-                this.source.next(values[0]);
-              } if (values instanceof Object) {
-                this.source.next(<T> values);
-              } else {
-                this.source.next(this.newSource());
-              }
-              this.bindForm(this.sourceForm, this.source.getValue());
-              this.messageService().success("Registro criado com sucesso!", MESSAGE_SUCCESS);
-            });
+          ._before((v?: any): Promise<any> | any | void => {this.showLoading()}) 
+          ._execute((v?: any): Promise<any> | any | void => {
+            return this.getCrudService().update(sourceValue).then((values: Array<T> | T) => {
+                    if (values) {
+                      if (values instanceof Array) {
+                        this.source.next(values[0]);
+                      } if (values instanceof Object) {
+                        this.source.next(<T> values);
+                      }
+                      this.bindForm(this.sourceForm, this.source.getValue());
+                      this.messageService().success("Registro criado com sucesso!", MESSAGE_SUCCESS);
+                    }
+                  }).catch((errors: any) => {
+                    errors.forEach((error: any) => {
+                      this.messageService().error(error.message, "Erro ao atualizar o cadastro especificado!");
+                    });
+                  });
           })
-          ._after(() => this.hideLoading());
+          ._after((v?: any): Promise<any> | any | void => this.hideLoading());
         }
       }
       if (task) {
@@ -136,5 +150,20 @@ export abstract class FormComponent<T extends BaseDTO | BaseDTO> extends BaseCom
 
   protected messageService() : MessageService {
     return ServiceLocator.get(MessageService);
+  }
+
+  ngOnDestroy(): void {
+    super.ngOnDestroy()
+    this.originalSource =  undefined;
+    this.currentSource =  undefined;
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    if (this.source) {
+      this.source.unsubscribe();
+    }
+    this.sourceForm = undefined
+    this.loading = false;
+    this.menuOption = undefined;
   }
 }

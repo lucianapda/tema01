@@ -16,8 +16,7 @@ export class AppTask {
     this.source.subscribe((appAction: AppActionTask) => this.appState.change(appAction));
     this.source.subscribe((appAction: AppActionTask) => {
       appAction.makeBefore();
-      appAction.makeExecute();
-      appAction.makeAfter();
+      appAction.makeExecute().then((v: any) => appAction.makeAfter(v));
     });
   }
 

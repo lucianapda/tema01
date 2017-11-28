@@ -7,10 +7,10 @@ declare var $: any;
 @Component({
   selector: 'calendar',
   template: `
-    <div class="ui calendar" style="display: inherit !important" #calendar>
+    <div class="ui calendar" #calendar>
       <div class="ui input left icon">
         <i class="calendar icon"></i>
-        <input (change)="dateTabCompletion($event)" type="text"  placeholder="{{placeholder}}">
+        <input mask="00/00/0000" (change)="dateTabCompletion($event)" type="text"  placeholder="{{placeholder}}">
       </div>
     </div>
   `,
@@ -55,11 +55,11 @@ export class CalendarComponent implements AfterViewInit, ControlValueAccessor {
   }
 
   ngAfterViewInit() {
-    this.useSemanticUiCalendar();
+    this.init();
   }
 
-  useSemanticUiCalendar() {
-    this.$control = $('.ui.calendar').calendar(this.options);
+  public init() {
+    this.$control = $(this.componentRoot.nativeElement).calendar(this.options);
   }
 
   dateTabCompletion(evr: any) {
@@ -70,8 +70,20 @@ export class CalendarComponent implements AfterViewInit, ControlValueAccessor {
 
     if(matches == null || (matches && matches.length !== 6)) { return; }
 
-    let [, day, , month, , year] = matches;
-    // console.log(day, month, year);
+    let [, day, , month, , year]  = matches;
+    
+    let currentDate: Date = new Date();
+    if (!day || day.length == 0) {
+      day = currentDate.getUTCDate().toString();
+    }
+    if (!month || month.length == 0) {
+      month = currentDate.getUTCMonth().toString();
+    }
+    if (!year || year.length == 0) {
+      year = currentDate.getUTCFullYear().toString();
+    }
+
+    
     this.$control.calendar('set date', new Date(parseInt(year), parseInt(month)-1, parseInt(day)));
     this.propagateChange(this.$control.calendar('get date'));
   }
@@ -88,10 +100,6 @@ export class CalendarComponent implements AfterViewInit, ControlValueAccessor {
 
   writeValue(dateTime: Date) {
     if(!this.$control) { return; }
-
-    if (!dateTime) {
-      dateTime = new Date();
-    }
 
     this.$control.calendar('set date', dateTime, true, false);
   }

@@ -51,9 +51,9 @@ export abstract class BaseCrudService<T extends BaseDTO> extends BaseService imp
    /**
    * Executa a criação do dado no backend.
    */
-  public createAll(data: T[]) : Promise<T[]> {
-    return super.httpService().post(this.path, {data: data}).then((data) => this.extract(data));
-  }
+  // public createAll(data: T[]) : Promise<T[]> {
+  //   return super.httpService().post(this.path, {data: data}).then((data) => this.extract(data));
+  // }
 
   /**
    * Executa a atualização dos dados no backend.
@@ -65,15 +65,18 @@ export abstract class BaseCrudService<T extends BaseDTO> extends BaseService imp
   /**
    * Executa a atualização dos dados no backend.
    */
-  public updateAll(data: T[]) : Promise<T[]> {
-    return super.httpService().put(this.path, {data: data}).then((data) => this.extract(data));
-  }
+  // public updateAll(data: T[]) : Promise<T[]> {
+  //   return super.httpService().put(this.path, {data: data}).then((data) => this.extract(data));
+  // }
 
   /**
    * Executa a atualização dos dados no backend.
    */
   public deleteById(id: Number, config?:HttpConfigMethod) : Promise<T> {
-    return super.httpService().delete(this.path + "/" + id, config).then((data) => this.extract(data));
+    config = config? config : new HttpConfigMethod();
+    config.params = config.params? config.params : new Map<string, any>();
+    config.params.set("id", id);
+    return super.httpService().delete(this.path, config).then((data) => this.extract(data));
   }
 
   /**

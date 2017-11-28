@@ -16,15 +16,12 @@ export class BreadcrumbComponent implements OnInit {
   private rootMenuOption: MenuOption;
   private routeMenuOptions: Array<MenuOption> = new Array<MenuOption>();
 
-  constructor() {
+  ngOnInit(): void {
     this.rootMenuOption = this.menuService().getRootMenuOption();
     this.menuService().registerNotify((v) => {
       this.routeMenuOptions.pop();
       this.routeMenuOptions.push(this.menuService().getMenuOptionSelected());
     });
-  }
-
-  ngOnInit(): void {
   }
 
   private menuService() : MenuService {

@@ -1,4 +1,5 @@
 <div class="ui container" id="loginContent">
+    <message></message>
     <div class="ui raised very padded container segment" id="loginBox">
         <h3 class="ui center aligned header">Acesso</h3>
         <form class="ui form" [formGroup]="form" (ngSubmit)="doLogin(form.value)">
@@ -13,7 +14,7 @@
                 <div class="ui pointing below label">Senha</div>
                 <div class="ui left icon input">
                     <input formControlName="password" type="password" placeholder="Informe sua senha...">
-                    <i class="users icon"></i>
+                    <i class="lock icon"></i>
                 </div>
             </div>
             <div class="field">
@@ -21,5 +22,4 @@
             </div>
         </form>
     </div>
-    <div class="ui divider"></div>
 </div>

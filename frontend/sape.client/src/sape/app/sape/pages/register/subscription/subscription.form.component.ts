@@ -67,7 +67,8 @@ export class SubscriptionFormComponent extends FormComponent<BaseDTO> implements
         code: new FormControl(source.currentSubscription.code),
         date: new FormControl(source.currentSubscription.date),
         idPerson: new FormControl(source.currentSubscription.idPerson),
-        namePerson: new FormControl(source.currentSubscription.namePerson)
+        namePerson: new FormControl(source.currentSubscription.namePerson),
+        activities: new FormControl(source.currentSubscription.activities)
       }),
       subscriptions: new FormControl(source.subscriptions),
       idEvent: new FormControl(source.idEvent),
@@ -83,6 +84,7 @@ export class SubscriptionFormComponent extends FormComponent<BaseDTO> implements
         date: source.currentSubscription.date, 
         idPerson: source.currentSubscription.idPerson,
         namePerson: source.currentSubscription.namePerson,
+        activities: source.currentSubscription.activities
       },
       idEvent: source.idEvent,
       subscriptions: source.subscriptions
@@ -105,7 +107,7 @@ export class SubscriptionFormComponent extends FormComponent<BaseDTO> implements
       ._before(() => {this.loading = true}) 
       ._execute(() => { 
         this.refresh();
-      })._after(() => {this.loading = false});
+      });
   }
 
   getModalApprove(value: SubscriptionFormDTO) : boolean {
@@ -184,9 +186,10 @@ export class SubscriptionFormComponent extends FormComponent<BaseDTO> implements
         } else {
           (<SubscriptionFormDTO> this.source.getValue()).currentSubscription = new SubscriptionDTO();
         }
-        this.orinialSource = this.source.getValue();
+        this.originalSource = this.source.getValue();
         this.bindForm(this.sourceForm, (<SubscriptionFormDTO> this.source.getValue()));
         this.sourceForm.valueChanges.subscribe((value: SubscriptionFormDTO) => {this.source.next(value)});
+        this.loading = false
       });
   }
 }

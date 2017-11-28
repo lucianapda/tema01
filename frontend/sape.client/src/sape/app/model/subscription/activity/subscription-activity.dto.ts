@@ -8,5 +8,7 @@ export class SubscriptionActivityDTO extends BaseDTO {
   date: Date = null;
   waitingList: boolean = null;
   idActivity: number = null;
+  descActivity: string = null;
   idSubscription: number = null;
+  namePerson: string = null;
 }

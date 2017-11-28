@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import sape.server.core.exception.ValidationException;
+import sape.server.core.exception.crud.ValidationCRUDException;
 import sape.server.crud.base.service.AbstractCRUDService;
 import sape.server.model.base.BaseDTO;
 import sape.server.model.base.BaseEntity;
@@ -83,18 +84,15 @@ public abstract class AbstractCRUDController<O extends BaseDTO, E extends BaseEn
      * Disponibiliza uma forma de atualizar a entidade.
      * @param dto - {@link BaseDTO}
      * @return {@link ResponseEntity}
+     * @throws ValidationException
      */
     @PutMapping
-    public @ResponseBody ResponseEntity<Object> update(@RequestBody O dto) {
+    public @ResponseBody ResponseEntity<Object> update(@RequestBody O dto) throws ValidationException {
         AbstractCRUDService<E, O> service = getService();
         if (dto != null && dto.getId() != null) {
-            try {
-                return ResponseEntity.ok(service.save(dto));
-            } catch (ValidationException e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-            }
+          return ResponseEntity.ok(service.save(dto));
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error");
+        throw new ValidationCRUDException("Objeto deve conter 'ID' para ser atualizado. ");
     }
 
 //    /**

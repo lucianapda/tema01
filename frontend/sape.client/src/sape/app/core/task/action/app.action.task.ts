@@ -42,19 +42,20 @@ export class AppActionTask {
     }
   }
 
-  makeExecute() : void {
+  async makeExecute() : Promise<any> {
     if (!!this.execute) {
-      this.execute();
+      let returnExecute: Promise<any> = await this.execute();
+      return Promise.all([returnExecute]);
     }
   }
 
-  makeAfter() : void {
+  makeAfter(v?: any) : void {
     if (!!this.after) {
-        this.after();
+        this.after(v);
     }
   }
 }
 
 export interface AppAction {
-  (): void;
+  (v?: any): Promise<any> | any | void;
 }

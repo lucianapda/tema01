@@ -1,5 +1,6 @@
 package sape.server.crud.subscription.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import sape.server.crud.person.repository.PersonCRUDRepository;
 import sape.server.crud.subscription.repository.SubscriptionCRUDRepository;
 import sape.server.model.subscription.SubscriptionDTO;
 import sape.server.model.subscription.SubscriptionEntity;
-import sape.server.model.subscription.activity.SubscriptionActivityDTO;
 import sape.server.model.subscription.activity.SubscriptionActivityEntity;
 
 /**
@@ -54,24 +54,21 @@ public class SubscriptionCRUDService extends AbstractCRUDService<SubscriptionEnt
     	if (idPerson != null) {
 			entity.setPerson(personCRUDRepository.get(idPerson));
 		}
-    	dto.getActivities().forEach(activityDTO -> {
+    	dto.getActivities().forEach(idActivity -> {
 			SubscriptionActivityEntity activity = null;
-			if (activityDTO.getId() != null) {
-				Optional<SubscriptionActivityEntity> findFirst = entity.getActivities().stream().filter(activityEntity -> activityDTO.getId().equals(activityEntity.getId())).findFirst();
+			if (idActivity != null) {
+				Optional<SubscriptionActivityEntity> findFirst = entity.getActivities().stream().filter(activityEntity -> idActivity.equals(activityEntity.getActivity().getId())).findFirst();
 				if (findFirst.isPresent()) {
 					activity = findFirst.get();
+				} else {
+					activity = new SubscriptionActivityEntity();
+					activity.setActivity(eventActivityCRUDRepository.get(idActivity));
 				}
 
-				activity.setId(activityDTO.getId());
-				activity.setVersion(activityDTO.getVersion());
-				activity.setCode(activityDTO.getCode());
-		    	activity.setDate(activityDTO.getDate());
-		    	activity.setWaitingList(activityDTO.getWaitingList());
-		    	Long idActivity = activityDTO.getIdActivity();
-		    	if (idActivity != null) {
-		    		activity.setActivity(eventActivityCRUDRepository.get(idActivity));
-				}
-	    		activity.setSubscription(entity);
+				activity.setCode(1L);
+		    	activity.setDate(LocalDateTime.now());
+		    	activity.setSubscription(entity);
+		    	entity.getActivities().add(activity);
 			}
 		});
         return entity;
@@ -92,15 +89,7 @@ public class SubscriptionCRUDService extends AbstractCRUDService<SubscriptionEnt
     	dto.setIdPerson(entity.getPerson().getId());
     	dto.setNamePerson(entity.getPerson().getName());
     	entity.getActivities().forEach(t -> {
-			SubscriptionActivityDTO activityDTO = new SubscriptionActivityDTO();
-			activityDTO.setId(t.getId());
-			activityDTO.setVersion(t.getVersion());
-			activityDTO.setCode(t.getCode());
-			activityDTO.setDate(t.getDate());
-			activityDTO.setWaitingList(t.getWaitingList());
-			activityDTO.setIdActivity(t.getActivity().getId());
-			activityDTO.setIdSubscription(t.getSubscription().getId());
-			dto.getActivities().add(activityDTO);
+			dto.getActivities().add(t.getActivity().getId());
 		});
         return dto;
     }

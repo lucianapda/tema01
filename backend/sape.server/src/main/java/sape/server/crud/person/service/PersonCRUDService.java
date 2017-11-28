@@ -1,6 +1,7 @@
 package sape.server.crud.person.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -8,6 +9,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sape.server.core.exception.crud.ValidationCRUDException;
+import sape.server.core.exception.error.ValidationError;
+import sape.server.core.utils.CPFUtils;
 import sape.server.crud.base.repository.AbstractCRUDRepository;
 import sape.server.crud.base.service.AbstractCRUDService;
 import sape.server.crud.person.repository.PersonCRUDRepository;
@@ -127,7 +131,9 @@ public class PersonCRUDService extends AbstractCRUDService<PersonEntity, PersonD
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void internalValidate(PersonEntity entity) {
-
+	protected void internalValidate(PersonEntity entity)  throws ValidationCRUDException {
+		if (!CPFUtils.isCPF(entity.getCpf())) {
+			throw new ValidationCRUDException(Arrays.asList(new ValidationError(1L, "CPF inválido.", "Informe um CPF válido.")));
+		}
 	}
 }

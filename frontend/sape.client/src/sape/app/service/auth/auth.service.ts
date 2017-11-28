@@ -18,6 +18,7 @@ import {HttpService} from '../http/http.service';
 
 import { AuthCredentials } from './auth.credentials';
 import {Router} from '@angular/router';
+import { MessageService } from '../message/message.service';
 
 @Injectable()
 export class AuthService extends BaseService {
@@ -46,12 +47,16 @@ export class AuthService extends BaseService {
           this.router.navigate([SAPE_PAGES.routingFull]);
           return true;
         } else {
+          this.messageService().error("Login e/ou senha inválidos.", "Erro ao realizar o login!");
           this.tokenService.resetToken();
-          this.router.navigate([SAPE_LOGIN.routingFull]);
+          // this.router.navigate([SAPE_LOGIN.routingFull]);
           return false;
         }
       }
-    );
+    ).catch((errors) => {
+      this.messageService().error("Login e/ou senha inválidos.", "Erro ao realizar o login!");
+      return false;
+    });
   }
 
   isLoggedIn(): Promise<boolean> {
@@ -68,16 +73,25 @@ export class AuthService extends BaseService {
           this.tokenService.setCheckToken(data);
           return true;
         } else {
+          this.messageService().error("Sessão expirada.", "Voce será redirecionado para o login!");
           this.tokenService.resetToken();
           this.router.navigate([SAPE_LOGIN.routingFull]);
           return false;
         }
       }
-    );
+    ).catch((errors) => {
+      this.messageService().error("Sessão expirada.", "Voce será redirecionado para o login!");
+      this.router.navigate([SAPE_LOGIN.routingFull]);
+      return false;
+    });
   }
 
   logout(): void {
     this.tokenService.resetToken();
     this.router.navigate([SAPE_LOGIN.routingFull]);
+  }
+
+  protected messageService() : MessageService {
+    return ServiceLocator.get(MessageService);
   }
 }

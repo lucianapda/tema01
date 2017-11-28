@@ -3,8 +3,9 @@ import { ServiceLocator } from './../../service/locator/service.locator';
 import {AppTask} from '../../core/task/app.task';
 import {AppActionType, AppActionTask} from '../../core/task/action/app.action.task';
 import {AppActionTaskFactory} from '../../core/task/action/app.action.task.factory';
+import { OnDestroy } from '@angular/core';
 
-export abstract class BaseComponent implements OnInit, AfterViewChecked, OnChanges, AfterViewInit {
+export abstract class BaseComponent implements OnInit, AfterViewChecked, OnChanges, AfterViewInit, OnDestroy {
 
   private appTask: AppTask = ServiceLocator.get(AppTask);
 
@@ -29,5 +30,8 @@ export abstract class BaseComponent implements OnInit, AfterViewChecked, OnChang
   }
 
   ngOnChanges(): void {
+  }
+
+  ngOnDestroy(): void {
   }
 }

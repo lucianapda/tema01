@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import sape.server.model.base.BaseDTO;
-import sape.server.model.subscription.activity.SubscriptionActivityDTO;
 import sape.server.model.subscription.activity.SubscriptionActivityEntity;
 
 /**
@@ -18,7 +17,7 @@ public class SubscriptionDTO extends BaseDTO {
     private LocalDate date;
     private Long idPerson;
     private String namePerson;
-    private ArrayList<SubscriptionActivityDTO> activities = new ArrayList<>();
+    private ArrayList<Long> activities = new ArrayList<>();
 
 	/**
 	 * Retorna uma instancia de {@link Long}
@@ -85,18 +84,18 @@ public class SubscriptionDTO extends BaseDTO {
 	}
 
 	/**
-	 * Retorna uma instancia de {@link ArrayList<SubscriptionActivityDTO>}
-	 * @return {@link ArrayList<SubscriptionActivityDTO>}
+	 * Retorna uma instancia de {@link ArrayList<Long>}
+	 * @return {@link ArrayList<Long>}
 	 */
-	public ArrayList<SubscriptionActivityDTO> getActivities() {
+	public ArrayList<Long> getActivities() {
 		return activities;
 	}
 
 	/**
-	 * Atribui um {@link ArrayList<SubscriptionActivityDTO>}
-	 * @param activities - {@link ArrayList<SubscriptionActivityDTO>}
+	 * Atribui um {@link ArrayList<Long>}
+	 * @param activities - {@link ArrayList<Long>}
 	 */
-	public void setActivities(ArrayList<SubscriptionActivityDTO> activities) {
+	public void setActivities(ArrayList<Long> activities) {
 		this.activities = activities;
 	}
 }

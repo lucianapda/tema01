@@ -1,10 +1,10 @@
 <div id="eventFormPage" class="ui left aligned container">
     <div class="ui center aligned container">
         <h2 class="ui header">
-            <i class="{{menuOption.icon}} icon"></i>
+            <i class="calendar outline icon"></i>
             <div class="content">
-                {{menuOption.name}}
-                <div class="sub header">{{menuOption.text}}</div>
+                Eventos
+                <div class="sub header">Cadastro de Eventos</div>
             </div>
         </h2>
     </div>
@@ -21,7 +21,7 @@
                     </div>
                     <div class="column">
                         <div class="ui input">
-                            <input type="number" formControlName="code">
+                            <input type="number" placeholder="Informe o código..." formControlName="code">
                         </div>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                     </div>
                     <div class="column">
                         <div class="ui fluid input">
-                            <input type="text" formControlName="place">
+                            <input type="text" placeholder="Informe o local..." formControlName="place">
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                     </div>
                     <div class="column">
                         <div class="ui fluid input">
-                            <input type="text" formControlName="description">
+                            <input type="text" placeholder="Informe a descrição..." formControlName="description">
                         </div>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                         <label>Início:</label>
                     </div>
                     <div class="column">
-                        <calendar type="date" formControlName="dateStart"></calendar>
+                        <calendar type="date" placeholder="Informe a data de início..." formControlName="dateStart"></calendar>
                     </div>
                 </div>
                 <div class="noPaddingBottom row">
@@ -58,7 +58,7 @@
                         <label>Fim:</label>
                     </div>
                     <div class="column">
-                        <calendar type="date" formControlName="dateEnd"></calendar>
+                        <calendar type="date" placeholder="Informe a data de fim..." formControlName="dateEnd"></calendar>
                     </div>
                 </div>
                 <div class="noPaddingBottom row">
@@ -66,7 +66,7 @@
                         <label>Início inscrições:</label>
                     </div>
                     <div class="column">
-                        <calendar type="date" formControlName="dateStartSubscription"></calendar>
+                        <calendar type="date" placeholder="Informe a data de início das incrições..." formControlName="dateStartSubscription"></calendar>
                     </div>
                 </div>
                 <div class="noPaddingBottom row">
@@ -74,7 +74,7 @@
                         <label>Fim inscrições:</label>
                     </div>
                     <div class="column">
-                        <calendar type="date" formControlName="dateEndSubscription"></calendar>
+                        <calendar type="date" placeholder="Informe a data de fim das incrições..." formControlName="dateEndSubscription"></calendar>
                     </div>
                 </div>
                 <div class="noPaddingBottom row">
@@ -82,8 +82,8 @@
                         <label>Número de vagas:</label>
                     </div>
                     <div class="column">
-                        <div class="ui fluid input">
-                            <input type="number" maxlength="5" formControlName="vacancy">
+                        <div class="ui input">
+                            <input type="number" maxlength="5" placeholder="Informe o número de vagas..." formControlName="vacancy">
                         </div>
                     </div>
                 </div>
@@ -92,8 +92,8 @@
                         <label>Lista de espera</label>
                     </div>
                     <div class="column">
-                        <div class="ui checkbox">
-                            <input type="checkbox" tabindex="0" class="hidden" formControlName="waitingList">
+                        <div class="ui checkbox" checkbox>
+                            <input type="checkbox" tabindex="0" placeholder="Informe se permite lista de espera..." class="hidden" formControlName="waitingList">
                             <label></label>
                         </div>
                     </div>
@@ -101,61 +101,167 @@
                 <div class="row"></div>
             </div>
         </form>
-    </div>
-    <div class="ui tab " data-tab="second">
-        <table class="ui fixed single line celled table">
-            <thead>
-                <tr>
-                    <th>
-                        Descrição
-                    </th>
-                    <th>
-                        Início
-                    </th>
-                    <th>
-                        Fim
-                    </th>
-                    <th>
-                        Ações
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let value of source.getValue().activities; trackBy: index;">
-                    <td>
-                        {{value.code}}
-                    </td>
-
-                    <td>
-                        {{value.dateStart}}
-                    </td>
-                    <td>
-                        {{value.dateEnd}}
-                    </td>
-                    <td>
-                        <a>
-                            <i class="write link icon" (click)="editAction(value)"></i>
-                        </a>
-
-                        <a>
-                            <i class="trash outline link icon" (click)="removeAction(value)"></i>
-                        </a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <br />
-    </div>
-    <div class="ui center aligned container">
-        <div class="ui form">
-            <div class="inline fields">
-                <div class="field">
-                    <button class="ui button" (click)="onCancel()">Cancelar</button>
-                </div>
-                <div class="field">
-                    <button class="ui primary button" (click)="onSave()">Salvar</button>
+        <div class="ui center aligned container">
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="field">
+                        <button class="ui red cancel inverted button" (click)="onCancel()">
+                            <i class="remove icon"></i> Cancelar
+                        </button>
+                    </div>
+                    <div class="field">
+                        <button class="ui {{sourceForm.invalid? ' disabled ' : ''}} green ok inverted button" (click)="onSave()">
+                            <i class="checkmark icon"></i> Salvar
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="ui tab " data-tab="second">
+        <modal [control]="this">
+            <div class="header">
+                Atividade
+            </div>
+            <div class="content">
+                <form class="ui form" [formGroup]="sourceEventActivityForm" [ngClass]="{'loading': loading}">
+                    <div class="ui two column grid">
+                        <div class="noPaddingBottom row">
+                            <div class="right aligned five wide column noPaddingRight">
+                                <label>Código*:</label>
+                            </div>
+                            <div class="column">
+                                <div class="ui input">
+                                    <input type="number" placeholder="Informe o código..." formControlName="code">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="noPaddingBottom row">
+                            <div class="right aligned five wide column noPaddingRight">
+                                <label>Local:</label>
+                            </div>
+                            <div class="column">
+                                <div class="ui fluid input">
+                                    <input type="text" placeholder="Informe o local..." formControlName="place">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="noPaddingBottom row">
+                            <div class="right aligned five wide column noPaddingRight">
+                                <label>Descrição*:</label>
+                            </div>
+                            <div class="column">
+                                <input type="text" placeholder="Informe a descrição..." formControlName="description">
+                            </div>
+                        </div>
+                        <div class="noPaddingBottom row">
+                            <div class="right aligned five wide column noPaddingRight">
+                                <label>Palestrante:</label>
+                            </div>
+                            <div class="column">
+                                <input type="text" placeholder="Informe o palestrante..." formControlName="speaker">
+                            </div>
+                        </div>
+                        <div class="noPaddingBottom row">
+                            <div class="right aligned five wide column noPaddingRight">
+                                <label>Tema:</label>
+                            </div>
+                            <div class="column">
+                                <input type="text" placeholder="Informe o tema..." formControlName="theme">
+                            </div>
+                        </div>
+                        <div class="noPaddingBottom row">
+                            <div class="right aligned five wide column noPaddingRight">
+                                <label>Data de início*:</label>
+                            </div>
+                            <div class="column">
+                                <calendar type="date" placeholder="Informe a data de início..." formControlName="dateStart"></calendar>
+                            </div>
+                        </div>
+                        <div class="noPaddingBottom row">
+                            <div class="right aligned five wide column noPaddingRight">
+                                <label>Data de fim*:</label>
+                            </div>
+                            <div class="column">
+                                <calendar type="date" placeholder="Informe a data de fim..." formControlName="dateEnd"></calendar>
+                            </div>
+                        </div>
+                        <div class="noPaddingBottom row">
+                            <div class="right aligned five wide column noPaddingRight">
+                                <label>Número de vagas:</label>
+                            </div>
+                            <div class="column">
+                                <div class="ui input">
+                                    <input type="number" maxlength="5" placeholder="Informe o número de vagas..." formControlName="vacancy">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="actions">
+                <button class="ui red cancel inverted button">
+                    <i class="remove icon"></i> Cancelar
+                </button>
+                <button class="ui {{sourceEventActivityForm.invalid? ' disabled ' : ''}} green ok inverted button">
+                    <i class="checkmark icon"></i> Salvar
+                </button>
+            </div>
+        </modal>
+        <div class="ui right top attached menu">
+            <div class="ui right animated button icon item" (click)="onEventActivityNew()">
+                <div class="visible content">
+                    <i class="large icons">
+                        <i class="edit icon"></i><i class="corner add icon"></i>
+                    </i>
+                </div>
+                <div class="hidden content">
+                    Novo
+                </div>
+            </div>
+        </div>
+        <div class="ui bottom scrolling attached segment" id="listContent">
+            <table class="ui fixed single line celled table">
+                <thead>
+                    <tr>
+                        <th>
+                            Descrição
+                        </th>
+                        <th>
+                            Início
+                        </th>
+                        <th>
+                            Fim
+                        </th>
+                        <th>
+                            Ações
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let value of source.getValue().activities; trackBy: index;let idx = index;">
+                        <td>
+                            {{value.code}}
+                        </td>
+
+                        <td>
+                            {{value.dateStart}}
+                        </td>
+                        <td>
+                            {{value.dateEnd}}
+                        </td>
+                        <td>
+                            <a>
+                                <i class="write link icon" (click)="editAction(value, idx)"></i>
+                            </a>
+                            <a>
+                                <i class="trash outline link icon" (click)="removeAction(idx)"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br />
     </div>
 </div>

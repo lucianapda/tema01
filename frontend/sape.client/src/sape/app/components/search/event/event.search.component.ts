@@ -12,10 +12,10 @@ declare var $: any;
 @Component({
   selector: 'event-search',
   template: `
-    <div class="ui {{loading? 'loading disabled' : ''}} {{disable? 'disabled' : ''}} search selection dropdown">
+    <div class="ui {{loading? 'loading disabled' : ''}} {{disable? 'disabled' : ''}} search selection dropdown" #dropdown>
         <input name="tags" type="event">
         <i class="dropdown icon"></i>
-        <div class="default text">Selecione o event...</div>
+        <div class="default text">Selecione o evento...</div>
         <div class="menu">
             <div *ngFor="let event of results" class="item" (click)="onSelect(event)">
                 {{event.place}}
@@ -28,6 +28,8 @@ declare var $: any;
   }]
 })
 export class EventSearchComponent implements AfterViewInit, ControlValueAccessor {
+
+  @ViewChild('dropdown') dropdownComponent: ElementRef;
 
   private loading: boolean = false;
   @Input()
@@ -42,7 +44,7 @@ export class EventSearchComponent implements AfterViewInit, ControlValueAccessor
   private objectOwner: Object;
 
   ngAfterViewInit() {
-    this.component = $('.ui.dropdown').dropdown({});
+    this.component = $(this.dropdownComponent.nativeElement).dropdown({});
   }
 
   private onSelect(value: EventDTO) : void {

@@ -15,7 +15,9 @@ public class SubscriptionActivityDTO extends BaseDTO {
     private LocalDateTime date;
     private Boolean waitingList;
     private Long idActivity;
+    private String descActivity;
     private Long idSubscription;
+    private String namePerson;
 
 	/**
 	 * Retorna uma instancia de {@link Long}
@@ -82,6 +84,22 @@ public class SubscriptionActivityDTO extends BaseDTO {
 	}
 
 	/**
+	 * Retorna uma instancia de {@link String}
+	 * @return {@link String}
+	 */
+	public String getDescActivity() {
+		return descActivity;
+	}
+
+	/**
+	 * Atribui um {@link String}
+	 * @param descActivity - {@link String}
+	 */
+	public void setDescActivity(String descActivity) {
+		this.descActivity = descActivity;
+	}
+
+	/**
 	 * Retorna uma instancia de {@link Long}
 	 * @return {@link Long}
 	 */
@@ -95,5 +113,21 @@ public class SubscriptionActivityDTO extends BaseDTO {
 	 */
 	public void setIdSubscription(Long idSubscription) {
 		this.idSubscription = idSubscription;
+	}
+
+	/**
+	 * Retorna uma instancia de {@link String}
+	 * @return {@link String}
+	 */
+	public String getNamePerson() {
+		return namePerson;
+	}
+
+	/**
+	 * Atribui um {@link String}
+	 * @param namePerson - {@link String}
+	 */
+	public void setNamePerson(String namePerson) {
+		this.namePerson = namePerson;
 	}
 }

@@ -20,6 +20,7 @@ export class DefaultCalendarOptions implements CalendarOptions {
     formatter = {
         date: formatDate
     };
+    monthFirst = false;
 }
 
 function formatDate(date: Date, settings: any) {

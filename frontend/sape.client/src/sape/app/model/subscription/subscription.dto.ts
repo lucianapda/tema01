@@ -10,7 +10,7 @@ export class SubscriptionDTO extends BaseDTO {
   date: Date = null;
   idPerson: number = null;
   namePerson: string = null;
-  activities: Array<SubscriptionActivityDTO>;
+  activities: Array<number> = [];
 
   // loaded ondemand
   person: PersonDTO = null;

@@ -1,3 +1,4 @@
+import { MessageModule } from './../../components/message/message.module';
 /**
  * Created by Guilherme on 03/04/2017.
  */
@@ -10,7 +11,8 @@ import { LoginComponent } from './login.component';
 @NgModule({
   imports: [
     routing,
-    SharedModule
+    SharedModule,
+    MessageModule
   ],
   declarations: [
     LoginComponent

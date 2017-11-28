@@ -1,6 +1,7 @@
+import { CalendarComponent } from './../calendar/calendar.component';
 import { DefaultModalOptions } from './default-modal.options';
 import { ModalOptions } from './modal.options';
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, QueryList, ContentChildren, OnDestroy } from '@angular/core';
 import { ElementRef } from '@angular/core';
 import { ModalControl } from './modal.control';
 
@@ -12,11 +13,21 @@ declare var $: any;
     styleUrls: ['./modal.component.css'],
     templateUrl: `./modal.component.html`,
   })
-export class ModalComponent<T> implements OnInit {
+export class ModalComponent<T> implements OnInit, OnDestroy {
   
   @Input() options: ModalOptions;
 
-  @Input() control: ModalControl<T>;
+  @Input() control: ModalControl<T>; 
+
+  @Input() afterShow: Function = () => {
+    if (this.calendarComponents && this.calendarComponents.length > 0) {
+      this.calendarComponents.forEach(calendar => {
+        calendar.init();
+      });
+    }
+  };
+
+  @ContentChildren(CalendarComponent, {descendants: true}) calendarComponents:QueryList<CalendarComponent>;
 
   private modal: any;
 
@@ -31,6 +42,9 @@ export class ModalComponent<T> implements OnInit {
    */
   public show(value: T) {
     this.getModal().modal('show');
+    if (this.afterShow) {
+      this.afterShow();
+    }
     this.control.setModalValue(value);
   }
 
@@ -38,7 +52,8 @@ export class ModalComponent<T> implements OnInit {
    * Ativa o modal
    */
   public hide() : any {
-    this.getModal().modal('hide');
+    this.getModal().modal('hide all');
+    this.getModal().remove();
     return this.control.getModalValue();
   }
 
@@ -52,7 +67,7 @@ export class ModalComponent<T> implements OnInit {
         keyboardShortcuts: this.options.keyboardShortcuts,
         offset: this.options.offset,
         context: this.options.context,
-        closable: this.options.closable,
+        closable: this.options.closable, 
         blurring: this.options.blurring,
         inverted : this.options.inverted,
         dimmerSettings: 	
@@ -69,10 +84,18 @@ export class ModalComponent<T> implements OnInit {
         onVisible: this.options.onVisible,
         onHide: this.options.onHide,
         onHidden: this.options.onHidden,
-        onApprove: () => { this.control.getModalApprove(this.control.getModalValue()) },
-        onDeny: () => { this.control.getModalDeny(this.control.getModalValue()) },
+        onApprove: () => { return this.control.getModalApprove(this.control.getModalValue());  },
+        onDeny: () => { return this.control.getModalDeny(this.control.getModalValue());  },
       });
     }
     return this.modal;
+  }
+
+  ngOnDestroy() {
+    this.afterShow = undefined;
+    this.options = undefined;
+    this.control = undefined;
+    this.calendarComponents = undefined;
+    this.modal = undefined; 
   }
 }

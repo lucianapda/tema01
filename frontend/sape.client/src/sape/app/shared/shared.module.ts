@@ -6,15 +6,11 @@ import { SuiModule } from 'ng2-semantic-ui';
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SuiModule
+    ReactiveFormsModule
   ],
   exports: [
     CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SuiModule
+    ReactiveFormsModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -4,14 +4,14 @@ export class DefaultModalOptions implements ModalOptions {
 
     detachable = true;
     autofocus = true;
-    observeChanges = false;
+    observeChanges = true;
     allowMultiple = false;
     keyboardShortcuts = true;
     offset = 0;
     context = 'body';
     closable = false;
     inverted = false;
-    blurring = true;
+    blurring = false;
     transition = 'fade';
     duration = 400;
     queue = false;

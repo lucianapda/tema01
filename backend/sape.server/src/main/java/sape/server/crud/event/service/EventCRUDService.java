@@ -1,5 +1,8 @@
 package sape.server.crud.event.service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,27 +80,42 @@ public class EventCRUDService extends AbstractCRUDService<EventEntity, EventDTO>
     	if (idUser != null) {
 			entity.setUser(userCRUDService.getEntity(idUser));
 		}
-    	dto.getActivities().forEach(activityDTO -> {
-			EventActivityEntity activity = null;
-			if (activityDTO.getId() != null) {
-				Optional<EventActivityEntity> findFirst = entity.getActivities().stream().filter(activityEntity -> activityDTO.getId().equals(activityEntity.getId())).findFirst();
-				if (findFirst.isPresent()) {
-					activity = findFirst.get();
-				}
 
-				activity.setId(activityDTO.getId());
-				activity.setVersion(activityDTO.getVersion());
-				activity.setCode(activityDTO.getCode());
-				activity.setDescription(activityDTO.getDescription());
-		    	activity.setSpeaker(activityDTO.getSpeaker());
-		    	activity.setTheme(activityDTO.getTheme());
-		    	activity.setDateStart(activityDTO.getDateStart());
-		    	activity.setDateEnd(activityDTO.getDateEnd());
-		    	activity.setVacancy(activityDTO.getVacancy());
-		    	activity.setPlace(activityDTO.getPlace());
-		    	activity.setEvent(entity);
+    	List<EventActivityEntity> activitiesUpdated = new ArrayList<>();
+    	dto.getActivities().forEach(activityDTO -> {
+    		EventActivityEntity eventActivityEntity = null;
+    		if (activityDTO.getId() != null) {
+    			Optional<EventActivityEntity> findFirst = entity.getActivities().stream().filter(t -> activityDTO.getId() == t.getId()).findFirst();
+    			if (findFirst.isPresent()) {
+    				eventActivityEntity = findFirst.get();
+    			}
 			}
+    		if (eventActivityEntity == null){
+    			eventActivityEntity = new EventActivityEntity();
+    			entity.getActivities().add(eventActivityEntity);
+			}
+    		eventActivityEntity.setId(activityDTO.getId());
+    		eventActivityEntity.setVersion(activityDTO.getVersion());
+    		eventActivityEntity.setCode(activityDTO.getCode());
+    		eventActivityEntity.setDescription(activityDTO.getDescription());
+    		eventActivityEntity.setSpeaker(activityDTO.getSpeaker());
+    		eventActivityEntity.setTheme(activityDTO.getTheme());
+    		eventActivityEntity.setDateStart(activityDTO.getDateStart());
+    		eventActivityEntity.setDateEnd(activityDTO.getDateEnd());
+    		eventActivityEntity.setVacancy(activityDTO.getVacancy());
+    		eventActivityEntity.setPlace(activityDTO.getPlace());
+    		eventActivityEntity.setEvent(entity);
+    		activitiesUpdated.add(eventActivityEntity);
 		});
+
+
+		for (Iterator<EventActivityEntity> iterator = entity.getActivities().iterator(); iterator.hasNext();) {
+			EventActivityEntity eventActivityEntity = iterator.next();
+			if (!activitiesUpdated.stream().filter(t -> t.getId() == null || eventActivityEntity.getId() == t.getId()).findFirst().isPresent()) {
+				iterator.remove();
+			}
+		}
+
         return entity;
     }
 

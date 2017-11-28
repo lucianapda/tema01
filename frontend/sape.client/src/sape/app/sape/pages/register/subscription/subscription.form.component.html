@@ -1,10 +1,10 @@
 <div id="subscriptionFormPage" class="ui left aligned container">
     <div class="ui center aligned container">
         <h2 class="ui header">
-            <i class="{{menuOption.icon}} icon"></i>
+            <i class="edit icon"></i>
             <div class="content">
-                {{menuOption.name}}
-                <div class="sub header">{{menuOption.text}}</div>
+                Inscrições
+                <div class="sub header">Cadastro de Inscrições</div>
             </div>
         </h2>
     </div>
@@ -49,6 +49,14 @@
                         </div>
                         <div class="column" formGroupName="currentSubscription">
                             <person-search (afterSelected)="setNamePerson($event[0], $event[1])" [objectOwner]="source.getValue().currentSubscription" formControlName="idPerson"></person-search>
+                        </div>
+                    </div>
+                    <div class="noPaddingBottom row">
+                        <div class="right aligned five wide column noPaddingRight">
+                            <label>Atividades:</label>
+                        </div>
+                        <div class="column" formGroupName="currentSubscription">
+                            <event-activity-search (afterSelected)="setNamePerson($event[0], $event[1])" [objectOwner]="source.getValue()" formControlName="activities"></event-activity-search>
                         </div>
                     </div>
 

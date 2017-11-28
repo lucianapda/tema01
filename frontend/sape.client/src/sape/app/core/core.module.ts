@@ -1,3 +1,4 @@
+import { SuiModule } from 'ng2-semantic-ui';
 import { NgxMaskModule } from './../components/mask/mask.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -24,10 +25,13 @@ const CORE_PROVIDERS = [
     BrowserModule,
     HttpModule,
     JsonpModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule,
     ToastrModule.forRoot({positionClass: 'inline'}),
     BrowserAnimationsModule,
-    NgxMaskModule.forRoot() 
+    NgxMaskModule.forRoot() ,
+    SuiModule
   ],
   exports: [
     SharedModule,
@@ -35,8 +39,12 @@ const CORE_PROVIDERS = [
     BrowserModule,
     HttpModule,
     JsonpModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule,
     ToastrModule,
+    SuiModule,
+    NgxMaskModule
   ],
   providers: CORE_PROVIDERS
 })

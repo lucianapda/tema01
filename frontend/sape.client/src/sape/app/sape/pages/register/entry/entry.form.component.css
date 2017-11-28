@@ -1,0 +1,9 @@
+#entryFormPage {
+    background-color: rgb(255, 255, 255);
+    height: 100%;
+    padding: 5px;
+}
+
+#listContent {
+    padding: 0px !important;
+}

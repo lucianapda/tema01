@@ -7,7 +7,7 @@ import { ServiceLocator } from './../locator/service.locator';
  */
 
 import { Injectable, ErrorHandler } from '@angular/core';
-import { RequestOptions, Http, Response } from '@angular/http';
+import { RequestOptions, Http, Response, URLSearchParams } from '@angular/http';
 import { HttpHeaders } from './http.headers';
 
 import 'rxjs/add/operator/toPromise';
@@ -39,11 +39,12 @@ export class HttpService {
    * Realiza um put no endereço especificado.
    */
   public delete(url: string, config?: HttpConfigMethod): Promise<any> {
+    config = config? config : new HttpConfigMethod();
     let headers = this.getConfigHeaders(config.headers);
     let finalURL = this.formatURL(url);
     console.log('Method delete: ' + finalURL);
     let options = this.buildRequestOptions(headers, config);
-    return this.http.delete(URL_SERVER + '' + url, options).toPromise().then(this.extractData).catch((e) => this.handleError(e));
+    return this.http.delete(URL_SERVER + '' + url, options).toPromise().then(this.extractData).catch((e) => {throw this.handleError(e)});
   }
 
   /**
@@ -55,7 +56,7 @@ export class HttpService {
     let finalURL = this.formatURL(url);
     console.log('Method get: ' + finalURL);
     let options = this.buildRequestOptions(headers, config);
-    return this.http.get(URL_SERVER + '' + url, options).toPromise().then(this.extractData).catch((e) => this.handleError(e));
+    return this.http.get(URL_SERVER + '' + url, options).toPromise().then(this.extractData).catch((e) => {throw this.handleError(e)});
   }
 
   /**
@@ -67,7 +68,7 @@ export class HttpService {
     let finalURL = this.formatURL(url);
     console.log('Method put: ' + finalURL);
     let options = this.buildRequestOptions(headers, config);    
-    return this.http.put(URL_SERVER + '' + url, { name }, options).toPromise().then(this.extractData).catch((e) => this.handleError(e));
+    return this.http.put(URL_SERVER + '' + url, { name }, options).toPromise().then(this.extractData).catch((e) => {throw this.handleError(e)});
   }
 
   /**
@@ -79,7 +80,7 @@ export class HttpService {
     let finalURL = this.formatURL(url);
     console.log('Method post: ' + finalURL);
     let options = this.buildRequestOptions(headers, config);
-    return this.http.post(finalURL, { name }, options).toPromise().then(this.extractData).catch((e) => this.handleError(e));
+    return this.http.post(finalURL, { name }, options).toPromise().then(this.extractData).catch((e) => {throw this.handleError(e)});
   }
 
   /**
@@ -117,7 +118,7 @@ export class HttpService {
     return res.json();
   }
 
-  private handleError(error: Response | any) {
-    ServiceLocator.get(ApplicationErrorHandler).handleError(error);
+  private handleError(error: Response | any) : ApplicationError | ApplicationError[] | Response | any {
+    return ServiceLocator.get(ApplicationErrorHandler).handleError(error);
   }
 }

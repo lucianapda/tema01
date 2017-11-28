@@ -14,6 +14,9 @@ import { ApplicationErrorHandler } from './error/application.error.handler';
 import { CommonModule } from '@angular/common';
 import {SharedModule} from '../shared/shared.module';
 import { SubscriptionCrudService } from './crud/subscription/subscription.crud.service';
+import { EventActivityCrudService } from './crud/event/activity/event.activity.crud.service';
+import { SubscriptionActivityCrudService } from './crud/subscription/activity/subscription.activity.crud.service';
+import { EntryCrudService } from './crud/entry/entry.crud.service';
 
 /**
  * Created by Guilherme on 06/04/2017.
@@ -32,7 +35,10 @@ const PROVIDERS = [
   MessageService,
   StorageService,
   MenuService,
-  MenuSideBarService
+  MenuSideBarService,
+  EventActivityCrudService,
+  EntryCrudService,
+  SubscriptionActivityCrudService
 ];
 
 @NgModule({

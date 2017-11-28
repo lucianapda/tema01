@@ -25,17 +25,9 @@
                 </thead>
                 <tbody class="scroll">
                     <tr *ngFor="let value of values; trackBy: index;">
-                        <!-- Valores que precisam de formatação.  -->
-                        <ng-container *ngIf="isFormatValue">
+                        <ng-container>
                             <td class="{{column.style}}{{column.hide?' hide ':''}}" *ngFor='let column of columns; trackBy: index;'>
-                                {{formatValue(value[column.name])}}
-                            </td>
-                        </ng-container>
-
-                        <!-- Valores que não precisam de formatação.  -->
-                        <ng-container *ngIf="!isFormatValue">
-                            <td class="{{column.style}}{{column.hide?' hide ':''}}" *ngFor='let column of columns; trackBy: index;'>
-                                {{value[column.name]}}
+                                {{!column.formatValue? value[column.name] : column.formatValue(value[column.name])}}
                             </td>
                         </ng-container>
                         <!-- Coluna de ações da table .  -->

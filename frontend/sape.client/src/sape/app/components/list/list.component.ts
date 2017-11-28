@@ -43,7 +43,7 @@ export class ListComponent<T extends BaseDTO> extends BaseComponent{
   private values: T[] = []; 
   private isFormatValue: Boolean = false;
   private collectionSize: number = 10;
-  private maxSize: number = 10;
+  private maxSize: number = 6;
   private pageSize: number = 10;
   private selectedPage: number = 1;
   private currentMenuOption: MenuOption;
@@ -57,31 +57,41 @@ export class ListComponent<T extends BaseDTO> extends BaseComponent{
     this.beforeLoad.subscribe(() => {
       this.values = [];
     });
+    return this.getActionReading();
+  }
+
+  private getActionReading() {
     return this.createAction(AppActionType.READING)
-      ._before(() => {this.beforeLoad.emit();})
-      ._execute(() => { 
-        if(!this.params) {
-          this.params = new Map<string, any>();
-        }
+    ._before((v?: any): Promise<any> | any | void => {this.beforeLoad.emit();})
+    ._execute((v?: any): Promise<any> | any | void => { 
+      if(!this.params) {
+        this.params = new Map<string, any>();
+      }
 
-        if (this.columns) {
-          let columnsFormat: string = "";
-          this.columns.forEach((column: ListColumn) =>{
-            if (columnsFormat !== "") {
-              columnsFormat += ", ";
-            } 
-            columnsFormat += column.name;
-          });
-          this.params.set('fields', columnsFormat);
-        } 
-
-        this.service.readByParams(this.params).then((values: Array<T>) => {
-          if (values instanceof Array) {
-            values.forEach((t: T) => this.values.push(t))
-          }
+      if (this.columns) {
+        let columnsFormat: string = "";
+        this.columns.forEach((column: ListColumn) =>{
+          if (columnsFormat !== "") {
+            columnsFormat += ", ";
+          } 
+          columnsFormat += column.name;
         });
-        
-      })._after(() => {this.afterLoad.emit();});
+        this.params.set('fields', columnsFormat);
+      }
+      this.params.set('page', this.selectedPage);
+      this.params.set('per_page', this.pageSize);
+
+      return this.service.readByParams(this.params).then((values: Array<T>) => {
+        if (values instanceof Array) {
+          values.forEach((t: T) => this.values.push(t))
+        }
+      });
+      
+    })._after((v?: any): Promise<any> | any | void => {this.afterLoad.emit();});
+  }
+
+  public refresh() {
+    super.runner(this.getActionReading());
   }
 
   private menuService() : MenuService {
@@ -91,6 +101,10 @@ export class ListComponent<T extends BaseDTO> extends BaseComponent{
   private onNew() {
     this.newAction.execute();
   }
+
+  private pageChange() {
+
+  }
 }
 
 export class ListColumn {
@@ -99,12 +113,14 @@ export class ListColumn {
   public index: number; 
   public style: string;
   public hide: boolean;
-  constructor(name: string, title: string, index: number, style: string, hide: boolean) {
+  public formatValue: Function;
+  constructor(name: string, title: string, index: number, style: string, hide: boolean, formatValue?: Function) {
     this.name = name;
     this.title = title;
     this.index = index;
     this.style = style;
     this.hide = hide;
+    this.formatValue = formatValue;
   }
 }
 

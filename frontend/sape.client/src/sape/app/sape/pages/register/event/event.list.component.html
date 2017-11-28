@@ -1,4 +1,12 @@
 <div id="eventListPage">
-    <h1>Eventos</h1>
+    <div class="ui center aligned container">
+        <h2 class="ui header">
+            <i class="calendar outline icon"></i>
+            <div class="content">
+                Eventos
+                <div class="sub header">Listagem de Eventos</div>
+            </div>
+        </h2>
+    </div>
     <list [service]='eventCrudService()' [actions]='getActions()' [newAction]="getNewAction()" [columns]='getColumns()'></list>
 </div>
