@@ -78,8 +78,8 @@ export class ListComponent<T extends BaseDTO> extends BaseComponent{
         });
         this.params.set('fields', columnsFormat);
       }
-      this.params.set('page', this.selectedPage);
-      this.params.set('per_page', this.pageSize);
+      //this.params.set('page', this.selectedPage);
+      //this.params.set('per_page', this.pageSize);
 
       return this.service.readByParams(this.params).then((values: Array<T>) => {
         if (values instanceof Array) {
